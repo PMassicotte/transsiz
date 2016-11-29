@@ -8,7 +8,7 @@
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 ```
 
-Last updated: 2016-11-29 08:44:57
+Last updated: 2016-11-29 14:05:18
 ## Open the PS file and do some cleaning
 
 
@@ -95,25 +95,72 @@ res %>%
 ![plot of chunk unnamed-chunk-6](pp//unnamed-chunk-6-1.png)
 
 ## PI curve
-In this section we start by calculating photosynthetic parameters of one PvsE curve.
+In this section we start by calculating photosynthetic parameters of one P vs E curve.
 
 
 ```r
-params <- readxl::read_excel("data/Calculs_PP_CTD47.xlsx") %>% 
-  janitor::clean_names() %>% 
-  rename(depth = depth_m) %>% 
-  rename(tchl = tchl_a_mg_m3) %>% 
-  rename(pmax = ps_mgc_m_3_h_1) %>% 
-  rename(alpha = alpha_mgc_m_3_h_1_µmol_quanta_m_2_s_1_1) %>% 
-  rename(beta = beta_b_mgc_3_h_1_µmol_quanta_m_2_s_1_1) 
+# Open de PE data
+df <- read_csv("data/pe.csv") %>% 
+  fill(depth)
 ```
+
+```
+## Parsed with column specification:
+## cols(
+##   depth = col_double(),
+##   light = col_double(),
+##   p_manip = col_double()
+## )
+```
+
+```r
+# Fit the PE curve for each depth
+mod <- df %>%
+  group_by(depth) %>%
+  nest() %>%
+  mutate(model = map(
+    data,
+    ~ minpack.lm::nlsLM(
+      p_manip ~
+        ps * (1 - exp(-alpha * light / ps)) * exp(-beta * light / ps) + p0,
+      data = .,
+      start = list(
+        ps = 0.5,
+        alpha = 0.005,
+        beta = 0.004,
+        p0 = 0
+      ),
+      lower = c(0, 0, 0, -Inf)
+    )
+  )) %>% 
+  mutate(fitted = map(model, broom::augment)) %>% 
+  mutate(coef = map(model, broom::tidy)) 
+
+# Overview of the PE curves
+mod %>% 
+  unnest(fitted) %>% 
+  ggplot(aes(x = light, y = p_manip)) +
+  geom_point() +
+  geom_line(aes(y = .fitted), col = "red") +
+  facet_wrap(~depth, scales = "free")
+```
+
+![plot of chunk unnamed-chunk-7](pp//unnamed-chunk-7-1.png)
 
 ## Calculate hourly PP at each depth
 
 
 ```r
+params <- mod %>% 
+  unnest(coef) %>% 
+  select(depth, term, estimate) %>% 
+  spread(term, estimate)
+
+params <- rbind(params[1, ], params)
+params$depth[1] <- 0
+
 dat <- inner_join(res, params, by = "depth") %>% 
-  mutate(p = pmax * (1 - exp(-alpha * e_z / pmax)) * exp(-beta * e_z / pmax))
+  mutate(p = ps * (1 - exp(-alpha * e_z / ps)) * exp(-beta * e_z / ps))
 
 dat %>%
   ggplot(aes(x = hour, y = p)) +
@@ -152,6 +199,6 @@ pracma::trapz(res$depth, res$sum_day)
 ```
 
 ```
-## [1] 638.1606
+## [1] 707.5934
 ```
 
