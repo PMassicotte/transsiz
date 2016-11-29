@@ -83,28 +83,35 @@ params <- readxl::read_excel("data/Calculs_PP_CTD47.xlsx") %>%
   rename(alpha = alpha_mgc_m_3_h_1_µmol_quanta_m_2_s_1_1) %>% 
   rename(beta = beta_b_mgc_3_h_1_µmol_quanta_m_2_s_1_1) 
 
+#' ## Calculate hourly PP at each depth
+
 dat <- inner_join(res, params, by = "depth") %>% 
   mutate(p = pmax * (1 - exp(-alpha * e_z / pmax)) * exp(-beta * e_z / pmax))
 
 dat %>%
   ggplot(aes(x = hour, y = p)) +
   geom_point() +
-  facet_wrap(~depth)
+  facet_wrap(~depth) +
+  xlab("Hour of the day") + 
+  ylab("PP")
 
-dat %>%
-  group_by(depth) %>% 
-  summarise(sum_day = sum(p)) %>% 
-  ggplot(aes(x = sum_day, y = depth)) +
-  geom_point() +
-  geom_line() +
-  scale_y_reverse()
+#' ## Calculate integrated PP at each depth
+
+#' Calculating the sum of PP at each depth gives us the daily PP at each particular depth.
 
 res <- dat %>%
   group_by(depth) %>% 
   summarise(sum_day = sum(p))
 
+res %>% 
+  ggplot(aes(x = sum_day, y = depth)) +
+  geom_point() +
+  geom_line() +
+  scale_y_reverse()
+
+
 #' ## Calculate the integrated PP
 
-#' This is the integrated value of PP for 1 day
+#' This is the integrated value of PP for 1 day. This is done by calculating the area under the curve of the daily PP at each depth.
 
 pracma::trapz(res$depth, res$sum_day)
