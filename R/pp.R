@@ -62,7 +62,6 @@ compute_ez <- function(e) {
   return(df)
 }
 
-
 res <- res %>% 
   mutate(ez = map(.$e, compute_ez)) %>% 
   unnest(ez)
@@ -88,6 +87,8 @@ params <- readxl::read_excel("data/Calculs_PP_CTD47.xlsx") %>%
 
 dat <- inner_join(res, params, by = "depth") %>% 
   mutate(p = pmax * (1 - exp(-alpha * e_z / pmax)) * exp(-beta * e_z / pmax))
+
+knitr::kable(dat)
 
 dat %>%
   ggplot(aes(x = hour, y = p)) +
