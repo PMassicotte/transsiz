@@ -8,7 +8,7 @@
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 ```
 
-Last updated: 2016-11-29 08:40:30
+Last updated: 2016-11-29 08:41:23
 ## Open the PS file and do some cleaning
 
 
@@ -32,6 +32,7 @@ ps$par_just_below_ice_scalar_µmolquanta_corrected[i] <-
 ```
 
 ## Plot the "raw" data
+This is the raw data to work with.
 
 
 ```r
