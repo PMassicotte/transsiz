@@ -109,12 +109,16 @@ mod %>%
   geom_line(aes(y = .fitted), col = "red") +
   facet_wrap(~depth, scales = "free")
 
-#' ## Calculate hourly PP at each depth
-
 params <- mod %>% 
   unnest(coef) %>% 
   select(depth, term, estimate) %>% 
   spread(term, estimate)
+
+params
+
+#' ## Calculate hourly PP at each depth
+
+# Duplicate the first row and assume the same value at depth = 0 m
 
 params <- rbind(params[1, ], params)
 params$depth[1] <- 0
