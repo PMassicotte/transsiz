@@ -114,14 +114,14 @@ params <- mod %>%
   select(depth, term, estimate) %>% 
   spread(term, estimate)
 
-params
-
-#' ## Calculate hourly PP at each depth
-
 # Duplicate the first row and assume the same value at depth = 0 m
 
 params <- rbind(params[1, ], params)
 params$depth[1] <- 0
+
+params
+
+#' ## Calculate hourly PP at each depth
 
 dat <- inner_join(res, params, by = "depth") %>% 
   mutate(p = ps * (1 - exp(-alpha * e_z / ps)) * exp(-beta * e_z / ps))

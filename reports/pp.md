@@ -8,7 +8,7 @@
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 ```
 
-Last updated: 2016-11-29 14:15:36
+Last updated: 2016-11-29 14:16:19
 ## Open the PS file and do some cleaning
 
 
@@ -153,30 +153,31 @@ params <- mod %>%
   select(depth, term, estimate) %>% 
   spread(term, estimate)
 
+# Duplicate the first row and assume the same value at depth = 0 m
+
+params <- rbind(params[1, ], params)
+params$depth[1] <- 0
+
 params
 ```
 
 ```
-## # A tibble: 6 × 5
+## # A tibble: 7 × 5
 ##   depth      alpha         beta          p0        ps
 ## * <dbl>      <dbl>        <dbl>       <dbl>     <dbl>
-## 1   2.1 0.08011632 9.423394e-04 -0.01059057 3.2274108
-## 2   5.0 0.05447885 1.289265e-03  0.06624422 3.3129174
-## 3  10.0 0.05437787 4.394171e-04  0.06799501 2.7518885
-## 4  15.0 0.04359118 3.014396e-04  0.04435857 1.6443554
-## 5  30.0 0.04008135 4.939990e-04  0.04474596 1.3912690
-## 6  50.0 0.00462599 4.136213e-05  0.08170308 0.0957417
+## 1   0.0 0.08011632 9.423394e-04 -0.01059057 3.2274108
+## 2   2.1 0.08011632 9.423394e-04 -0.01059057 3.2274108
+## 3   5.0 0.05447885 1.289265e-03  0.06624422 3.3129174
+## 4  10.0 0.05437787 4.394171e-04  0.06799501 2.7518885
+## 5  15.0 0.04359118 3.014396e-04  0.04435857 1.6443554
+## 6  30.0 0.04008135 4.939990e-04  0.04474596 1.3912690
+## 7  50.0 0.00462599 4.136213e-05  0.08170308 0.0957417
 ```
 
 ## Calculate hourly PP at each depth
 
 
 ```r
-# Duplicate the first row and assume the same value at depth = 0 m
-
-params <- rbind(params[1, ], params)
-params$depth[1] <- 0
-
 dat <- inner_join(res, params, by = "depth") %>% 
   mutate(p = ps * (1 - exp(-alpha * e_z / ps)) * exp(-beta * e_z / ps))
 
