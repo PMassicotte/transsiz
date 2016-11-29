@@ -22,6 +22,7 @@ ps$par_just_below_ice_scalar_µmolquanta_corrected[i] <-
   ps$par_just_below_ice_scalar_µmolquanta_corrected[length(i):1]
 
 #' ## Plot the "raw" data
+
 ps %>% 
   ggplot(aes(x = time, y = par_just_below_ice_scalar_µmolquanta)) +
   geom_point() +
