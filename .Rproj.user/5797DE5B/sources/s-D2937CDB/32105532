@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1480423987187.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1421814506",
+    "id" : "32105532",
+    "lastKnownWriteTime" : 1480424358,
+    "last_content_update" : 1480424358389,
+    "path" : "/media/work/projects/transsiz/R/main.R",
+    "project_path" : "R/main.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
