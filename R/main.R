@@ -9,6 +9,8 @@ graphics.off()
 loadfonts(quiet = TRUE)
 theme_set(theme_bw(base_size = 12, base_family = "Open Sans"))
 
+source("R/simulate_pe.R")
+
 ## Do the calculation and generate the report
 ezknitr::ezspin("R/pp.R", out_dir = "reports/", keep_html = FALSE, chunk_opts = list(tidy = FALSE))
 

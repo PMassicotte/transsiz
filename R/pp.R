@@ -99,7 +99,8 @@ mod <- df %>%
     )
   )) %>% 
   mutate(fitted = map(model, broom::augment)) %>% 
-  mutate(coef = map(model, broom::tidy)) 
+  mutate(coef = map(model, broom::tidy)) %>% 
+  mutate(simulation = map2(model, data, simul, n = 10))
 
 # Overview of the PE curves
 mod %>% 
@@ -111,7 +112,7 @@ mod %>%
 
 params <- mod %>% 
   unnest(coef) %>% 
-  select(depth, term, estimate) %>% 
+  dplyr::select(depth, term, estimate) %>% 
   spread(term, estimate)
 
 # Duplicate the first row and assume the same value at depth = 0 m
@@ -152,3 +153,9 @@ res %>%
 #' This is the integrated value of PP for 1 day. This is done by calculating the area under the curve of the daily PP at each depth.
 
 pracma::trapz(res$depth, res$sum_day)
+
+#' ## Simulations
+
+#' NOT FINISHED
+
+map2(mod$simulation, mod$depth, plot_simulations)

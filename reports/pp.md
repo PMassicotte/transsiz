@@ -8,7 +8,7 @@
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 ```
 
-Last updated: 2016-11-29 14:16:19
+Last updated: 2016-11-29 15:58:05
 ## Open the PS file and do some cleaning
 
 
@@ -134,7 +134,8 @@ mod <- df %>%
     )
   )) %>% 
   mutate(fitted = map(model, broom::augment)) %>% 
-  mutate(coef = map(model, broom::tidy)) 
+  mutate(coef = map(model, broom::tidy)) %>% 
+  mutate(simulation = map2(model, data, simul, n = 10))
 
 # Overview of the PE curves
 mod %>% 
@@ -150,7 +151,7 @@ mod %>%
 ```r
 params <- mod %>% 
   unnest(coef) %>% 
-  select(depth, term, estimate) %>% 
+  dplyr::select(depth, term, estimate) %>% 
   spread(term, estimate)
 
 # Duplicate the first row and assume the same value at depth = 0 m
@@ -220,4 +221,53 @@ pracma::trapz(res$depth, res$sum_day)
 ```
 ## [1] 707.5934
 ```
+
+## Simulations
+NOT FINISHED
+
+
+```r
+map2(mod$simulation, mod$depth, plot_simulations)
+```
+
+```
+## [[1]]
+```
+
+![plot of chunk unnamed-chunk-11](pp//unnamed-chunk-11-1.png)
+
+```
+## 
+## [[2]]
+```
+
+![plot of chunk unnamed-chunk-11](pp//unnamed-chunk-11-2.png)
+
+```
+## 
+## [[3]]
+```
+
+![plot of chunk unnamed-chunk-11](pp//unnamed-chunk-11-3.png)
+
+```
+## 
+## [[4]]
+```
+
+![plot of chunk unnamed-chunk-11](pp//unnamed-chunk-11-4.png)
+
+```
+## 
+## [[5]]
+```
+
+![plot of chunk unnamed-chunk-11](pp//unnamed-chunk-11-5.png)
+
+```
+## 
+## [[6]]
+```
+
+![plot of chunk unnamed-chunk-11](pp//unnamed-chunk-11-6.png)
 
