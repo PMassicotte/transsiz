@@ -157,6 +157,8 @@ pracma::trapz(res$depth, res$sum_day)
 
 #' NOT FINISHED
 
+#' I am using simulated data based on a normal distribution of the fitted parameters to obtain an error estimation. For each P vs E curve, I generate *n* simulated curves based a multivariate normal distribution of the fitted parameters.
+
 mod <- mod %>% 
   mutate(simulation = map2(model, data, simul, n = 10)) # 10 simulations per depth
 

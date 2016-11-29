@@ -8,7 +8,7 @@
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 ```
 
-Last updated: 2016-11-29 16:00:28
+Last updated: 2016-11-29 16:07:05
 ## Open the PS file and do some cleaning
 
 
@@ -223,6 +223,7 @@ pracma::trapz(res$depth, res$sum_day)
 
 ## Simulations
 NOT FINISHED
+I am using simulated data based on a normal distribution of the fitted parameters to obtain an error estimation. For each P vs E curve, I generate *n* simulated curves based a multivariate normal distribution of the fitted parameters.
 
 
 ```r
