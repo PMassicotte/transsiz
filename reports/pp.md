@@ -8,7 +8,7 @@
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 ```
 
-Last updated: 2016-11-29 15:58:05
+Last updated: 2016-11-29 15:59:02
 ## Open the PS file and do some cleaning
 
 
@@ -227,47 +227,10 @@ NOT FINISHED
 
 
 ```r
-map2(mod$simulation, mod$depth, plot_simulations)
-```
+p <- map2(mod$simulation, mod$depth, plot_simulations)
 
-```
-## [[1]]
+cowplot::plot_grid(plotlist = p)
 ```
 
 ![plot of chunk unnamed-chunk-11](pp//unnamed-chunk-11-1.png)
-
-```
-## 
-## [[2]]
-```
-
-![plot of chunk unnamed-chunk-11](pp//unnamed-chunk-11-2.png)
-
-```
-## 
-## [[3]]
-```
-
-![plot of chunk unnamed-chunk-11](pp//unnamed-chunk-11-3.png)
-
-```
-## 
-## [[4]]
-```
-
-![plot of chunk unnamed-chunk-11](pp//unnamed-chunk-11-4.png)
-
-```
-## 
-## [[5]]
-```
-
-![plot of chunk unnamed-chunk-11](pp//unnamed-chunk-11-5.png)
-
-```
-## 
-## [[6]]
-```
-
-![plot of chunk unnamed-chunk-11](pp//unnamed-chunk-11-6.png)
 

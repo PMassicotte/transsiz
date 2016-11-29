@@ -158,4 +158,7 @@ pracma::trapz(res$depth, res$sum_day)
 
 #' NOT FINISHED
 
-map2(mod$simulation, mod$depth, plot_simulations)
+p <- map2(mod$simulation, mod$depth, plot_simulations)
+
+cowplot::plot_grid(plotlist = p)
+
