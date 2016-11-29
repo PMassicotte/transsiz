@@ -8,7 +8,7 @@
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 ```
 
-Last updated: 2016-11-29 15:59:02
+Last updated: 2016-11-29 16:00:28
 ## Open the PS file and do some cleaning
 
 
@@ -134,8 +134,7 @@ mod <- df %>%
     )
   )) %>% 
   mutate(fitted = map(model, broom::augment)) %>% 
-  mutate(coef = map(model, broom::tidy)) %>% 
-  mutate(simulation = map2(model, data, simul, n = 10))
+  mutate(coef = map(model, broom::tidy))
 
 # Overview of the PE curves
 mod %>% 
@@ -227,6 +226,9 @@ NOT FINISHED
 
 
 ```r
+mod <- mod %>% 
+  mutate(simulation = map2(model, data, simul, n = 10)) # 10 simulations per depth
+
 p <- map2(mod$simulation, mod$depth, plot_simulations)
 
 cowplot::plot_grid(plotlist = p)

@@ -99,8 +99,7 @@ mod <- df %>%
     )
   )) %>% 
   mutate(fitted = map(model, broom::augment)) %>% 
-  mutate(coef = map(model, broom::tidy)) %>% 
-  mutate(simulation = map2(model, data, simul, n = 10))
+  mutate(coef = map(model, broom::tidy))
 
 # Overview of the PE curves
 mod %>% 
@@ -157,6 +156,9 @@ pracma::trapz(res$depth, res$sum_day)
 #' ## Simulations
 
 #' NOT FINISHED
+
+mod <- mod %>% 
+  mutate(simulation = map2(model, data, simul, n = 10)) # 10 simulations per depth
 
 p <- map2(mod$simulation, mod$depth, plot_simulations)
 
