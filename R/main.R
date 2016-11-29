@@ -9,6 +9,8 @@ graphics.off()
 loadfonts(quiet = TRUE)
 theme_set(theme_bw(base_size = 12, base_family = "Open Sans"))
 
+## Do the calculation and generate the report
 ezknitr::ezspin("R/pp.R", out_dir = "reports/", keep_html = FALSE)
 
+## Publish it on github
 system("sh ./publish.sh")
