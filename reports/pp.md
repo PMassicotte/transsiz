@@ -8,7 +8,7 @@
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 ```
 
-Last updated: 2016-11-29 08:39:12
+Last updated: 2016-11-29 08:39:56
 ## Open the PS file and do some cleaning
 
 
@@ -19,12 +19,11 @@ ps <- readxl::read_excel("data/Global_PS_for_Takuvik.xlsx") %>%
   mutate(time_numeric = as.numeric(time)) %>% 
   mutate(hour = as.numeric(format(time, "%H"))) %>% 
   mutate(par_just_below_ice_scalar_µmolquanta_corrected = par_just_below_ice_scalar_µmolquanta)
-```
 
-There is a problem with data later than 2015-06-20 20:20:00. Replace these "outliers" with the observations measured at the begining.
-
-
-```r
+# *************************************************************************
+# There is a problem with data later than 2015-06-20 20:20:00.
+# Replace these "outliers" with the observations measured at the begining.
+# *************************************************************************
 i <- which(ps$time >= "2015-06-20 20:20:00")
 
 ps$par_just_below_ice_scalar_µmolquanta_corrected[i] <- 
@@ -41,7 +40,7 @@ ps %>%
   geom_point(aes(y = par_just_below_ice_scalar_µmolquanta_corrected), col = "red")
 ```
 
-![plot of chunk unnamed-chunk-4](pp//unnamed-chunk-4-1.png)
+![plot of chunk unnamed-chunk-3](pp//unnamed-chunk-3-1.png)
 
 ## Hourly PAR
 
@@ -59,7 +58,7 @@ res %>%
   geom_point()
 ```
 
-![plot of chunk unnamed-chunk-5](pp//unnamed-chunk-5-1.png)
+![plot of chunk unnamed-chunk-4](pp//unnamed-chunk-4-1.png)
 
 ## Calculate e at each depth
 This is done based on the integrated surface PAR and a kd value of 0.15 $m^{-1}$.
@@ -92,7 +91,7 @@ res %>%
   scale_y_reverse()
 ```
 
-![plot of chunk unnamed-chunk-6](pp//unnamed-chunk-6-1.png)
+![plot of chunk unnamed-chunk-5](pp//unnamed-chunk-5-1.png)
 
 ## PI curve
 In this section we start by calculating photosynthetic parameters of one PvsE curve.
@@ -123,7 +122,7 @@ dat %>%
   ylab("PP")
 ```
 
-![plot of chunk unnamed-chunk-8](pp//unnamed-chunk-8-1.png)
+![plot of chunk unnamed-chunk-7](pp//unnamed-chunk-7-1.png)
 
 ## Calculate integrated PP at each depth
 Calculating the sum of PP at each depth gives us the daily PP at each particular depth.
@@ -141,7 +140,7 @@ res %>%
   scale_y_reverse()
 ```
 
-![plot of chunk unnamed-chunk-9](pp//unnamed-chunk-9-1.png)
+![plot of chunk unnamed-chunk-8](pp//unnamed-chunk-8-1.png)
 
 ## Calculate the integrated PP
 This is the integrated value of PP for 1 day. This is done by calculating the area under the curve of the daily PP at each depth.

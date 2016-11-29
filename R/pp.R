@@ -14,8 +14,10 @@ ps <- readxl::read_excel("data/Global_PS_for_Takuvik.xlsx") %>%
   mutate(hour = as.numeric(format(time, "%H"))) %>% 
   mutate(par_just_below_ice_scalar_µmolquanta_corrected = par_just_below_ice_scalar_µmolquanta)
 
-#' There is a problem with data later than 2015-06-20 20:20:00. Replace these "outliers" with the observations measured at the begining.
-
+# *************************************************************************
+# There is a problem with data later than 2015-06-20 20:20:00.
+# Replace these "outliers" with the observations measured at the begining.
+# *************************************************************************
 i <- which(ps$time >= "2015-06-20 20:20:00")
 
 ps$par_just_below_ice_scalar_µmolquanta_corrected[i] <- 
