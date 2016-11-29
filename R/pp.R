@@ -88,8 +88,6 @@ params <- readxl::read_excel("data/Calculs_PP_CTD47.xlsx") %>%
 dat <- inner_join(res, params, by = "depth") %>% 
   mutate(p = pmax * (1 - exp(-alpha * e_z / pmax)) * exp(-beta * e_z / pmax))
 
-head(dat)
-
 dat %>%
   ggplot(aes(x = hour, y = p)) +
   geom_point() +
@@ -110,7 +108,6 @@ res %>%
   geom_point() +
   geom_line() +
   scale_y_reverse()
-
 
 #' ## Calculate the integrated PP
 

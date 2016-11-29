@@ -8,7 +8,7 @@
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 ```
 
-Last updated: 2016-11-29 08:44:33
+Last updated: 2016-11-29 08:44:57
 ## Open the PS file and do some cleaning
 
 
@@ -115,23 +115,6 @@ params <- readxl::read_excel("data/Calculs_PP_CTD47.xlsx") %>%
 dat <- inner_join(res, params, by = "depth") %>% 
   mutate(p = pmax * (1 - exp(-alpha * e_z / pmax)) * exp(-beta * e_z / pmax))
 
-head(dat)
-```
-
-```
-## # A tibble: 6 × 11
-##    hour        e depth        e_z    station  tchl     pmax      alpha
-##   <dbl>    <dbl> <dbl>      <dbl>      <chr> <dbl>    <dbl>      <dbl>
-## 1     0 55.35692   0.0 55.3569220 PS92_47-04 3.292 3.227403 0.08011572
-## 2     0 55.35692   2.1 40.3988658 PS92_47-04 3.292 3.227403 0.08011572
-## 3     0 55.35692   5.0 26.1487584 PS92_47-04 2.690 3.312897 0.05447923
-## 4     0 55.35692  10.0 12.3517989 PS92_47-04 2.932 2.751872 0.05437815
-## 5     0 55.35692  15.0  5.8345767 PS92_47-04 1.885 1.644349 0.04359104
-## 6     0 55.35692  30.0  0.6149599 PS92_47-04 1.681 1.391195 0.04009125
-## # ... with 3 more variables: beta <dbl>, kd <dbl>, p <dbl>
-```
-
-```r
 dat %>%
   ggplot(aes(x = hour, y = p)) +
   geom_point() +
