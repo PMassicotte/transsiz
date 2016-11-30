@@ -8,7 +8,7 @@
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 ```
 
-Last updated: 2016-11-29 16:08:04
+Last updated: 2016-11-30 10:10:43
 ## Open the PS file and do some cleaning
 
 
@@ -82,11 +82,11 @@ compute_ez <- function(e) {
   return(df)
 }
 
-res <- res %>% 
+insitu_light <- res %>% 
   mutate(ez = map(.$e, compute_ez)) %>% 
   unnest(ez)
 
-res %>% 
+insitu_light %>% 
   ggplot(aes(x = e_z, y = depth, group = hour)) +
   geom_line() +
   scale_y_reverse()
@@ -178,7 +178,7 @@ params
 
 
 ```r
-dat <- inner_join(res, params, by = "depth") %>% 
+dat <- inner_join(insitu_light, params, by = "depth") %>% 
   mutate(p = ps * (1 - exp(-alpha * e_z / ps)) * exp(-beta * e_z / ps))
 
 dat %>%
@@ -214,7 +214,8 @@ This is the integrated value of PP for 1 day. This is done by calculating the ar
 
 
 ```r
-pracma::trapz(res$depth, res$sum_day)
+int_pp <- pracma::trapz(res$depth, res$sum_day)
+int_pp
 ```
 
 ```
@@ -227,7 +228,7 @@ For each P vs E curve, I generate *n* simulated curves based a multivariate norm
 
 ```r
 mod <- mod %>% 
-  mutate(simulation = map2(model, data, simul, n = 10)) # 10 simulations per depth
+  mutate(simulation = map2(model, data, simul, n = 1000)) # 10 simulations per depth
 
 p <- map2(mod$simulation, mod$depth, plot_simulations)
 
@@ -235,4 +236,71 @@ cowplot::plot_grid(plotlist = p)
 ```
 
 ![plot of chunk unnamed-chunk-11](pp//unnamed-chunk-11-1.png)
+
+At this point we have generated 10 000 P vs E curves. Let's have a look to the histogram for each photosynthetic parameter.
+
+
+```r
+plot_histo(mod)
+```
+
+![plot of chunk unnamed-chunk-12](pp//unnamed-chunk-12-1.png)
+
+This is rassuring to see that they all follow a normal distribution. Now, we are ready to calculate the depth integrated PP.
+### Depth integrated PP
+
+
+```r
+depth_pp <- mod %>%
+  unnest(simulation) %>% 
+  left_join(insitu_light, by = "depth") %>% 
+  distinct(depth, simul, hour, .keep_all = TRUE) %>% 
+  mutate(p = ps * (1 - exp(-alpha * e_z / ps)) * exp(-beta * e_z / ps)) %>% 
+  group_by(depth, simul) %>% 
+  summarise(sum_day = sum(p))
+
+## Assume that the surface values are the same at surface
+surface_pp <- depth_pp[depth_pp$depth == 2.1, ]
+surface_pp$depth <- 0
+
+depth_pp <- bind_rows(surface_pp, depth_pp)
+
+## Have a look to the depth integrated PP
+depth_pp %>% 
+  ggplot(aes(x = sum_day)) +
+  geom_histogram(bins = 100) +
+  facet_wrap(~depth, scales = "free")
+```
+
+![plot of chunk unnamed-chunk-13](pp//unnamed-chunk-13-1.png)
+
+### Daily integrated PP
+
+
+```r
+## Calculate the integrated daily PP
+daily_pp <- depth_pp %>% 
+  group_by(simul) %>% 
+  nest() %>% 
+  mutate(daily_pp = map(data, ~pracma::trapz(.$depth, .$sum_day))) %>% 
+  unnest(daily_pp)
+
+daily_pp %>% 
+  ggplot(aes(x = daily_pp)) +
+  geom_histogram(bins = 50) +
+  geom_vline(xintercept = int_pp, col = "red", lty = 2)
+```
+
+![plot of chunk unnamed-chunk-14](pp//unnamed-chunk-14-1.png)
+
+### Final error estimate
+
+
+```r
+sd(daily_pp$daily_pp)
+```
+
+```
+## [1] 42.6375
+```
 

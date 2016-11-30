@@ -10,10 +10,13 @@ simul <- function(mod, data, n = 100) {
     mutate(simul = 1:nrow(.)) %>% 
     group_by(simul) %>% 
     nest() %>% 
-    mutate(p_manip = map(data, ~.$ps * (1 - exp(-.$alpha * light / .$ps)) * exp(-.$beta * light / .$ps) + .$p0)) %>% 
+    mutate(p_manip = 
+             map(data, 
+                 ~.$ps * (1 - exp(-.$alpha * light / .$ps)) * exp(-.$beta * light / .$ps) + .$p0)) %>% 
+    unnest(data) %>% 
     unnest(p_manip) %>% 
     mutate(light = rep(light, times = n))
-
+  
   return(simulation)
     
 }
@@ -30,4 +33,13 @@ plot_simulations <- function(df, depth) {
   
   invisible(p)
   
+}
+
+plot_histo <- function(mod) {
+  mod %>% 
+    unnest(simulation) %>% 
+    gather(parameter, value, ps, alpha, beta, p0) %>% 
+    ggplot(aes(x = value)) +
+    geom_histogram(bins = 100) +
+    facet_grid(depth ~ parameter, scales = "free")
 }
