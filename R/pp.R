@@ -159,7 +159,7 @@ int_pp
 #' For each P vs E curve, I generate *n* simulated curves based a multivariate normal distribution of the fitted parameters. This will be used to estimate the error on the PP estimation.
 
 mod <- mod %>% 
-  mutate(simulation = map2(model, data, simul, n = 1000)) # 10 simulations per depth
+  mutate(simulation = map2(model, data, simul, n = 10)) # 10 simulations per depth
 
 p <- map2(mod$simulation, mod$depth, plot_simulations)
 
@@ -211,3 +211,5 @@ daily_pp %>%
 #' ### Final error estimate
 
 sd(daily_pp$daily_pp)
+
+#' Hence, the value of `r int_pp`

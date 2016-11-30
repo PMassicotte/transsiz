@@ -8,7 +8,7 @@
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 ```
 
-Last updated: 2016-11-30 10:10:43
+Last updated: 2016-11-30 10:12:25
 ## Open the PS file and do some cleaning
 
 
@@ -228,7 +228,7 @@ For each P vs E curve, I generate *n* simulated curves based a multivariate norm
 
 ```r
 mod <- mod %>% 
-  mutate(simulation = map2(model, data, simul, n = 1000)) # 10 simulations per depth
+  mutate(simulation = map2(model, data, simul, n = 10)) # 10 simulations per depth
 
 p <- map2(mod$simulation, mod$depth, plot_simulations)
 
@@ -301,6 +301,7 @@ sd(daily_pp$daily_pp)
 ```
 
 ```
-## [1] 42.6375
+## [1] 42.48122
 ```
 
+Hence, the value of 707.5933622
