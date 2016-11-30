@@ -8,7 +8,7 @@
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 ```
 
-Last updated: 2016-11-30 10:12:25
+Last updated: 2016-11-30 10:13:19
 ## Open the PS file and do some cleaning
 
 
@@ -228,7 +228,7 @@ For each P vs E curve, I generate *n* simulated curves based a multivariate norm
 
 ```r
 mod <- mod %>% 
-  mutate(simulation = map2(model, data, simul, n = 10)) # 10 simulations per depth
+  mutate(simulation = map2(model, data, simul, n = 10000)) # 10 simulations per depth
 
 p <- map2(mod$simulation, mod$depth, plot_simulations)
 
@@ -297,11 +297,12 @@ daily_pp %>%
 
 
 ```r
-sd(daily_pp$daily_pp)
+error <- sd(daily_pp$daily_pp)
+error
 ```
 
 ```
-## [1] 42.48122
+## [1] 42.66696
 ```
 
-Hence, the value of 707.5933622
+Hence, the value of 707.5933622 +- 42.6669556 should be reported in the paper.
