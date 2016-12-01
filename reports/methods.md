@@ -16,4 +16,5 @@ A Monte-Carlo procedure has been used to propagate the incertitude of the fitted
 ## References
 
 Plat, T., C.L. Gallegos and W.G. Harrison (1980). Photoinhibition o photosynthesis in natural assemblages of marine phytoplankton. J. Mar. Res. 38:687-701.
+
 Timur V. Elzhov, Katharine M. Mullen, Andrej-Nikolai Spiess and Ben Bolker (2016). minpack.lm: R Interface to the Levenberg-Marquardt Nonlinear Least-Squares Algorithm Found in MINPACK, Plus Support for Bounds. R package version 1.2-1. https://CRAN.R-project.org/package=minpack.lm
