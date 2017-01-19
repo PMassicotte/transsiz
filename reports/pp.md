@@ -8,7 +8,7 @@
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 ```
 
-Last updated: 2016-11-30 10:15:58
+Last updated: 2017-01-19 10:46:45
 ## Open the PS file and do some cleaning
 
 
@@ -51,7 +51,7 @@ ps %>%
 res <- ps %>% 
   group_by(hour) %>% 
   nest() %>% 
-  mutate(e = map(data, ~pracma::trapz(1:6, .$par_just_below_ice_scalar_µmolquanta_corrected))) %>% 
+  mutate(e = map(data, ~mean(.$par_just_below_ice_scalar_µmolquanta_corrected))) %>% 
   unnest(e)
 
 res %>% 
@@ -219,7 +219,7 @@ int_pp
 ```
 
 ```
-## [1] 707.5934
+## [1] 240.5816
 ```
 
 ## Simulations
@@ -302,7 +302,7 @@ error
 ```
 
 ```
-## [1] 42.66696
+## [1] 20.91984
 ```
 
-Hence, the value of 707.5933622 +- 42.6669556 should be reported in the paper.
+Hence, the value of 240.5816434 +- 20.9198415 should be reported in the paper.

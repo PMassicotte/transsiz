@@ -35,7 +35,7 @@ ps %>%
 res <- ps %>% 
   group_by(hour) %>% 
   nest() %>% 
-  mutate(e = map(data, ~pracma::trapz(1:6, .$par_just_below_ice_scalar_µmolquanta_corrected))) %>% 
+  mutate(e = map(data, ~mean(.$par_just_below_ice_scalar_µmolquanta_corrected))) %>% 
   unnest(e)
 
 res %>% 
