@@ -1,3 +1,12 @@
+---
+title: "Untitled"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 ## Primary production
 
 Photosynthetic available radiation (PAR) just bellow ice was derived from the total energy measured every 10 minutes over a period of 24 hours by the Polarstern weatherstation. Hourly PAR were then estimated by integrating measurements taken at each hour (n = 6). At each hour, PAR at different depths (2.1m, 5.0m, 10.0m, 15.0m, 30.0m, 50.0m) were estimated using an attenuation coefficient (kdPAR) of 0.15 m-1 (Christian Katlein, pers. comm.). Hourly primary production at each depth was then estimated using fitted photosynthetic parameters estimated from P vs E curves with the following equation (Platt et al., 1980):
@@ -12,6 +21,32 @@ The non-linear fitting was done using the Levenberg-Marquardt algorithm from the
 
 A Monte-Carlo procedure has been used to propagate the incertitude of the fitted photosynthetic parameters on the estimate daily primary production. At each depth, a total of 10 000 simulations (i.e. P vs E curves) were performed by randomly sampling parameter values based a multivariate normal distribution of the fitted parameters. Using the generated curves, depth and daily integrated primary production rates were calculated as previously explained. The standard deviation of the 10 000 integrated daily primary production rates was then used as a measure of the uncertainty around the estimated value of primary production.
 
+
+## Estimation of KdPAR
+
+Estimations been done on irradiance measured by the ROV using files containing `rov_irrad` in their name. At each station, the ROV made a vertical profile. We extracted the profile data visually by exploring the graphics of depth as a function of time.
+
+\begin{center}
+\includegraphics{../graphs/rov_vs_depth.pdf}
+\end{center}
+
+Then, PAR has been calculated by integrating irradiance data between 400 and 700 nm. Finally, KdPAR has been calculated using the following equation:
+
+$$
+\text{PAR} = a \times e^{-\text{kd} \times \text{depth}}
+$$
+
+\begin{center}
+\includegraphics{../graphs/kd.pdf}
+\end{center}
+
+## Ice transmittance
+
+\begin{center}
+\includegraphics{../graphs/irradiance_map.pdf}
+\end{center}
+
+To remove the effect of ice hole where the ROV was deployed, we excluded measurements in a radius of 3 meters around the coordinates. This correspond to the red circles in the previous figure. We also conserved observations between 0.7 and 3 meters to avoid including transmittance measured a high depths.
 
 ## References
 

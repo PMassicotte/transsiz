@@ -19,10 +19,12 @@ kd <- lapply(files, read_irradiance) %>%
   group_by(station, date_time, dist_rel_x_m, dist_rel_y_m, depth_water_m) %>% 
   summarise(par = sum(irradiance))
 
-kd %>% 
+p <- kd %>% 
   ggplot(aes(x = date_time, y = depth_water_m)) +
   geom_point() +
   facet_wrap(~station, scales = "free")
+
+ggsave("graphs/rov_vs_depth.pdf", width = 12)
 
 ## Cut the data
 
