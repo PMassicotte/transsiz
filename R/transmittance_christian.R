@@ -21,10 +21,11 @@ circle <- function(center = c(0, 0), diameter = 1, npoints = 100){
 
 files <- list.files("data/raw/Katlein-etal_2016/datasets/", "rovT_irrad", full.names = TRUE)
 
-trans <- lapply(files, read_data) %>% 
+trans <- lapply(files, read_transmittance) %>% 
   set_names(basename(files)) %>% 
   bind_rows(.id = "station") %>% 
-  mutate(station = stringr::str_sub(station, 1, 10))
+  mutate(station = stringr::str_sub(station, 1, 10)) %>% 
+  mutate(transmittance_percent = transmittance_percent * 1.3) ## See email from Christian
 
 ## Calculate the distance of each points from the 0,0 cordinate
 

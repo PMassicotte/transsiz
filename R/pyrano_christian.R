@@ -1,8 +1,14 @@
+rm(list = ls())
+
+## "Official" stations
+stations <- readxl::read_excel("data/raw/Sampling_Takuvik.xlsx", skip = 1) %>% 
+  janitor::clean_names() %>% 
+  mutate(date = as.Date(date)) %>% 
+  filter(p_vs_e == "x")
+
 # *************************************************************************
 # Read pyranometer data
 # *************************************************************************
-
-rm(list = ls())
 
 pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>% 
   setNames(iconv(names(.), "latin1", "utf-8", sub = "byte")) %>% 
@@ -17,16 +23,7 @@ pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>%
   mutate(hour = lubridate::hour(date_time)) %>% 
   mutate(minute = lubridate::minute(date_time)) %>% 
   filter(par_just_below_surface_µmol >= 0) %>% 
-  filter(date %in% as.Date(c(
-    "2015-05-31",
-    "2015-06-03",
-    "2015-06-06",
-    "2015-06-11",
-    "2015-06-15",
-    "2015-06-17",
-    "2015-06-19",
-    "2015-06-20"
-  )))
+  filter(date %in% stations$date) # Keep only obs. matching the "official" list of stations
 
 # There is a problem with data later than 2015-06-20 20:20:00. Replace these
 # "outliers" with the observations measured at the begining.
@@ -53,19 +50,21 @@ pyrano <- pyrano %>%
   select(-date, -date_time) %>% 
   rename(date = date2, date_time = date_time2) %>% 
   group_by(date_time, date, date_numeric, hour, minute) %>% 
-  summarise(par_just_below_surface_µmol = mean(par_just_below_surface_µmol),
-            par_just_below_surface_µmol_ice  = mean(par_just_below_surface_µmol_ice))
+  summarise(
+    par_just_below_surface_µmol = mean(par_just_below_surface_µmol),
+    par_just_below_surface_µmol_ice  = mean(par_just_below_surface_µmol_ice)
+  )
 
 p <- pyrano %>% 
   ggplot(aes(x = date_time, y = par_just_below_surface_µmol)) +
   geom_line() +
-  facet_wrap(~date, scales = "free") +
-  scale_x_datetime(date_labels = "%H:%M:%S", expand = c(0.1, 0)) +
+  facet_wrap(~date, scales = "free", ncol = 4) +
+  scale_x_datetime(date_labels = "%H:%M:%S", expand = c(0.2, 0), breaks = scales::pretty_breaks(n = 4)) +
   xlab("Time (hour)") +
   ylab("PAR just below surface (umol s-1 m-2)") +
   labs(title = "This is the data from the pyranometer used to propagate light in the water column")
 
-ggsave("graphs/pyrano.pdf", width = 12, height = 9)
+ggsave("graphs/pyrano.pdf", width = 10, height = 6)
 
 hourly_par <- pyrano %>% 
   group_by(date, hour) %>% 
@@ -78,8 +77,15 @@ p <- hourly_par %>%
   ggplot(aes(x = hour, y = e)) +
   geom_line() +
   geom_point() +
-  facet_wrap(~date, scales = "free") +
+  facet_wrap(~date, scales = "free", ncol = 4) +
   xlab("Time (hour)") +
   ylab("Hourly averaged PAR just below surface (umol s-1 m-2)") 
 
-ggsave("graphs/hourly_par.pdf", width = 12, height = 9)
+ggsave("graphs/hourly_par.pdf", width = 10, height = 6)
+
+## Save hourly PAR
+
+hourly_par %>% 
+  select(-data) %>% 
+  write_feather("data/clean/hourly_par.feather")
+

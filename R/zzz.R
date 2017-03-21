@@ -47,12 +47,38 @@ calculate_metrics <- function(mod, data) {
 # }
 
 
-read_data <- function(file) {
+read_transmittance <- function(file) {
   
-  trans <- read_delim(file, delim = "\t", skip = 647) %>% 
-    select(1:5) %>% 
+  trans <-
+    read_delim(
+      file,
+      delim = "\t",
+      skip = 647,
+      col_types = cols(.default = col_double(),
+                       `Date/Time` = col_datetime(format = ""))
+    ) %>%
+    select(1:5) %>%
     janitor::clean_names() 
   
   return(trans)
   
+}
+
+read_irradiance <- function(file) {
+  
+  irradiance <-
+    read_delim(
+      file,
+      delim = "\t",
+      skip = 647,
+      col_types = cols(.default = col_double(),
+                       `Date/Time` = col_datetime(format = ""))
+    ) %>%
+    janitor::clean_names() %>%
+    select(-ed_w_m_2) %>%
+    gather(wavelength, irradiance, contains("ed")) %>%
+    mutate(wavelength = stringr::str_match(wavelength, "ed_(\\d{3})")[, 2]) %>%
+    mutate(wavelength = parse_number(wavelength)) 
+  
+  return(irradiance)
 }
