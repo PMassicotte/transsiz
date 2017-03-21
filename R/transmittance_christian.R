@@ -19,7 +19,7 @@ circle <- function(center = c(0, 0), diameter = 1, npoints = 100){
   return(data_frame(x = xx, y = yy))
 }
 
-files <- list.files("data/Katlein-etal_2016/datasets/", "rovT_irrad", full.names = TRUE)
+files <- list.files("data/raw/Katlein-etal_2016/datasets/", "rovT_irrad", full.names = TRUE)
 
 trans <- lapply(files, read_data) %>% 
   set_names(basename(files)) %>% 

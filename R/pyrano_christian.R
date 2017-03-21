@@ -4,7 +4,7 @@
 
 rm(list = ls())
 
-pyrano <- data.table::fread("data/PS92_cont_surf_Pyrano.txt") %>% 
+pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>% 
   setNames(iconv(names(.), "latin1", "utf-8", sub = "byte")) %>% 
   janitor::clean_names() %>% 
   as_tibble() %>% 
