@@ -4,8 +4,9 @@ source("R/zzz.R")
 
 ## Read limits used to extract the data linked to light profils (estimated by Flavienne)
 
-limits <- read_csv2("data/raw/bornes_profils_ed.csv") %>% 
-  mutate(station = gsub("/", "_", station))
+limits <- read_csv("data/raw/bornes_profils_ed.csv") %>% 
+  mutate(station = gsub("/", "_", station)) %>% 
+  drop_na()
 
 ## ROV irradiance
 
@@ -81,3 +82,8 @@ p <- p +
 
 ggsave("graphs/kd.pdf")
 
+kd %>% 
+  separate(station, into = c("cruise", "station", "operation")) %>% 
+  select(-cruise, -operation, -(std.error:p.value)) %>% 
+  spread(term, estimate) %>% 
+  write_feather("data/clean/kd.feather")

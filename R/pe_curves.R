@@ -110,8 +110,12 @@ pp <- pp %>%
 plot_pe <- function(df, mod, model_type, date, depth, sheet) {
   
   df <- df %>% 
-    modelr::add_predictions(., mod) %>% 
     mutate(model_type = model_type)
+  
+  pred <- df %>% 
+    modelr::data_grid(light = modelr::seq_range(light, 100)) %>% 
+    modelr::add_predictions(., mod)  
+    
   
   # mod2 <- phytotools::fitPGH(df$light, df$p_manip)
   # print(mod2)
@@ -121,14 +125,20 @@ plot_pe <- function(df, mod, model_type, date, depth, sheet) {
   ps <- coef(mod)["ps"]
   beta <- coef(mod)["beta"]
   
+  pm <- ps * (alpha / (alpha + beta)) * (beta / (alpha + beta)) ^ (beta / alpha)
+  ek <- pm / alpha
+  # abline(h = pm + p0)
+  
   p <- df %>% 
     ggplot(aes(x = light, y = p_manip)) +
     geom_point(aes(color = model_type)) +
-    geom_line(aes(y = pred)) +
-    geom_abline(slope = alpha, intercept = p0, color = "blue") +
-    geom_hline(yintercept = p0, color = "blue") +
+    geom_line(data = pred, aes(x = light, y = pred)) +
+    geom_abline(slope = alpha, intercept = p0, color = "blue", lwd = 0.25, lty = 2) +
+    geom_hline(yintercept = p0, color = "blue", lwd = 0.25, lty = 2) +
+    geom_hline(yintercept = pm + p0, color = "blue", lwd = 0.25, lty = 2) +
+    geom_vline(xintercept = ek, color = "blue", lwd = 0.25, lty = 2) +
     # geom_hline(yintercept = ps, color = "red") +
-    geom_abline(slope = -beta, intercept = ps + p0, color = "blue") +
+    # geom_abline(slope = -beta, intercept = ps + p0, color = "blue") +
     labs(title = paste(date, depth, sheet))
   
   print(p)
@@ -143,7 +153,7 @@ dev.off()
 
 metric <- pp %>% 
   unnest(metric) %>% 
-  select(date, depth, model_type, sheet, pb_max, alpha_b, beta_b, ek, rss, r2)
+  select(-data, -mod, -prediction, -params)
 
 write_feather(metric, "data/clean/photosynthetic_parameters.feather")
 

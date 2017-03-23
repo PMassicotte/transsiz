@@ -1,10 +1,21 @@
+# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>  
+# AUTHOR:       Philippe Massicotte
+#
+# DESCRIPTION:  Pyranometer data from Christian.
+# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
 rm(list = ls())
 
 ## "Official" stations
 stations <- readxl::read_excel("data/raw/Sampling_Takuvik.xlsx", skip = 1) %>% 
   janitor::clean_names() %>% 
   mutate(date = as.Date(date)) %>% 
-  filter(p_vs_e == "x")
+  filter(p_vs_e == "x") %>% 
+  select(station, date) %>% 
+  mutate(station = gsub("/", "_", station))
+
+group <- readxl::read_excel("data/raw/Sampling_Takuvik.xlsx", sheet = 2) %>% 
+  mutate(date = as.Date(date))
 
 # *************************************************************************
 # Read pyranometer data
@@ -14,8 +25,9 @@ pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>%
   setNames(iconv(names(.), "latin1", "utf-8", sub = "byte")) %>% 
   janitor::clean_names() %>% 
   as_tibble() %>% 
-  mutate(par_just_below_surf_w_m2_ice = par_down_above_surface_w_m2 * 0.04 * 1.66) %>% 
-  mutate(par_just_below_surface_µmol_ice  = par_just_below_surf_w_m2_ice * 4.59) %>% 
+  select(c(1,2,3, 7)) %>% 
+  # mutate(par_just_below_surf_w_m2_ice = par_down_above_surface_w_m2 * 0.04 * 1.66) %>% 
+  # mutate(par_just_below_surface_µmol_ice  = par_just_below_surf_w_m2_ice * 4.59) %>% 
   # select(date_time, par_just_below_surface_µmol) %>% 
   mutate(date_time = anytime::anytime(date_time)) %>% 
   mutate(date = lubridate::date(date_time)) %>% 
@@ -23,7 +35,7 @@ pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>%
   mutate(hour = lubridate::hour(date_time)) %>% 
   mutate(minute = lubridate::minute(date_time)) %>% 
   filter(par_just_below_surface_µmol >= 0) %>% 
-  filter(date %in% stations$date) # Keep only obs. matching the "official" list of stations
+  inner_join(group, by = "date") # Keep only obs. matching the "official" list of stations
 
 # There is a problem with data later than 2015-06-20 20:20:00. Replace these
 # "outliers" with the observations measured at the begining.
@@ -31,47 +43,66 @@ pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>%
 # 2015-06-11
 i <- which(pyrano$date_time >= "2015-06-11 20:00:00" & pyrano$date == "2015-06-11")
 pyrano$par_just_below_surface_µmol[i] <- pyrano$par_just_below_surface_µmol[pyrano$date == "2015-06-11"][length(i):1]
-pyrano$par_just_below_surface_µmol_ice[i] <- pyrano$par_just_below_surface_µmol_ice[pyrano$date == "2015-06-11"][length(i):1]
+# pyrano$par_just_below_surface_µmol_ice[i] <- pyrano$par_just_below_surface_µmol_ice[pyrano$date == "2015-06-11"][length(i):1]
 
 # 2015-06-20
 i <- which(pyrano$date_time >= "2015-06-20 20:20:00" & pyrano$date == "2015-06-20")
 pyrano$par_just_below_surface_µmol[i] <- pyrano$par_just_below_surface_µmol[pyrano$date == "2015-06-20"][length(i):1]
-pyrano$par_just_below_surface_µmol_ice[i] <- pyrano$par_just_below_surface_µmol_ice[pyrano$date == "2015-06-20"][length(i):1]
+# pyrano$par_just_below_surface_µmol_ice[i] <- pyrano$par_just_below_surface_µmol_ice[pyrano$date == "2015-06-20"][length(i):1]
 
 # ************************************************************************** 
-# Average data of 2015-06-19 and 2015-06-20 because sampling hsa been done 
-# during the night. Here I am using the mean of these two dates as the values of
-# the 2015-06-19
+# Systematically average pyrano data for consecutive days of a same station
+# sampling. See sheet "Sheet2" in Sampling_Takuvik.xlsx for grouping days.
 # *************************************************************************
 
-pyrano <- pyrano %>%
-  mutate(date2 = if_else(date == "2015-06-20", date - lubridate::days(1), date)) %>%
-  mutate(date_time2 = if_else(date == "2015-06-20", date_time - lubridate::days(1), date_time)) %>%
-  select(-date, -date_time) %>% 
-  rename(date = date2, date_time = date_time2) %>% 
-  group_by(date_time, date, date_numeric, hour, minute) %>% 
-  summarise(
-    par_just_below_surface_µmol = mean(par_just_below_surface_µmol),
-    par_just_below_surface_µmol_ice  = mean(par_just_below_surface_µmol_ice)
-  )
+pyrano <- pyrano %>% 
+  group_by(hour, minute, group) %>% 
+  summarise(par_just_below_surface_µmol = mean(par_just_below_surface_µmol))
+
+pyrano <- pyrano %>% 
+  left_join(group, by = "group") %>% 
+  mutate(date_time = lubridate::make_datetime(
+    lubridate::year(date),
+    lubridate::month(date),
+    lubridate::day(date),
+    hour,
+    minute
+  ))
 
 p <- pyrano %>% 
   ggplot(aes(x = date_time, y = par_just_below_surface_µmol)) +
-  geom_line() +
+  geom_line(aes(color = group)) +
   facet_wrap(~date, scales = "free", ncol = 4) +
   scale_x_datetime(date_labels = "%H:%M:%S", expand = c(0.2, 0), breaks = scales::pretty_breaks(n = 4)) +
   xlab("Time (hour)") +
   ylab("PAR just below surface (umol s-1 m-2)") +
   labs(title = "This is the data from the pyranometer used to propagate light in the water column")
 
-ggsave("graphs/pyrano.pdf", width = 10, height = 6)
+ggsave("graphs/pyrano.pdf", width = 10, height = 8)
 
-hourly_par <- pyrano %>% 
+# **************************************************************************** 
+# Associate calculated transmittance to the stations. If transmittance is not 
+# calculated (because open water), then assume 96% (A. Morel).
+# ****************************************************************************
+
+transmittance <- read_feather("data/clean/mean_transmittance.feather") %>% 
+  separate(station, into = c("cruise", "station", "operation")) %>% 
+  select(-cruise, -operation)
+
+pyrano <- pyrano %>% 
+  separate(station, into = c("cruise", "station", "operation"))  %>% 
+  select(-cruise, -operation)
+
+light <- pyrano %>% 
+  left_join(transmittance, by = "station") %>% 
+  drop_na(mean_transmittance) %>% 
+  mutate(par_just_below_surface_µmol = par_just_below_surface_µmol * (mean_transmittance / 100))
+
+hourly_par <- light %>% 
   group_by(date, hour) %>% 
   nest() %>% 
   mutate(e = map(data, ~mean(.$par_just_below_surface_µmol))) %>%
-  mutate(e_ice = map(data, ~mean(.$par_just_below_surface_µmol_ice))) %>%
-  unnest(e, e_ice)
+  unnest(e)
 
 p <- hourly_par %>% 
   ggplot(aes(x = hour, y = e)) +
@@ -79,9 +110,10 @@ p <- hourly_par %>%
   geom_point() +
   facet_wrap(~date, scales = "free", ncol = 4) +
   xlab("Time (hour)") +
-  ylab("Hourly averaged PAR just below surface (umol s-1 m-2)") 
+  ylab("Hourly under ice PAR (umol s-1 m-2)") +
+  labs(title = "Hourly under ice PAR (corrected for transmittance)")
 
-ggsave("graphs/hourly_par.pdf", width = 10, height = 6)
+ggsave("graphs/hourly_par.pdf", width = 10, height = 8)
 
 ## Save hourly PAR
 

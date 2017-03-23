@@ -26,6 +26,7 @@ source("R/transmittance_christian.R")
 source("R/kd_christian.R")
 source("R/pyrano_christian.R")
 
+source("R/primary_production.R")
 
 # source("R/simulate_pe.R")
 # 
