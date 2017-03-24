@@ -34,38 +34,48 @@ water <- df %>%
   mutate(ez = e * exp(-kd * depth)) %>% 
   mutate(pp = ps * (1 - exp(-alpha * ez / ps)))
   
-water %>% 
+p <- water %>% 
   ggplot(aes(x = ez, y = depth)) +
   geom_line(aes(color = factor(hour))) +
   facet_wrap(~station, scales = "free") +
-  scale_y_reverse() 
+  scale_y_reverse() +
+  labs(color = "Hour of the day") +
+  xlab(bquote("PAR"~(mu*mol%*%s^{-1}%*%m^{-2}))) +
+  ylab("Depth (m)")
+
+ggsave("graphs/light_by_hour.pdf")
 
 water %>% 
   ggplot(aes(x = hour, y = pp, group = station)) +
   geom_point() +
   facet_grid(station~depth, scales = "free") 
   
-
 daily_pp <- water %>% 
   group_by(station, depth) %>% 
   nest() %>% 
   mutate(pp = map(data, ~sum(.$pp))) %>% 
   unnest(pp)
 
-daily_pp %>% 
+p <- daily_pp %>% 
   ggplot(aes(x = pp, y = depth)) +
   geom_point() +
   geom_path() +
   facet_wrap(~station, scales = "free") +
-  scale_y_reverse() 
+  scale_y_reverse() + 
+  xlab(bquote("Primary production"~(mgC%*%m^{-3}%*%day^{-1}))) +
+  ylab("Depth (m)")
 
+ggsave("graphs/daily_pp.pdf")
 
-daily_pp %>% 
+depth_integrated <- daily_pp %>% 
   group_by(station) %>% 
   nest() %>% 
   mutate(pp = map(data, ~pracma::trapz(.$depth, .$pp))) %>% 
   unnest(pp)
 
+depth_integrated %>% 
+  select(-data) %>% 
+  write_csv("data/clean/depth_integrated_pp_water.csv")
 
 # ice ---------------------------------------------------------------------
 

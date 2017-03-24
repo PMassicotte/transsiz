@@ -1,55 +1,145 @@
 ---
-title: "Untitled"
-output: pdf_document
+title: "Method description for the calculation of primary production rates"
+header-includes:
+   - \usepackage{float}
+author:
+ - Flavienne Bruyant
+ - Philippe Massicotte
+
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  pdf_document:
+    fig_caption: yes
 ---
 
 ```{r setup, include=FALSE}
+library(tidyverse)
+library(feather)
+
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+This document presents a general overview of the different steps that were used to calculate primary production using data collected during the Transsiz cruise. Note that all the calculations have been done in R and that all the code is available at the following address:
+
+https://github.com/PMassicotte/transsiz
+
 ## Primary production
 
-Photosynthetic available radiation (PAR) just bellow ice was derived from the total energy measured every 10 minutes over a period of 24 hours by the Polarstern weatherstation. Hourly PAR were then estimated by integrating measurements taken at each hour (n = 6). At each hour, PAR at different depths (2.1m, 5.0m, 10.0m, 15.0m, 30.0m, 50.0m) were estimated using an attenuation coefficient (kdPAR) of 0.15 m-1 (Christian Katlein, pers. comm.). Hourly primary production at each depth was then estimated using fitted photosynthetic parameters estimated from P vs E curves with the following equation (Platt et al., 1980):
+Photosynthetic parameters were estimated from P vs E curves. Two different models based on the original definition proposed by (Platt et al., 1980) were used depending on the situation.
 
-EQUATION HERE
+### Model with photoinhibition
+
+When apparent photo-inhibition was present, a model including two exponential was fitted (equation \ref{eq:two_exp}).
+
+\begin{equation}
+p = ps \times (1 - e^{-\alpha \times \frac{light}{ps}}) \times e^{-\beta \times \frac{light}{ps}} + p0
+\label{eq:two_exp}
+\end{equation}
+
+### Model without photoinhibition
+
+When no apparent photo-inhibition was present, a model including only one exponential was fitted (equation \ref{eq:one_exp}).
+
+\begin{equation}
+p = ps \times (1 - e^{-\alpha \times \frac{light}{ps}}) + p0
+\label{eq:one_exp}
+\end{equation}
 
 where x, y, z
 
-The non-linear fitting was done using the Levenberg-Marquardt algorithm from the minpack.lm R package (Timur2016). At each depth primary production was estimated using photosynthetic parameter and PAR estimates. Finally, daily primary production was calculated by integrating production over the depths.
+The non-linear fitting was done using the Levenberg-Marquardt algorithm implemented in the minpack.lm R package (Timur2016).
+
+## Ice transmittance
+
+Ice transmittance was measured by the ROV at 8 different stations (Fig. \ref{fig:rov}). At each station, we used an average transmittance value to calculate the light just bellow ice cover. To remove the effect of ice hole where the ROV was deployed, we excluded measurements in a radius of 3 meters around the 0, 0 coordinates. This correspond to the red circles in Fig. \ref{fig:rov}. We also only conserved observations between 0.7 and 3 meters to avoid including transmittance measured a high depths.
+
+\begin{figure}[H]
+\includegraphics{../graphs/transmittance_map.pdf}
+\caption{Positions of the ROV at each station.}
+\label{fig:rov}
+\end{figure}
+
+## Estimation of KdPAR
+
+Estimations been done on irradiance measured by the ROV using files containing `rov_irrad` in their name. At each station, during the deployment, the ROV made one vertical profile (Fig. \ref{fig:rov_depth}). We extracted the profile data visually by exploring the graphics of depth as a function of time (Fig. \ref{fig:rov_depth}).
+
+\begin{figure}[H]
+\includegraphics{../graphs/rov_vs_depth.pdf}
+\caption{Depth of the ROV as a function of the time.}
+\label{fig:rov_depth}
+\end{figure}
+
+
+Then, PAR has been calculated by integrating irradiance data between 400 and 700 nm. The calculated PAR can be view in Fig. \ref{fig:rov_par}. Finally, Kd PAR ($\text{m}^{-1}$) has been calculated using equation \ref{eq:par}.
+
+\begin{equation}
+\text{PAR} = a \times e^{-\text{kd} \times \text{z}}
+\label{eq:par}
+\end{equation}
+
+\begin{figure}[H]
+\includegraphics{../graphs/kd.pdf}
+\caption{PAR as a function of depth. The calculated kd as been used to propagate PAR light measured by the pyranometer (see next section).}
+\label{fig:rov_par}
+\end{figure}
+
+## Pyranometer
+
+Photosynthetic available radiation (PAR) just bellow ice was derived from the total energy measured every 10 minutes over a period of 24 hours by the Polarstern weather station (Fig. \ref{fig:pyrano_10min}). Because sampling and P vs E curves measurements have been generally done over two days, (Flavienne, can you complete in regard to the color code in Fig. \ref{fig:pyrano_10min}).
+
+\begin{figure}[H]
+\includegraphics{../graphs/pyrano.pdf}
+\caption{PAR just below the surface measured by the pyranometer.}
+\label{fig:pyrano_10min}
+\end{figure}
+
+In the raw data, measurement were done every 10 minutes and thus averaged to obtain hourly PAR (Fig. \ref{fig:pyrano_60min}). Note that the PAR presented in Fig. \ref{fig:pyrano_60min} are corrected with transmittance, explaining lower values compared to those found in Fig. \ref{fig:pyrano_10min}.
+
+\begin{figure}[H]
+\includegraphics{../graphs/hourly_par.pdf}
+\caption{Hourly PAR just below the surface at each hour of the day.}
+\label{fig:pyrano_60min}
+\end{figure}
+
+
+## Primary production
+
+At each depth primary production was estimated using photosynthetic parameter, kd and PAR estimates. First, PAR was propagated at depth where PvsE curves were measured (Fig. \ref{fig:par_z}).
+
+\begin{figure}[H]
+\includegraphics{../graphs/light_by_hour.pdf}
+\caption{Propagated PAR in the water column.}
+\label{fig:par_z}
+\end{figure}
+
+Then, daily primary production at each depth at each hour was calculated using equation \ref{eq:pp}.
+
+\begin{equation}
+p = ps \times (1 - e^{-\alpha \times \frac{light}{ps}})
+\label{eq:pp}
+\end{equation}
+
+Daily integrated primary production was calculated by summing primary production at each depth over a 24 hours period \ref{fig:daily_pp}.
+
+\begin{figure}[H]
+\includegraphics{../graphs/daily_pp.pdf}
+\caption{Daily primary production at depths where PvsE parameters were measured.}
+\label{fig:daily_pp}
+\end{figure}
+
+Finally, depth integrated primary production was calculated by integrating daily primary production over the water column. Final values for the water samples looks like this ($mgC \times m^{-2} \times day^{-1}$:
+
+```{r, echo = FALSE, message=FALSE}
+df <- read_csv("../data/clean/depth_integrated_pp_water.csv")
+knitr::kable(df)
+```
 
 ## Error estimation
 
 A Monte-Carlo procedure has been used to propagate the incertitude of the fitted photosynthetic parameters on the estimate daily primary production. At each depth, a total of 10 000 simulations (i.e. P vs E curves) were performed by randomly sampling parameter values based a multivariate normal distribution of the fitted parameters. Using the generated curves, depth and daily integrated primary production rates were calculated as previously explained. The standard deviation of the 10 000 integrated daily primary production rates was then used as a measure of the uncertainty around the estimated value of primary production.
 
-
-## Estimation of KdPAR
-
-Estimations been done on irradiance measured by the ROV using files containing `rov_irrad` in their name. At each station, the ROV made a vertical profile. We extracted the profile data visually by exploring the graphics of depth as a function of time.
-
-\begin{center}
-\includegraphics{../graphs/rov_vs_depth.pdf}
-\end{center}
-
-Then, PAR has been calculated by integrating irradiance data between 400 and 700 nm. Finally, KdPAR has been calculated using the following equation:
-
-$$
-\text{PAR} = a \times e^{-\text{kd} \times \text{depth}}
-$$
-
-\begin{center}
-\includegraphics{../graphs/kd.pdf}
-\end{center}
-
-## Ice transmittance
-
-\begin{center}
-\includegraphics{../graphs/irradiance_map.pdf}
-\end{center}
-
-To remove the effect of ice hole where the ROV was deployed, we excluded measurements in a radius of 3 meters around the coordinates. This correspond to the red circles in the previous figure. We also conserved observations between 0.7 and 3 meters to avoid including transmittance measured a high depths.
-
 ## References
 
-Plat, T., C.L. Gallegos and W.G. Harrison (1980). Photoinhibition o photosynthesis in natural assemblages of marine phytoplankton. J. Mar. Res. 38:687-701.
+Plat, T., C.L. Gallegos and W.G. Harrison (1980). Photo-inhibition o photosynthesis in natural assemblages of marine phytoplankton. J. Mar. Res. 38:687-701.
 
 Timur V. Elzhov, Katharine M. Mullen, Andrej-Nikolai Spiess and Ben Bolker (2016). minpack.lm: R Interface to the Levenberg-Marquardt Nonlinear Least-Squares Algorithm Found in MINPACK, Plus Support for Bounds. R package version 1.2-1. https://CRAN.R-project.org/package=minpack.lm

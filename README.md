@@ -5,4 +5,4 @@ Repository for the [Transsiz expedition](http://polarforskningsportalen.se/en/ar
 ### Table of contents
 
 - [Primary production](reports/pp.md)
-- [Methods](reports/methods.md)
+- [Methods](reports/methods.pdf)

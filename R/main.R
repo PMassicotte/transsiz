@@ -28,6 +28,13 @@ source("R/pyrano_christian.R")
 
 source("R/primary_production.R")
 
+## Embed fonts
+files <- list.files("graphs/", full.names = TRUE)
+lapply(files, embed_fonts)
+
+## Create the report
+rmarkdown::render("reports/methods.Rmd")
+
 # source("R/simulate_pe.R")
 # 
 # ## Do the calculation and generate the report

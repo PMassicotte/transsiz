@@ -76,4 +76,4 @@ p <- p +
     hjust = -0.1
   )
 
-ggsave("graphs/irradiance_map.pdf", height = 7, width = 10)
+ggsave("graphs/transmittance_map.pdf", height = 7, width = 10)
