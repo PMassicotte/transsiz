@@ -52,8 +52,6 @@ p = ps \times (1 - e^{-\alpha \times \frac{light}{ps}}) + p0
 \label{eq:one_exp}
 \end{equation}
 
-where x, y, z
-
 The non-linear fitting was done using the Levenberg-Marquardt algorithm implemented in the minpack.lm R package (Timur2016).
 
 ## Ice transmittance
@@ -62,13 +60,13 @@ Ice transmittance was measured by the ROV at 8 different stations (Fig. \ref{fig
 
 \begin{figure}[H]
 \includegraphics{../graphs/transmittance_map.pdf}
-\caption{Positions of the ROV at each station.}
+\caption{Transmittance at each position of the ROV for each stations sampled.}
 \label{fig:rov}
 \end{figure}
 
 ## Estimation of KdPAR
 
-Estimations been done on irradiance measured by the ROV using files containing `rov_irrad` in their name. At each station, during the deployment, the ROV made one vertical profile (Fig. \ref{fig:rov_depth}). We extracted the profile data visually by exploring the graphics of depth as a function of time (Fig. \ref{fig:rov_depth}).
+Estimations have been done on irradiance measured by the ROV using files containing `rov_irrad` in their name. At each station, during the deployment, the ROV made one vertical profile (Fig. \ref{fig:rov_depth}). We extracted the profile data visually by exploring the graphics of depth as a function of time (Fig. \ref{fig:rov_depth}).
 
 \begin{figure}[H]
 \includegraphics{../graphs/rov_vs_depth.pdf}
@@ -92,11 +90,11 @@ Then, PAR has been calculated by integrating irradiance data between 400 and 700
 
 ## Pyranometer
 
-Photosynthetic available radiation (PAR) just bellow ice was derived from the total energy measured every 10 minutes over a period of 24 hours by the Polarstern weather station (Fig. \ref{fig:pyrano_10min}). Because sampling and P vs E curves measurements have been generally done over two days, (Flavienne, can you complete in regard to the color code in Fig. \ref{fig:pyrano_10min}).
+Photosynthetic available radiation (PAR) just bellow ice was derived from the total energy measured every 10 minutes over a period of 24 hours by the Polarstern weather station (Fig. \ref{fig:pyrano_10min}). As a same station was sampled over two consecutive days, we decided to average the PAR measurements over those two days in order to make the calculations for water colummns and ice core samples with the same theoretical light (Fig. \ref{fig:pyrano_10min}).
 
 \begin{figure}[H]
 \includegraphics{../graphs/pyrano.pdf}
-\caption{PAR just below the surface measured by the pyranometer.}
+\caption{PAR just below the surface measured by the pyranometer every 10 minutes and averaged over 48 hours station by station. Stations on May 28th and June 22nd have not been sampled for ice cores, therefore only one light profil is used.}
 \label{fig:pyrano_10min}
 \end{figure}
 
@@ -104,7 +102,7 @@ In the raw data, measurement were done every 10 minutes and thus averaged to obt
 
 \begin{figure}[H]
 \includegraphics{../graphs/hourly_par.pdf}
-\caption{Hourly PAR just below the surface at each hour of the day.}
+\caption{Hourly PAR just below the ice at each hour of the day.}
 \label{fig:pyrano_60min}
 \end{figure}
 
@@ -126,15 +124,15 @@ p = ps \times (1 - e^{-\alpha \times \frac{light}{ps}})
 \label{eq:pp}
 \end{equation}
 
-Daily integrated primary production was calculated by summing primary production at each depth over a 24 hours period \ref{fig:daily_pp}.
+Daily integrated primary production was calculated by summing primary production at each depth over a 24 hours period (Fig. \ref{fig:daily_pp}).
 
 \begin{figure}[H]
 \includegraphics{../graphs/daily_pp.pdf}
-\caption{Daily primary production at depths where PvsE parameters were measured.}
+\caption{Daily primary production at depths where photosynthetic parameters were measured.}
 \label{fig:daily_pp}
 \end{figure}
 
-Finally, depth integrated primary production was calculated by integrating daily primary production over the water column. Final values for the water samples looks like this ($mgC \times m^{-2} \times day^{-1}$:
+Finally, depth integrated primary production was calculated by integrating daily primary production over the water column. Final values for the water samples looks like this ($\text{mgC} \times \text{m}^{-2} \times \text{day}^{-1}$):
 
 ```{r, echo = FALSE, message=FALSE}
 df <- read_csv("../data/clean/depth_integrated_pp_water.csv")
