@@ -23,7 +23,8 @@ kd <- lapply(files, read_irradiance) %>%
 p <- kd %>% 
   ggplot(aes(x = date_time, y = depth_water_m)) +
   geom_point() +
-  facet_wrap(~station, scales = "free")
+  facet_wrap(~station, scales = "free") +
+  xlab("Depth (m)")
 
 ggsave("graphs/rov_vs_depth.pdf", width = 12)
 
@@ -43,7 +44,12 @@ kd <- kd %>%
 res <- kd %>% 
   nest() %>% 
   mutate(model = map(data, ~nls(.$par ~ a0 * exp(-kd * .$depth_water_m), data = ., start = list(a0 = 5, kd = 0.15)))) %>% 
-  mutate(pred = map2(data, model, modelr::add_predictions))
+  mutate(pred = map2(data, model, modelr::add_predictions)) %>% 
+  mutate(r2 = map2(data, pred, function(data, pred) {
+    
+    r2 <- cor(data$par, pred$pred)^2
+    
+  }))
 
 p <- res %>% 
   unnest(pred) %>% 
@@ -60,7 +66,8 @@ p <- res %>%
     ),
     sep = "",
     collapse = "\n"
-  ))
+  )) +
+  xlab("Depth (m)")
 
 
 kd <- res %>% 
@@ -78,7 +85,17 @@ p <- p +
     ),
     vjust = -1,
     hjust = 1.1
-  )
+  ) +
+  geom_text(
+    data = unnest(res, r2),
+    aes(
+      x = Inf,
+      y = Inf,
+      label = sprintf("R2: %2.4f", r2)
+    ),
+    vjust = -3,
+    hjust = 1.1
+  ) 
 
 ggsave("graphs/kd.pdf")
 
