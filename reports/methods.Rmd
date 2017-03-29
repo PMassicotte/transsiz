@@ -23,9 +23,9 @@ This document presents a general overview of the different steps that were used 
 
 https://github.com/PMassicotte/transsiz
 
-## Primary production
+## Photosynthetic parameters
 
-Photosynthetic parameters were estimated from P vs E curves. Two different models based on the original definition proposed by (Platt et al., 1980) were used depending on the situation.
+Photosynthetic parameters have been determined from the P vs E curves obtained according to a method derived from Lewis and Smith (1983) both on water samples taken from the rosette and ice core bottom (last cm, see an example in Fig. \ref{fig:pvse}). Some samples were also collected directly under the ice (UISW). 
 
 \begin{figure}[H]
 \centering
@@ -33,6 +33,8 @@ Photosynthetic parameters were estimated from P vs E curves. Two different model
 \caption{Example of a fitted PvsE curve.}
 \label{fig:pvse}
 \end{figure}
+
+Two different models based on the original definition proposed by (Platt et al., 1980) were used depending on the situation.
 
 ### Model with photoinhibition
 
@@ -109,7 +111,7 @@ In the raw data, measurement were done every 10 minutes and thus averaged to obt
 
 ## Primary production
 
-At each depth primary production was estimated using photosynthetic parameter, kd and PAR estimates. First, PAR was propagated at depth where PvsE curves were measured (Fig. \ref{fig:par_z}).
+At each depth primary production was estimated using photosynthetic parameter, kd and PAR estimates. First, PAR was propagated at depth where PvsE curves were measured (Fig. \ref{fig:par_z}). For ice samples, we used the light estimated just under the ice. 
 
 \begin{figure}[H]
 \includegraphics{../graphs/light_by_hour.pdf}
@@ -139,14 +141,27 @@ df <- read_csv("../data/clean/depth_integrated_pp_water.csv")
 knitr::kable(df)
 ```
 
-## Error estimation
+## Ice sample
 
-1. See if we still need simulation. If so, do we do it on each PvsE curve?
+Please note that unit for primary production for ice algea is cubic meter per day.
 
-A Monte-Carlo procedure has been used to propagate the incertitude of the fitted photosynthetic parameters on the estimate daily primary production. At each depth, a total of 10 000 simulations (i.e. P vs E curves) were performed by randomly sampling parameter values based a multivariate normal distribution of the fitted parameters. Using the generated curves, depth and daily integrated primary production rates were calculated as previously explained. The standard deviation of the 10 000 integrated daily primary production rates was then used as a measure of the uncertainty around the estimated value of primary production.
+\begin{figure}[H]
+\includegraphics{../graphs/daily_integrated_pp_ice.pdf}
+\caption{Daily primary production for ice algea.}
+\label{fig:daily_ice}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics{../graphs/daily_integrated_pp_uisw.pdf}
+\caption{Daily primary production for phytoplankon sampled from the ice.}
+\label{fig:daily_uisw}
+\end{figure}
 
 ## References
+
+Lewis, M. R. and J. C. Smith (1983). "A small volume, short-incubation-time method for measurements of photosynthesis as a function of incident irradiance." Marine Ecology Progress Series 13: 99-102.
 
 Plat, T., C.L. Gallegos and W.G. Harrison (1980). Photo-inhibition o photosynthesis in natural assemblages of marine phytoplankton. J. Mar. Res. 38:687-701.
 
 Timur V. Elzhov, Katharine M. Mullen, Andrej-Nikolai Spiess and Ben Bolker (2016). minpack.lm: R Interface to the Levenberg-Marquardt Nonlinear Least-Squares Algorithm Found in MINPACK, Plus Support for Bounds. R package version 1.2-1. https://CRAN.R-project.org/package=minpack.lm
+uisw

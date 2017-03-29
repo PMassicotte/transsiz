@@ -56,6 +56,10 @@ daily_pp <- water %>%
   mutate(pp = map(data, ~sum(.$pp))) %>% 
   unnest(pp)
 
+daily_pp %>% 
+  select(-data) %>% 
+  write_csv("data/clean/daily_integrated_pp_water.csv")
+
 p <- daily_pp %>% 
   ggplot(aes(x = pp, y = depth)) +
   geom_point() +
@@ -91,6 +95,19 @@ ice <- df %>%
   mutate(pp = map(data, ~sum(.$pp))) %>% 
   unnest(pp)
 
+p <- ice %>% 
+  ggplot(aes(x = station, y = pp)) +
+  geom_bar(aes(fill = factor(depth)), stat = "identity", position = "dodge") +
+  labs(fill = "Replicate") +
+  ylab(bquote("Primary production"~(mgC%*%m^{-3}%*%day^{-1}))) +
+  xlab("Station")
+
+ggsave("graphs/daily_integrated_pp_ice.pdf")
+
+ice %>% 
+  select(-data) %>% 
+  write_csv("data/clean/daily_integrated_pp_ice.csv")
+
 # uisw --------------------------------------------------------------------
 
 uisw <- df %>% 
@@ -103,3 +120,17 @@ uisw <- df %>%
   nest() %>% 
   mutate(pp = map(data, ~sum(.$pp))) %>% 
   unnest(pp)
+
+p <- uisw %>% 
+  ggplot(aes(x = depth, y = pp)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(fill = "Depth") +
+  facet_wrap(~station) +
+  ylab(bquote("Primary production"~(mgC%*%m^{-3}%*%day^{-1}))) +
+  xlab("Depth (m)")
+
+ggsave("graphs/daily_integrated_pp_uisw.pdf")
+
+uisw %>% 
+  select(-data) %>% 
+  write_csv("data/clean/daily_integrated_pp_uisw.csv")
