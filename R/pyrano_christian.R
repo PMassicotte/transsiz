@@ -75,7 +75,7 @@ p <- pyrano %>%
   facet_wrap(~date, scales = "free", ncol = 4) +
   scale_x_datetime(date_labels = "%H:%M:%S", expand = c(0.2, 0), breaks = scales::pretty_breaks(n = 4)) +
   xlab("Time (hour)") +
-  ylab("PAR just below surface (umol s-1 m-2)") +
+  ylab("PAR just above surface (umol s-1 m-2)") +
   labs(title = "This is the data from the pyranometer used to propagate light in the water column")
 
 ggsave("graphs/pyrano.pdf", width = 10, height = 8)

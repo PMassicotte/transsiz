@@ -96,7 +96,7 @@ Photosynthetic available radiation (PAR) just bellow ice was derived from the to
 
 \begin{figure}[H]
 \includegraphics{../graphs/pyrano.pdf}
-\caption{PAR just below the surface measured by the pyranometer every 10 minutes and averaged over 48 hours station by station. Stations on May 28th and June 22nd have not been sampled for ice cores, therefore only one light profil is used.}
+\caption{PAR just above the surface measured by the pyranometer every 10 minutes and averaged over 48 hours station by station. Stations on May 28th and June 22nd have not been sampled for ice cores, therefore only one light profil is used.}
 \label{fig:pyrano_10min}
 \end{figure}
 

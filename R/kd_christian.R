@@ -17,8 +17,11 @@ kd <- lapply(files, read_irradiance) %>%
   bind_rows(.id = "station") %>% 
   mutate(station = substr(station, 1, 10)) %>% 
   filter(wavelength >= 400 & wavelength <= 700) %>% 
-  group_by(station, date_time, dist_rel_x_m, dist_rel_y_m, depth_water_m) %>% 
-  summarise(par = sum(irradiance))
+  # mutate(np = irradiance * wavelength * 5.03e15) %>% 
+  # mutate(eqf = np / 6022e23) %>% 
+  mutate(e = irradiance * wavelength * 0.836e-2) %>% # https://www.berthold.com/en/bio/how-do-i-convert-irradiance-photon-flux
+  group_by(station, date_time, dist_rel_x_m, dist_rel_y_m, depth_water_m) %>%
+  summarise(par = sum(e))
 
 p <- kd %>% 
   ggplot(aes(x = date_time, y = depth_water_m)) +
@@ -58,15 +61,7 @@ p <- res %>%
   geom_line(aes(y = pred), color = "red") +
   facet_wrap(~station, scales = "free") +
   scale_y_reverse() +
-  ylab("PAR (W/m**2/nm)") +
-  labs(title = paste0(
-    strwrap(
-      "Irradiance data were not converted to umol m-2 sec-1 since only used to calculate Kd",
-      80
-    ),
-    sep = "",
-    collapse = "\n"
-  )) +
+  ylab(bquote("PAR ("~mu*mol%*%s^{-1}%*%m^{-2}~")")) +
   xlab("Depth (m)")
 
 

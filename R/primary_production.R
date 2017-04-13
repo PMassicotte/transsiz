@@ -4,7 +4,7 @@ kd <- read_feather("data/clean/kd.feather")
 light <- read_feather("data/clean/hourly_par.feather")
 
 params <- read_feather("data/clean/photosynthetic_parameters.feather") %>% 
-  select(date, depth, sheet, ps, alpha, p0, pm) %>% 
+  select(date, depth, sheet, ps, alpha, p0) %>% 
   mutate(date = as.Date(date))
 
 ## "Official" stations
