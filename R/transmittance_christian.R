@@ -27,6 +27,27 @@ trans <- lapply(files, read_transmittance) %>%
   mutate(station = stringr::str_sub(station, 1, 10)) %>% 
   mutate(transmittance_percent = transmittance_percent * 1.3) ## See email from Christian
 
+## Transmittance histo
+
+p <- trans %>% 
+  ggplot(aes(x = transmittance_percent)) +
+  geom_histogram(binwidth = 0.1) +
+  facet_wrap(~station, scales = "free_y") +
+  scale_x_log10() +
+  annotation_logticks(sides = "b") +
+  xlab("log(transmittance)") 
+
+ggsave("graphs/histo_transmittance.pdf", width = 9, height = 7)
+
+## Depth histo
+
+p <- trans %>% 
+  ggplot(aes(x = depth_water_m)) +
+  geom_histogram(binwidth = 0.50) +
+  facet_wrap(~station, scales = "free")
+
+ggsave("graphs/histo_transmittance_depth.pdf", width = 9, height = 7)
+
 ## Calculate the distance of each points from the 0,0 cordinate
 
 r <- 3 # maximum radius
