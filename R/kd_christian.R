@@ -46,7 +46,7 @@ kd <- kd %>%
 
 res <- kd %>% 
   nest() %>% 
-  mutate(model = map(data, ~nls(.$par ~ a0 * exp(-kd * .$depth_water_m), data = ., start = list(a0 = 5, kd = 0.15)))) %>% 
+  mutate(model = map(data, ~nls(par ~ a0 * exp(-kd * depth_water_m), data = ., start = list(a0 = 5, kd = 0.15)))) %>% 
   mutate(pred = map2(data, model, modelr::add_predictions)) %>% 
   mutate(r2 = map2(data, pred, function(data, pred) {
     
@@ -63,7 +63,6 @@ p <- res %>%
   scale_y_reverse() +
   ylab(bquote("PAR ("~mu*mol%*%s^{-1}%*%m^{-2}~")")) +
   xlab("Depth (m)")
-
 
 kd <- res %>% 
   mutate(params = map(model, broom::tidy)) %>% 
@@ -95,7 +94,8 @@ p <- p +
 ggsave("graphs/kd.pdf")
 
 kd %>% 
-  separate(station, into = c("cruise", "station", "operation")) %>% 
-  select(-cruise, -operation, -(std.error:p.value)) %>% 
+  separate(station, into = c("cruise", "station"), sep = "_") %>% 
+  select(-cruise, -(std.error:p.value)) %>% 
   spread(term, estimate) %>% 
+  mutate(station = gsub("^0*", "", station)) %>% 
   write_feather("data/clean/kd.feather")

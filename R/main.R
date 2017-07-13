@@ -10,6 +10,7 @@ library(MASS)
 library(tidyverse)
 library(feather)
 library(extrafont)
+library(data.table)
 
 ## Clear the workspace
 rm(list = ls())
@@ -27,6 +28,8 @@ source("R/kd_christian.R")
 source("R/pyrano_christian.R")
 
 source("R/primary_production.R")
+
+source("R/process_cops.R")
 
 ## Embed fonts
 files <- list.files("graphs/", full.names = TRUE)

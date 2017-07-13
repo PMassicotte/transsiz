@@ -27,6 +27,9 @@ trans <- lapply(files, read_transmittance) %>%
   mutate(station = stringr::str_sub(station, 1, 10)) %>% 
   mutate(transmittance_percent = transmittance_percent * 1.3) ## See email from Christian
 
+trans %>% 
+  distinct(station, format(date_time, "%Y-%m-%d"))
+
 ## Transmittance histo
 
 p <- trans %>% 
