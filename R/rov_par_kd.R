@@ -18,11 +18,11 @@ kd <- read_feather("data/clean/rov_irradiance.feather") %>%
   # mutate(np = irradiance * wavelength * 5.03e15) %>% 
   # mutate(eqf = np / 6022e23) %>% 
   mutate(e = irradiance_w_m2_nm * wavelength * 0.836e-2) %>% # https://www.berthold.com/en/bio/how-do-i-convert-irradiance-photon-flux
-  group_by(station, date_time, dist_rel_x_m, dist_rel_y_m, depth_water_m) %>%
+  group_by(station, date_time, dist_rel_x_m, dist_rel_y_m, dist_sea_ice_bottom_m) %>%
   summarise(par = sum(e))
 
 p <- kd %>% 
-  ggplot(aes(x = date_time, y = depth_water_m)) +
+  ggplot(aes(x = date_time, y = dist_sea_ice_bottom_m)) +
   geom_point(size = 0.25) +
   facet_wrap(~station, scales = "free") +
   xlab("Depth (m)") +
@@ -44,15 +44,9 @@ kd <- kd %>%
 
 write_csv(kd, "data/clean/rov_par.csv")
 
-# kd %>% 
-#   ggplot(aes(x = ed_w_m_2, y = depth_water_m)) +
-#   geom_point(size = 1) +
-#   facet_wrap(~station, scales = "free") +
-#   scale_y_reverse()
-
 res <- kd %>% 
   nest() %>% 
-  mutate(model = map(data, ~nls(par ~ a0 * exp(-kd * depth_water_m), data = ., start = list(a0 = 5, kd = 0.15)))) %>% 
+  mutate(model = map(data, ~nls(par ~ a0 * exp(-kd * dist_sea_ice_bottom_m), data = ., start = list(a0 = 5, kd = 0.15)))) %>% 
   mutate(pred = map2(data, model, modelr::add_predictions)) %>% 
   mutate(r2 = map2(data, pred, function(data, pred) {
     
@@ -62,7 +56,7 @@ res <- kd %>%
 
 p <- res %>% 
   unnest(pred) %>% 
-  ggplot(aes(y = par, x = depth_water_m)) +
+  ggplot(aes(y = par, x = dist_sea_ice_bottom_m)) +
   geom_point(size = 1) +
   geom_line(aes(y = pred), color = "red") +
   facet_wrap(~station, scales = "free") +
@@ -105,7 +99,7 @@ p <- p +
 ggsave("graphs/rov_kd.pdf")
 ggsave("graphs/png/rov_kd.png")
 
-## Save the file
+## Save the data
 
 kd %>% 
   write_csv("data/clean/rov_kd.csv")
