@@ -6,30 +6,34 @@ source("R/zzz.R")
 
 limits <- read_csv("data/raw/bornes_profils_ed.csv") %>% 
   mutate(station = gsub("/", "_", station)) %>% 
-  drop_na()
+  drop_na() %>% 
+  mutate(station = stringr::str_extract(station, "(\\d{3}-\\d+)"))
 
 ## ROV irradiance
 
 files <- list.files("data/raw/Katlein-etal_2016/datasets/", "rov_irrad", full.names = TRUE)
 
-kd <- lapply(files, read_irradiance) %>% 
-  set_names(basename(files)) %>% 
-  bind_rows(.id = "station") %>% 
-  mutate(station = substr(station, 1, 10)) %>% 
+kd <- read_feather("data/clean/rov_irradiance.feather") %>% 
   filter(wavelength >= 400 & wavelength <= 700) %>% 
   # mutate(np = irradiance * wavelength * 5.03e15) %>% 
   # mutate(eqf = np / 6022e23) %>% 
-  mutate(e = irradiance * wavelength * 0.836e-2) %>% # https://www.berthold.com/en/bio/how-do-i-convert-irradiance-photon-flux
+  mutate(e = irradiance_w_m2_nm * wavelength * 0.836e-2) %>% # https://www.berthold.com/en/bio/how-do-i-convert-irradiance-photon-flux
   group_by(station, date_time, dist_rel_x_m, dist_rel_y_m, depth_water_m) %>%
   summarise(par = sum(e))
 
 p <- kd %>% 
   ggplot(aes(x = date_time, y = depth_water_m)) +
-  geom_point() +
+  geom_point(size = 0.25) +
   facet_wrap(~station, scales = "free") +
-  xlab("Depth (m)")
+  xlab("Depth (m)") +
+  geom_vline(data = limits, aes(xintercept = date_start), color = "red") +
+  geom_vline(data = limits, aes(xintercept = date_end), color = "red") +
+  labs(title = "Depth of the ROV as function of time",
+       subtitle = "The red lines represent the section (data) used to calculate kd value (see graphic named rov_kd.pdf).") +
+  scale_y_reverse()
 
-ggsave("graphs/rov_vs_depth.pdf", width = 12)
+ggsave("graphs/rov_vs_depth.pdf", width = 12, height = 8)
+ggsave("graphs/png/rov_vs_depth.png", width = 12, height = 8)
 
 ## Cut the data
 
@@ -37,6 +41,8 @@ kd <- kd %>%
   inner_join(limits, by = "station") %>% 
   group_by(station) %>% 
   filter(date_time >= date_start & date_time <= date_end)
+
+write_csv(kd, "data/clean/rov_par.csv")
 
 # kd %>% 
 #   ggplot(aes(x = ed_w_m_2, y = depth_water_m)) +
@@ -89,13 +95,17 @@ p <- p +
     ),
     vjust = -3,
     hjust = 1.1
-  ) 
+  ) +
+  labs(
+    title = "PAR values as a function of depth (rov data)",
+    subtitle = "e = irradiance_w_m2_nm * wavelength * 0.836e-2",
+    caption = "https://www.berthold.com/en/bio/how-do-i-convert-irradiance-photon-flux"
+  )
 
-ggsave("graphs/kd.pdf")
+ggsave("graphs/rov_kd.pdf")
+ggsave("graphs/png/rov_kd.png")
+
+## Save the file
 
 kd %>% 
-  separate(station, into = c("cruise", "station"), sep = "_") %>% 
-  select(-cruise, -(std.error:p.value)) %>% 
-  spread(term, estimate) %>% 
-  mutate(station = gsub("^0*", "", station)) %>% 
-  write_feather("data/clean/kd.feather")
+  write_csv("data/clean/rov_kd.csv")

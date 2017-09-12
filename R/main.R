@@ -22,14 +22,17 @@ theme_set(theme_bw(base_size = 12, base_family = "Open Sans"))
 
 # Prepare data ------------------------------------------------------------
 
-source("R/pe_curves.R")
-source("R/transmittance_christian.R")
-source("R/kd_christian.R")
-source("R/pyrano_christian.R")
+## ROV
+source("R/process_rov.R")
+source("R/rov_par_kd.R")
 
-source("R/primary_production.R")
-
-source("R/process_cops.R")
+# source("R/pe_curves.R")
+# source("R/transmittance_christian.R")
+# source("R/kd_christian.R")
+# source("R/pyrano_christian.R")
+# 
+# source("R/primary_production.R")
+# source("R/process_cops.R")
 
 ## Embed fonts
 files <- list.files("graphs/", full.names = TRUE)
