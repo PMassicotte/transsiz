@@ -13,14 +13,16 @@ source("R/rov_utils.R")
 files <- list.files("data/raw/Katlein-etal_2016/datasets/", "rovT_irrad", full.names = TRUE)
 
 transmittance <- map(files, read_transmittance) %>% 
-  bind_rows()
+  bind_rows() %>% 
+  distinct()
 
 ## Irradiance data
 
 files <- list.files("data/raw/Katlein-etal_2016/datasets/", "rov_irrad", full.names = TRUE)
 
 irradiance <- map(files, read_irradiance) %>% 
-  bind_rows()
+  bind_rows() %>% 
+  distinct()
 
 ## Depth data (for some reasons, the distance to ice bottom are in other files)
 
@@ -69,15 +71,20 @@ irradiance <- irradiance %>%
   mutate(ice_thickness = depth_water_m - dist_sea_ice_bottom_m) %>%
   filter(ice_thickness >= 0)
 
+irradiance %>% 
+  distinct(station, date)
+
 write_feather(transmittance, "data/clean/rov_transmittance.feather")
 write_feather(irradiance, "data/clean/rov_irradiance.feather")
 
 # Plot the data -----------------------------------------------------------
 
 p1 <- transmittance %>% 
-  ggplot(aes(x = dist_rel_x_m, y = dist_rel_y_m)) +
+  ggplot(aes(x = dist_rel_x_m, y = dist_rel_y_m, color = factor(date))) +
   geom_point(size = 0.1) +
-  facet_wrap(~station, scales = "free")
+  facet_wrap(~station + date, scales = "free") +
+  guides(color = guide_legend(override.aes = list(size = 2))) +
+  labs(color = "Date")
 
 p2 <- transmittance %>% 
   ggplot(aes(x = transmittance_percent)) +
@@ -88,5 +95,5 @@ p2 <- transmittance %>%
 
 ggsave("graphs/rov_transmittance_position.pdf", p1)
 ggsave("graphs/rov_transmittance_histogram.pdf", p2)
-ggsave("graphs/png/rov_transmittance_position.png", p1)
-ggsave("graphs/png/rov_transmittance_histogram.png", p2)
+# ggsave("graphs/png/rov_transmittance_position.png", p1)
+# ggsave("graphs/png/rov_transmittance_histogram.png", p2)

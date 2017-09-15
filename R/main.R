@@ -22,6 +22,12 @@ theme_set(theme_bw(base_size = 12, base_family = "Open Sans"))
 
 # Prepare data ------------------------------------------------------------
 
+## Ice station information
+source("R/process_stations.R")
+
+## Pyranometer
+source("R/process_pyrano.R")
+
 ## ROV
 source("R/process_rov.R")
 source("R/rov_par_kd.R")

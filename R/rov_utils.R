@@ -32,10 +32,13 @@ read_transmittance <- function(file) {
     ) %>%
     select(1:5) %>%
     janitor::clean_names() %>% 
+    distinct() %>% 
     mutate(starting_longitude = longitude) %>% 
     mutate(starting_latitude = latitude) %>% 
     mutate(filename = basename(file)) %>% 
-    mutate(station = stringr::str_extract(filename, "(\\d{3}-\\d+)"))
+    mutate(station = stringr::str_extract(filename, "(\\d{3}-\\d+)")) %>% 
+    mutate(date = as.Date(date_time)) %>% 
+    drop_na(transmittance_percent)
   
   return(trans)
   
@@ -58,7 +61,8 @@ read_irradiance <- function(file) {
     mutate(wavelength = stringr::str_match(wavelength, "ed_(\\d{3})")[, 2]) %>%
     mutate(wavelength = parse_number(wavelength)) %>%
     mutate(filename = basename(file)) %>%
-    mutate(station = stringr::str_extract(filename, "(\\d{3}-\\d+)"))
+    mutate(station = stringr::str_extract(filename, "(\\d{3}-\\d+)")) %>% 
+    mutate(date = as.Date(date_time))
 
   return(irradiance)
 }

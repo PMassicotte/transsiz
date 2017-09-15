@@ -155,7 +155,7 @@ metric <- pp %>%
   unnest(metric) %>% 
   select(-data, -mod, -prediction, -params)
 
-write_feather(metric, "data/clean/photosynthetic_parameters.feather")
+write_csv(metric, "data/clean/photosynthetic_parameters.csv")
 
 # write_csv(metric, "data/photosynthetic_parameters.csv")
 

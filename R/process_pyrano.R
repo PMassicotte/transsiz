@@ -1,3 +1,8 @@
+rm(list = ls())
+
+## Match the pyrano data using the ROV dates
+stations <- read_csv("data/clean/stations.csv")
+
 pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>% 
   setNames(iconv(names(.), "latin1", "utf-8", sub = "byte")) %>% 
   janitor::clean_names() %>% 
@@ -10,23 +15,60 @@ pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>%
   mutate(minute = lubridate::minute(date_time)) %>% 
   filter(par_just_below_surface_µmol >= 0)
 
+## Keep only pyrano data matching the ice stations
+pyrano <- pyrano %>% 
+  inner_join(stations, by = "date")
+
+pyrano %>% 
+  distinct(station, date)
+
 # There is a problem with data later than 2015-06-20 20:20:00. Replace these
 # "outliers" with the observations measured at the begining.
 
-# 2015-06-11
-i <- which(pyrano$date_time >= "2015-06-11 20:00:00" & pyrano$date == "2015-06-11")
-pyrano$par_just_below_surface_µmol[i] <- pyrano$par_just_below_surface_µmol[pyrano$date == "2015-06-11"][length(i):1]
-# pyrano$par_just_below_surface_µmol_ice[i] <- pyrano$par_just_below_surface_µmol_ice[pyrano$date == "2015-06-11"][length(i):1]
-
-# 2015-06-20
+# # 2015-06-11
+# i <- which(pyrano$date_time >= "2015-06-11 20:00:00" & pyrano$date == "2015-06-11")
+# pyrano$par_just_below_surface_µmol[i] <- pyrano$par_just_below_surface_µmol[pyrano$date == "2015-06-11"][length(i):1]
+# # pyrano$par_just_below_surface_µmol_ice[i] <- pyrano$par_just_below_surface_µmol_ice[pyrano$date == "2015-06-11"][length(i):1]
+# 
+# # # 2015-06-20
 i <- which(pyrano$date_time >= "2015-06-20 20:20:00" & pyrano$date == "2015-06-20")
 pyrano$par_just_below_surface_µmol[i] <- pyrano$par_just_below_surface_µmol[pyrano$date == "2015-06-20"][length(i):1]
-# pyrano$par_just_below_surface_µmol_ice[i] <- pyrano$par_just_below_surface_µmol_ice[pyrano$date == "2015-06-20"][length(i):1]
+# # # pyrano$par_just_below_surface_µmol_ice[i] <- pyrano$par_just_below_surface_µmol_ice[pyrano$date == "2015-06-20"][length(i):1]
 
-pyrano %>% 
+pyrano %>%
   ggplot(aes(x = date_time, y =  par_just_below_surface_µmol)) +
   geom_line() +
-  facet_wrap(~date, scales = "free") +
-  scale_x_datetime(date_labels = "%H:%M:%S", expand = c(0.2, 0), breaks = scales::pretty_breaks(n = 4))
+  facet_wrap( ~ date, scales = "free", ncol = 4) +
+  scale_x_datetime(
+    date_labels = "%H:%M:%S",
+    expand = c(0.2, 0),
+    breaks = scales::pretty_breaks(n = 4)
+  ) +
+  labs(title = "PAR measured by the pyrano",
+       subtitle = "This is the PAR just bellow surface measured every 5 min. Does not take into account ice transmittance.")
 
-write_feather(pyrano, "data/clean/pyranometer.feather")
+ggsave("graphs/pyrano_5min_par.pdf", width = 10, height = 5)
+
+
+# Hourly PAR --------------------------------------------------------------
+
+pyrano <- pyrano %>% 
+  group_by(station, date, hour) %>% 
+  nest() %>% 
+  mutate(par_just_below_surface_µmol = map(data, ~mean(.$par_just_below_surface_µmol))) %>%
+  unnest(par_just_below_surface_µmol)
+
+pyrano %>% 
+  ggplot(aes(x = hour, y = par_just_below_surface_µmol)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~date, scales = "free", ncol = 4) +
+  xlab("Time (hour)") +
+  labs(title = "PAR measured by the pyrano (averaged by hour)",
+       subtitle = "This is the PAR just bellow surface. Does not take into account ice transmittance.")
+
+ggsave("graphs/pyrano_hourly_par.pdf", width = 10, height = 5)
+
+pyrano %>% 
+  select(-data) %>% 
+  write_csv("data/clean/pyranometer.csv")

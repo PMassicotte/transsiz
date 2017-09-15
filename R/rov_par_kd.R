@@ -10,9 +10,6 @@ limits <- read_csv("data/raw/bornes_profils_ed.csv") %>%
   mutate(station = stringr::str_extract(station, "(\\d{3}-\\d+)"))
 
 ## ROV irradiance
-
-files <- list.files("data/raw/Katlein-etal_2016/datasets/", "rov_irrad", full.names = TRUE)
-
 kd <- read_feather("data/clean/rov_irradiance.feather") %>% 
   filter(wavelength >= 400 & wavelength <= 700) %>% 
   # mutate(np = irradiance * wavelength * 5.03e15) %>% 
@@ -56,13 +53,13 @@ res <- kd %>%
 
 p <- res %>% 
   unnest(pred) %>% 
-  ggplot(aes(y = par, x = dist_sea_ice_bottom_m)) +
+  ggplot(aes(x = par, y = dist_sea_ice_bottom_m)) +
   geom_point(size = 1) +
-  geom_line(aes(y = pred), color = "red") +
+  geom_line(aes(x = pred), color = "red") +
   facet_wrap(~station, scales = "free") +
   scale_y_reverse() +
-  ylab(bquote("PAR ("~mu*mol%*%s^{-1}%*%m^{-2}~")")) +
-  xlab("Depth (m)")
+  xlab(bquote("PAR ("~mu*mol%*%s^{-1}%*%m^{-2}~")")) +
+  ylab("Depth (m)")
 
 kd <- res %>% 
   mutate(params = map(model, broom::tidy)) %>% 
