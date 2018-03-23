@@ -5,7 +5,7 @@ stations <- read_csv("data/clean/stations.csv")
 
 pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>% 
   setNames(iconv(names(.), "latin1", "utf-8", sub = "byte")) %>% 
-  janitor::clean_names() %>% 
+  janitor::clean_names(case = "old_janitor") %>% 
   as_tibble() %>% 
   select(c(1,2,3, 7)) %>% 
   mutate(date_time = anytime::anytime(date_time)) %>% 

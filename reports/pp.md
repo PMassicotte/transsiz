@@ -14,7 +14,7 @@ Last updated: 2017-01-19 10:46:45
 
 ```r
 ps <- readxl::read_excel("data/Global_PS_for_Takuvik.xlsx") %>% 
-  janitor::clean_names() %>% 
+  janitor::clean_names(case = "old_janitor") %>% 
   mutate(time = anytime::anytime(paste(date, format(time, "%H:%M:%S")))) %>% 
   mutate(time_numeric = as.numeric(time)) %>% 
   mutate(hour = as.numeric(format(time, "%H"))) %>% 

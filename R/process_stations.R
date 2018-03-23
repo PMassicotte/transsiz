@@ -35,7 +35,7 @@ write_csv(stations, "data/clean/stations.csv")
 # # https://www.pangaea.de/expeditions/cr.php/Polarstern
 # 
 # stations <- read_delim("data/raw/PS92.tab", delim = "\t") %>% 
-#   janitor::clean_names() %>% 
+#   janitor::clean_names(case = "old_janitor") %>% 
 #   filter(device == "Ice station") %>% 
 #   select(
 #     station = event_label,
@@ -61,7 +61,7 @@ write_csv(stations, "data/clean/stations.csv")
 # write_csv(stations, "data/clean/stations.csv")
 
 # stations <- readxl::read_excel("data/raw/Sampling_Takuvik.xlsx", sheet = 1, skip = 1) %>% 
-#   janitor::clean_names() %>% 
+#   janitor::clean_names(case = "old_janitor") %>% 
 #   select(station:longitude, action) %>% 
 #   filter(grepl("^ice", action, ignore.case = TRUE)) %>% 
 #   # select(-in_situ_incubations) %>% 

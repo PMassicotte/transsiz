@@ -12,7 +12,7 @@ read_p_manip <- function(sheet) {
     na = c("", "NaN"),
     sheet = sheet
   ) %>%
-    janitor::clean_names() %>%
+    janitor::clean_names(case = "old_janitor") %>%
     fill(date, depth, chloro, dilution) %>%
     drop_na() %>%
     rename(light = light_incub) %>%

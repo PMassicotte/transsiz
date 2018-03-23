@@ -9,7 +9,7 @@ params <- read_feather("data/clean/photosynthetic_parameters.feather") %>%
 
 ## "Official" stations
 stations <- readxl::read_excel("data/raw/Sampling_Takuvik.xlsx", skip = 1) %>% 
-  janitor::clean_names() %>% 
+  janitor::clean_names(case = "old_janitor") %>% 
   mutate(date = as.Date(date)) %>% 
   filter(p_vs_e == "x") %>% 
   select(station, date) %>% 

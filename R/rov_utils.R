@@ -31,7 +31,7 @@ read_transmittance <- function(file) {
                        `Date/Time` = col_datetime(format = ""))
     ) %>%
     select(1:5) %>%
-    janitor::clean_names() %>% 
+    janitor::clean_names(case = "old_janitor") %>% 
     distinct() %>% 
     mutate(starting_longitude = longitude) %>% 
     mutate(starting_latitude = latitude) %>% 
@@ -54,7 +54,7 @@ read_irradiance <- function(file) {
       col_types = cols(.default = col_double(),
                        `Date/Time` = col_datetime(format = ""))
     ) %>%
-    janitor::clean_names() %>%
+    janitor::clean_names(case = "old_janitor") %>%
     distinct() %>% ## Don't know why, but there are duplicated lines in irradiance data
     select(-ed_w_m_2) %>%
     gather(wavelength, irradiance_w_m2_nm, contains("ed")) %>%
@@ -72,7 +72,7 @@ read_irradiance <- function(file) {
 read_depth <- function(file) {
   
   df <- read_delim(file, skip = 19, delim = "\t") %>% 
-  janitor::clean_names() %>% 
+  janitor::clean_names(case = "old_janitor") %>% 
   mutate(filename = basename(file)) %>% 
   mutate(station = stringr::str_extract(filename, "(\\d{3}-\\d+)"))
   
@@ -80,7 +80,7 @@ read_depth <- function(file) {
   
 }
 
-## Interpolate the distance to ice bottom
+## Interpolate the distance to ice bottom. For this, we use the data in another file (depth) and interpolate the rov data from this.
 
 interpol_depth <- function(rov, depth) {
   

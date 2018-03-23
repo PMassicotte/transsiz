@@ -8,7 +8,7 @@ rm(list = ls())
 
 ## "Official" stations
 stations <- readxl::read_excel("data/raw/Sampling_Takuvik.xlsx", skip = 1) %>% 
-  janitor::clean_names() %>% 
+  janitor::clean_names(case = "old_janitor") %>% 
   mutate(date = as.Date(date)) %>% 
   filter(p_vs_e == "x") %>% 
   select(station, date) %>% 
@@ -23,7 +23,7 @@ group <- readxl::read_excel("data/raw/Sampling_Takuvik.xlsx", sheet = 2) %>%
 
 pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>% 
   setNames(iconv(names(.), "latin1", "utf-8", sub = "byte")) %>% 
-  janitor::clean_names() %>% 
+  janitor::clean_names(case = "old_janitor") %>% 
   as_tibble() %>% 
   select(c(1,2,3, 7)) %>% 
   # mutate(par_just_below_surf_w_m2_ice = par_down_above_surface_w_m2 * 0.04 * 1.66) %>% 

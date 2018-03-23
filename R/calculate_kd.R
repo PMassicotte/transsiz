@@ -8,7 +8,7 @@
 rm(list = ls())
 
 df <- readxl::read_excel("data/Profils_Chl_WaterStation.xlsx") %>% 
-  janitor::clean_names() %>% 
+  janitor::clean_names(case = "old_janitor") %>% 
   mutate(chla_mg_m3 = sum_chl_ng_l / 1000)
 
 # df %>% 

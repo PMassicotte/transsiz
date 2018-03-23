@@ -1,4 +1,4 @@
-# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>  
+ # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>  
 # AUTHOR:       Philippe Massicotte
 #
 # DESCRIPTION:  Calculate PP based on P vs I curves.
@@ -8,7 +8,7 @@
 
 #' ## Open the PS file and do some cleaning
 ps <- readxl::read_excel("data/Global_PS_for_Takuvik.xlsx") %>% 
-  janitor::clean_names() %>% 
+  janitor::clean_names(case = "old_janitor") %>% 
   mutate(time = anytime::anytime(paste(date, format(time, "%H:%M:%S")))) %>% 
   mutate(time_numeric = as.numeric(time)) %>% 
   mutate(hour = as.numeric(format(time, "%H"))) %>% 
