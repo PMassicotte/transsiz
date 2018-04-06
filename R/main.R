@@ -11,6 +11,7 @@ library(tidyverse)
 library(feather)
 library(extrafont)
 library(data.table)
+library(sf)
 
 ## Clear the workspace
 rm(list = ls())
@@ -18,7 +19,7 @@ graphics.off()
 
 ## Set default ggplot2 font size and font family
 loadfonts(quiet = TRUE)
-theme_set(theme_bw(base_size = 12, base_family = "Open Sans"))
+theme_set(theme_bw(base_size = 12, base_family = "IBM Plex Sans"))
 
 # Prepare data ------------------------------------------------------------
 
