@@ -5,6 +5,7 @@
 
 graphs/*
 data/
+reports/*.pdf
 
 
 
