@@ -75,7 +75,7 @@ write_feather(res, "data/clean/suit_transmittance.feather")
 
 # Plot --------------------------------------------------------------------
 
-p <- res %>%
+p1 <- res %>%
   ggplot(aes(x = transmittance)) +
   geom_histogram() +
   facet_wrap(~ station, scales = "free") +
@@ -83,4 +83,12 @@ p <- res %>%
   labs(title = "Histograms of transmittance measured by the SUIT device") +
   labs(subtitle = sprintf("Total of %d measurements", nrow(res)))
 
-ggsave("graphs/suit_transmittance_histogram.pdf", device = cairo_pdf)
+p2 <- res %>% 
+  ggplot(aes(x = date_time, y = draft_m)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ station, scales = "free") +
+  labs(title = "Depth over the time")
+
+p <- cowplot::plot_grid(p1, p2, ncol = 1, align = "hv", labels = "AUTO")
+ggsave("graphs/suit_transmittance_histogram.pdf", device = cairo_pdf, height = 12, width = 10)

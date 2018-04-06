@@ -70,6 +70,8 @@ p1 <- transmittance %>%
   guides(color = guide_legend(override.aes = list(size = 2))) +
   labs(color = "Date")
 
+ggsave("graphs/rov_transmittance_position.pdf", p1)
+
 p2 <- transmittance %>%
   ggplot(aes(x = transmittance)) +
   geom_histogram() +
@@ -79,5 +81,13 @@ p2 <- transmittance %>%
   labs(title = "Histograms of transmittance measured by the ROV") +
   labs(subtitle = sprintf("Total of %d measurements", nrow(transmittance)))
 
-ggsave("graphs/rov_transmittance_position.pdf", p1)
-ggsave("graphs/rov_transmittance_histogram.pdf", p2)
+p3 <- transmittance %>% 
+  ggplot(aes(x = date_time, y = depth_water_m)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ station, scales = "free") +
+  labs(title = "Depth over the time") +
+  scale_y_reverse()
+
+p <- cowplot::plot_grid(p2, p3, ncol = 1, align = "hv", labels = "AUTO")
+ggsave("graphs/rov_transmittance_histogram.pdf", device = cairo_pdf, height = 12, width = 10)
