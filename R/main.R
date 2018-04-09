@@ -12,6 +12,7 @@ library(feather)
 library(extrafont)
 library(data.table)
 library(sf)
+library(parallel)
 
 ## Clear the workspace
 rm(list = ls())

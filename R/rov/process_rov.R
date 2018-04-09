@@ -8,11 +8,13 @@ rm(list = ls())
 
 source("R/rov/rov_utils.R")
 
+ncores <- detectCores() - 1
+
 ## Transmittance data
 
 files <- list.files("data/raw/Katlein-etal_2016/datasets/", "rovT_irrad", full.names = TRUE)
 
-transmittance <- map(files, read_transmittance) %>%
+transmittance <- mclapply(files, read_transmittance, mc.cores = ncores) %>%
   bind_rows() %>%
   distinct()
 
@@ -20,7 +22,7 @@ transmittance <- map(files, read_transmittance) %>%
 
 files <- list.files("data/raw/Katlein-etal_2016/datasets/", "rov_irrad", full.names = TRUE)
 
-irradiance <- map(files, read_irradiance) %>%
+irradiance <- mclapply(files, read_irradiance, mc.cores = ncores) %>%
   bind_rows() %>%
   distinct()
 

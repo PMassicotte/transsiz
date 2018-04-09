@@ -1,3 +1,4 @@
+rm(list = ls())
 
 ## Log of the sampled stations
 stations <- read_feather("data/clean/stations.feather")
@@ -39,7 +40,7 @@ p1 <- wm %>%
   xlab("Longitude") +
   ylab("Latitude") +
   scale_color_brewer(palette = "Dark2") +
-  labs(caption = "Ofifcial stations from: Station_book_24th_June.csv\nSuit data from: SUIT_summary.xlsx") +
+  labs(caption = "Official stations from: Station_book_24th_June.csv\nSuit data from: SUIT_summary.xlsx") +
   labs(color = "Official stations") +
   labs(shape = "Gear") +
   labs(linetype = "Pyranometer") +
@@ -64,7 +65,7 @@ p1 <- p1 +
 
 suit <-
   readxl::read_excel("/media/work/Dropbox/TRANSSIZ_2015/SUIT/SUIT_summary.xlsx") %>%
-  janitor::clean_names() %>%
+  janitor::clean_names(case = "old_janitor") %>%
   select(station,
          date_time,
          longitude = lon,
@@ -91,7 +92,22 @@ p1 <- p1 +
   )
 
 ggsave("graphs/stations.pdf", height = 10, width = 10)
-
-
+# ggsave("graphs/stations.png", height = 10, width = 10)
 
 # https://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters
+
+## Ice extent
+
+# ice <- rgdal::readOGR("/home/pmassicotte/Downloads/masie_ice_r00_v01_2015168_1km/", "masie_ice_r00_v01_2015168_1km") %>% 
+#   sp::spTransform("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs") %>% 
+#   fortify()
+# 
+# p1 +
+#   geom_polygon(data = ice, aes(x = long, y = lat, group = group), inherit.aes = FALSE, alpha = 0.5)
+# 
+# 
+# ice %>% 
+#   ggplot(aes(x = long, y = lat, group = group)) +
+#   geom_polygon() +
+#   geom_point(data = stations, aes(x = longitude, y = latitude, color = "red"), inherit.aes = FALSE) +
+#   coord_map("stereo")
