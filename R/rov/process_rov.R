@@ -83,7 +83,7 @@ p2 <- transmittance %>%
   labs(title = "Histograms of transmittance measured by the ROV") +
   labs(subtitle = sprintf("Total of %d measurements", nrow(transmittance)))
 
-p3 <- transmittance %>% 
+p3 <- transmittance %>%
   ggplot(aes(x = date_time, y = depth_water_m)) +
   geom_line() +
   geom_point() +
