@@ -1,0 +1,96 @@
+---
+title: "Transsiz data"
+output: 
+  pdf_document:
+  latex_engine: xelatex
+  sansfont: Open Sans
+  md_document: default
+header-includes:
+- \usepackage{graphicx}
+---
+
+```{r setup, include=FALSE, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+library(extrafont)
+library(tidyverse)
+
+## Set default ggplot2 font size and font familly
+
+loadfonts(quiet = TRUE)
+theme_set(theme_bw(base_size = 12, base_family = "IBM Plex Sans"))
+
+```
+
+# Transsiz
+
+Repository for the [Transsiz expedition](http://polarforskningsportalen.se/en/arctic/expeditions/transsiz).
+
+## Pyranometer
+
+This graphic show hourly averaged pyranometer data.
+
+```{r}
+pyrano <- read_csv("data/clean/pyranometer.csv") %>% 
+  separate(station, into = c("station", "cast"), convert = TRUE)
+
+pyrano %>% 
+  ggplot(aes(x = hour, y = par_just_below_surface_µmol)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~station) +
+  scale_y_continuous(breaks = seq(200, 1500, by = 200))
+
+```
+
+
+## ROV data
+
+- Transmittance files used: `rovT_irrad`.
+- Observations with `pitch` and `roll` between -10 and 10 degrees were kept.
+- Ice thickness was estimated as: *ice_thickness = depth_water_m - dist_sea_ice_bottom_m*
+- Transmittance just below ice was estimated using linear interpolation.
+- Using each ROV transmittance measurments, PAR0- (measured by the pyranometer) was propagated in the water column. 
+
+## SUIT data
+
+- Transmittance files used: `Ir_Dist_draft01_b.dat`.
+- Depth of measurement (draft) was assumed to reflect the transmittance just below ice.
+- Only haul number was specified in transmittance files. Station id was matched with the file `Summary_file_PS92.txt`.
+- Lat/long were extracted in files like `Lat_lon_01.dat` where the last part of the file name reflects the haul number.
+
+## Matching SUIT and ROV transmittance data
+
+There was some ROV stations without matching SUIT measurements. After discussions, we came up with this table that will link stations.
+
+| ROV 	| SUIT    	|                                           	|
+|-----	|---------	|-------------------------------------------	|
+| 19  	| 19      	|                                           	|
+| 27  	| 27      	|                                           	|
+| 31  	| **28**  	| No match, so use a different SUIT station 	|
+| 32  	|         	| We forget this station                    	|
+| 39  	| 39      	|                                           	|
+| 43  	| 43      	|                                           	|
+| 46  	| ** 45** 	| No match, so use a different SUIT station 	|
+| 47  	| 47      	|                                           	|
+
+**For this study, we will use a total of seven stations 19, 27, 31, 39, 43, 46, 47.**
+
+## Kd
+
+- Kd were calculated using vertical profiles made by the ROV at each station. Calculated Kd will be used to propagate pyranomater light using both ROV and SUIT transmittance data.
+
+\begin{figure}
+\includegraphics{graphs/rov_kd.pdf}
+\end{figure}
+
+## Propagating light in the water column
+
+Light will be propagated in the water column using the folowing equation:
+
+\begin{equation}
+\text{edz} = \text{par\_just\_below\_surface\_umol} * e^{(-\text{kd} * \text{depth})} * \text{transmittance\_percent\_ed0}
+\end{equation}
+
+Where $\text{par\_just\_below\_surface\_umol}$ is the irradiance measured by the pyranomater at 0-.
+

@@ -26,6 +26,9 @@ irradiance <- mclapply(files, read_irradiance, mc.cores = ncores) %>%
   bind_rows() %>%
   distinct()
 
+
+# Distance from the ice bottom --------------------------------------------
+
 ## Depth data (for some reasons, the distance to ice bottom are in other files)
 
 files <- list.files("data/raw/Katlein-etal_2016/datasets/", "positioning", full.names = TRUE)
@@ -33,11 +36,23 @@ files <- list.files("data/raw/Katlein-etal_2016/datasets/", "positioning", full.
 depth <- map(files, read_depth) %>%
   bind_rows()
 
+## Data clean up
 depth <- depth %>%
   filter(pitch_deg >= -10 & pitch_deg <= 10) %>%
   filter(roll_deg >= -10 & roll_deg <= 10)
 
-## Interpolate depth to ice bottom
+## Looks like there are some important differences between dist_sea_ice_bottom_m
+## and depth_water_m measures.
+
+# depth %>% 
+#   ggplot(aes(x = date_time)) +
+#   geom_line(aes( y = dist_sea_ice_bottom_m, color = "dist_sea_ice_bottom_m")) +
+#   geom_line(aes(y = depth_water_m, color = "depth_water_m")) +
+#   facet_wrap(~station, scales = "free")
+
+## Interpolate depth to ice bottom. This is done because the time stamp of
+## dist_sea_ice_bottom_m measurements do not match those of the ROV
+## transmittance data.
 
 transmittance <- transmittance %>%
   group_by(filename) %>%
