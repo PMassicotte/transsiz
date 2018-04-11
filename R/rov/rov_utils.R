@@ -40,8 +40,8 @@ read_transmittance <- function(file) {
     mutate(filename = basename(file)) %>%
     mutate(station = stringr::str_extract(filename, "(\\d{3}-\\d+)")) %>%
     mutate(date = as.Date(date_time)) %>%
-    drop_na(transmittance_percent) %>% 
-    mutate(transmittance = transmittance_percent / 100) %>% 
+    drop_na(transmittance_percent) %>%
+    mutate(transmittance = transmittance_percent / 100) %>%
     select(-transmittance_percent)
 
   return(trans)
@@ -85,7 +85,6 @@ read_depth <- function(file) {
 ## Interpolate the distance to ice bottom. For this, we use the data in another file (depth) and interpolate the rov data from this.
 
 interpol_depth <- function(rov, depth) {
-  
   station <- unique(rov$station)
 
   depth <- depth %>%

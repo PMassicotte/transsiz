@@ -33,17 +33,17 @@ stations <- data_frame(
 write_csv(stations, "data/clean/stations.csv")
 
 # # https://www.pangaea.de/expeditions/cr.php/Polarstern
-# 
-# stations <- read_delim("data/raw/PS92.tab", delim = "\t") %>% 
-#   janitor::clean_names(case = "old_janitor") %>% 
-#   filter(device == "Ice station") %>% 
+#
+# stations <- read_delim("data/raw/PS92.tab", delim = "\t") %>%
+#   janitor::clean_names(case = "old_janitor") %>%
+#   filter(device == "Ice station") %>%
 #   select(
 #     station = event_label,
 #     date_time_start = date_time,
 #     latitude_start = latitude,
 #     longitude_start = longitude
-#   ) %>% 
-#   mutate(station = stringr::str_extract(station, "\\d+-\\d*")) %>% 
+#   ) %>%
+#   mutate(station = stringr::str_extract(station, "\\d+-\\d*")) %>%
 #   filter(station %in% c(
 #     "019-6",
 #     "027-2",
@@ -53,26 +53,26 @@ write_csv(stations, "data/clean/stations.csv")
 #     "043-4",
 #     "046-1",
 #     "047-3"
-#   )) %>% 
+#   )) %>%
 #   arrange(station)
-# 
+#
 # stations
-# 
+#
 # write_csv(stations, "data/clean/stations.csv")
 
-# stations <- readxl::read_excel("data/raw/Sampling_Takuvik.xlsx", sheet = 1, skip = 1) %>% 
-#   janitor::clean_names(case = "old_janitor") %>% 
-#   select(station:longitude, action) %>% 
-#   filter(grepl("^ice", action, ignore.case = TRUE)) %>% 
-#   # select(-in_situ_incubations) %>% 
-#   mutate(station = stringr::str_extract(station, "\\d+-\\d*")) %>% 
-#   mutate_at(c("latitude", "longitude"), gsub, pattern = ",", replacement = ".")  %>% 
-#   mutate_at(c("latitude", "longitude"), gsub, pattern = " ", replacement = "") %>%  
-#   mutate_at(c("latitude", "longitude"), gsub, pattern = "°", replacement = " ") %>% 
-#   mutate_at(c("latitude", "longitude"), gsub, pattern = "'E|'N", replacement = "") %>% 
-#   mutate_at(c("latitude", "longitude"), measurements::conv_unit,  "deg_dec_min", "dec_deg") %>% 
-#   mutate_at(c("latitude", "longitude"), parse_number) %>% 
-#   mutate(hour = format(heure, "%H:%M")) %>% 
+# stations <- readxl::read_excel("data/raw/Sampling_Takuvik.xlsx", sheet = 1, skip = 1) %>%
+#   janitor::clean_names(case = "old_janitor") %>%
+#   select(station:longitude, action) %>%
+#   filter(grepl("^ice", action, ignore.case = TRUE)) %>%
+#   # select(-in_situ_incubations) %>%
+#   mutate(station = stringr::str_extract(station, "\\d+-\\d*")) %>%
+#   mutate_at(c("latitude", "longitude"), gsub, pattern = ",", replacement = ".")  %>%
+#   mutate_at(c("latitude", "longitude"), gsub, pattern = " ", replacement = "") %>%
+#   mutate_at(c("latitude", "longitude"), gsub, pattern = "°", replacement = " ") %>%
+#   mutate_at(c("latitude", "longitude"), gsub, pattern = "'E|'N", replacement = "") %>%
+#   mutate_at(c("latitude", "longitude"), measurements::conv_unit,  "deg_dec_min", "dec_deg") %>%
+#   mutate_at(c("latitude", "longitude"), parse_number) %>%
+#   mutate(hour = format(heure, "%H:%M")) %>%
 #   select(-heure)
-# 
+#
 # stations

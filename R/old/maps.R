@@ -6,7 +6,7 @@ stations <- read_feather("data/clean/stations.feather")
 ## Check station positions
 
 ## Pyrano data
-pyrano <- read_feather("data/clean/pyranometer.feather") %>% 
+pyrano <- read_feather("data/clean/pyranometer.feather") %>%
   arrange(date_time)
 
 wm <- rworldmap::getMap()
@@ -26,9 +26,11 @@ p1 <- wm %>%
     aes(x = longitude, y = latitude, color = station),
     inherit.aes = FALSE
   ) +
-  coord_map(xlim = c(6, 22),
-            ylim = c(81, 82.5),
-            projection = "stereo") +
+  coord_map(
+    xlim = c(6, 22),
+    ylim = c(81, 82.5),
+    projection = "stereo"
+  ) +
   ggrepel::geom_text_repel(
     data = stations,
     aes(x = longitude, y = latitude, label = as.character(date)),
@@ -49,7 +51,7 @@ p1 <- wm %>%
   guides(linetype = guide_legend(override.aes = list(size = 1)))
 
 ## C-OPS data
-cops <- read_feather("data/clean/cops.feather") %>% 
+cops <- read_feather("data/clean/cops.feather") %>%
   distinct(station, longitude, latitude)
 
 p1 <- p1 +
@@ -67,9 +69,10 @@ suit <-
   readxl::read_excel("/media/work/Dropbox/TRANSSIZ_2015/SUIT/SUIT_summary.xlsx") %>%
   janitor::clean_names(case = "old_janitor") %>%
   select(station,
-         date_time,
-         longitude = lon,
-         latitude = lat)
+    date_time,
+    longitude = lon,
+    latitude = lat
+  )
 
 p1 <- p1 +
   geom_point(
@@ -98,15 +101,15 @@ ggsave("graphs/stations.pdf", height = 10, width = 10)
 
 ## Ice extent
 
-# ice <- rgdal::readOGR("/home/pmassicotte/Downloads/masie_ice_r00_v01_2015168_1km/", "masie_ice_r00_v01_2015168_1km") %>% 
-#   sp::spTransform("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs") %>% 
+# ice <- rgdal::readOGR("/home/pmassicotte/Downloads/masie_ice_r00_v01_2015168_1km/", "masie_ice_r00_v01_2015168_1km") %>%
+#   sp::spTransform("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs") %>%
 #   fortify()
-# 
+#
 # p1 +
 #   geom_polygon(data = ice, aes(x = long, y = lat, group = group), inherit.aes = FALSE, alpha = 0.5)
-# 
-# 
-# ice %>% 
+#
+#
+# ice %>%
 #   ggplot(aes(x = long, y = lat, group = group)) +
 #   geom_polygon() +
 #   geom_point(data = stations, aes(x = longitude, y = latitude, color = "red"), inherit.aes = FALSE) +

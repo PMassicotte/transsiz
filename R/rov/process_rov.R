@@ -44,7 +44,7 @@ depth <- depth %>%
 ## Looks like there are some important differences between dist_sea_ice_bottom_m
 ## and depth_water_m measures.
 
-# depth %>% 
+# depth %>%
 #   ggplot(aes(x = date_time)) +
 #   geom_line(aes( y = dist_sea_ice_bottom_m, color = "dist_sea_ice_bottom_m")) +
 #   geom_line(aes(y = depth_water_m, color = "depth_water_m")) +

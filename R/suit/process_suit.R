@@ -1,7 +1,7 @@
-# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>  
+# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 # AUTHOR:       Philippe Massicotte
 #
-# DESCRIPTION:  
+# DESCRIPTION:
 #
 # Process and clean up SUIT data.
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
@@ -95,13 +95,13 @@ res <- res %>%
 #   | 46  	| ** 45** 	| No match, so use a different SUIT station 	|
 #   | 47  	| 47      	|                                           	|
 
-res <- res %>% 
-  mutate(station = ifelse(station == 28, 31, station)) %>% 
+res <- res %>%
+  mutate(station = ifelse(station == 28, 31, station)) %>%
   mutate(station = ifelse(station == 45, 46, station))
 
 # Final clean up ----------------------------------------------------------
 
-res <- res %>% 
+res <- res %>%
   filter(dplyr::between(transmittance, 0, 1))
 
 # Save data ---------------------------------------------------------------
@@ -118,7 +118,7 @@ p1 <- res %>%
   labs(title = "Histograms of transmittance measured by the SUIT device") +
   labs(subtitle = sprintf("Total of %d measurements", nrow(res)))
 
-p2 <- res %>% 
+p2 <- res %>%
   ggplot(aes(x = date_time, y = draft_m)) +
   geom_line() +
   geom_point() +

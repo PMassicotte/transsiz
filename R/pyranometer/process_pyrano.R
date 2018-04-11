@@ -17,7 +17,7 @@ pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>%
 
 ## Keep only pyrano data matching the ice stations
 pyrano <- pyrano %>%
-  inner_join(stations, by = "date") %>% 
+  inner_join(stations, by = "date") %>%
   separate(station, into = c("station", "cast"), convert = TRUE)
 
 pyrano %>%

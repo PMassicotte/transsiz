@@ -46,7 +46,7 @@ res <- transmittance %>%
   do(xx = pred_light(.)) %>%
   collect() %>%
   unnest() %>%
-  arrange(id, depth) %>% 
+  arrange(id, depth) %>%
   ungroup()
 
 ## Select only important variables
@@ -60,7 +60,7 @@ p <- res %>%
   ggplot(aes(x = par_z, y = depth, group = id)) +
   geom_path(size = 0.15, alpha = 0.5) +
   scale_y_reverse() +
-  facet_wrap( ~ hour) +
+  facet_wrap(~ hour) +
   labs(title = "Pyranometer PAR propagated in water column between 0-15 meters using ROV transmittance (station 19)") +
   labs(
     subtitle = str_wrap(
