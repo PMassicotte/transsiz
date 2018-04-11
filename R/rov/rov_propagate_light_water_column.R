@@ -24,7 +24,7 @@ transmittance %>%
 par <- read_csv("data/clean/pyranometer.csv")
 
 transmittance <- transmittance %>%
-  left_join(par)
+  left_join(par, by = c("station", "cast"))
 
 ## For each ROV measurement, propagate light between 0 and 100 m
 

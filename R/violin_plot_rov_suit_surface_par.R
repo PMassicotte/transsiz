@@ -1,3 +1,11 @@
+# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+# AUTHOR:       Philippe Massicotte
+#
+# DESCRIPTION:
+#
+# Violin plot of PAR at 0 meter estimated from both ROV and SUIT transmittance.
+# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
 rm(list = ls())
 
 suit <- read_feather("data/clean/suit_propagated_par_water_column.feather") %>%
@@ -12,9 +20,8 @@ df <- bind_rows(suit, rov) %>%
 p <- df %>%
   filter(depth == 0) %>%
   filter(station != 32) %>%
-  drop_na(hour) %>%
   ggplot(aes(x = data_source, y = par_z, fill = data_source)) +
-  geom_violin() +
+  geom_violin(size = 0.25) +
   facet_grid(station ~ hour) +
   scale_y_log10() +
   annotation_logticks(side = "l") +
@@ -23,4 +30,4 @@ p <- df %>%
   theme(legend.title = element_blank()) +
   theme(text = element_text(size = 10))
 
-ggsave("graphs/violin_plot_rov_suit_surface_par.pdf", device = cairo_pdf, width = 20, height = 8)
+ggsave("graphs/violin_plot_rov_suit_surface_par.pdf", device = cairo_pdf, width = 24, height = 8)
