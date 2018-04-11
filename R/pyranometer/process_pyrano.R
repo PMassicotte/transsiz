@@ -17,10 +17,11 @@ pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>%
 
 ## Keep only pyrano data matching the ice stations
 pyrano <- pyrano %>%
-  inner_join(stations, by = "date")
+  inner_join(stations, by = "date") %>% 
+  separate(station, into = c("station", "cast"), convert = TRUE)
 
 pyrano %>%
-  distinct(station, date)
+  distinct(station, cast, date)
 
 # There is a problem with data later than 2015-06-20 20:20:00. Replace these
 # "outliers" with the observations measured at the begining.
@@ -35,10 +36,10 @@ i <- which(pyrano$date_time >= "2015-06-20 20:20:00" & pyrano$date == "2015-06-2
 pyrano$par_just_below_surface_µmol[i] <- pyrano$par_just_below_surface_µmol[pyrano$date == "2015-06-20"][length(i):1]
 # # # pyrano$par_just_below_surface_µmol_ice[i] <- pyrano$par_just_below_surface_µmol_ice[pyrano$date == "2015-06-20"][length(i):1]
 
-pyrano %>%
+p <- pyrano %>%
   ggplot(aes(x = date_time, y = par_just_below_surface_µmol)) +
   geom_line() +
-  facet_wrap(~ date, scales = "free", ncol = 4) +
+  facet_wrap(~ date + paste(station, cast, sep = "-"), scales = "free", ncol = 4) +
   scale_x_datetime(
     date_labels = "%H:%M:%S",
     expand = c(0.2, 0),
@@ -51,20 +52,19 @@ pyrano %>%
 
 ggsave("graphs/pyrano_5min_par.pdf", width = 10, height = 5)
 
-
 # Hourly PAR --------------------------------------------------------------
 
 pyrano <- pyrano %>%
-  group_by(station, date, hour) %>%
+  group_by(station, cast, date, hour) %>%
   nest() %>%
   mutate(par_just_below_surface_µmol = map(data, ~ mean(.$par_just_below_surface_µmol))) %>%
   unnest(par_just_below_surface_µmol)
 
-pyrano %>%
+p <- pyrano %>%
   ggplot(aes(x = hour, y = par_just_below_surface_µmol)) +
   geom_line() +
   geom_point() +
-  facet_wrap(~ date, scales = "free", ncol = 4) +
+  facet_wrap(~ date + paste(station, cast, sep = "-"), scales = "free", ncol = 4) +
   xlab("Time (hour)") +
   labs(
     title = "PAR measured by the pyrano (averaged by hour)",

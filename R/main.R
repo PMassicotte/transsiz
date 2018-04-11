@@ -13,6 +13,7 @@ library(extrafont)
 library(data.table)
 library(sf)
 library(parallel)
+library(multidplyr)
 
 ## Clear the workspace
 rm(list = ls())
@@ -31,28 +32,13 @@ source("R/process_stations.R")
 source("R/process_pyrano.R")
 
 ## ROV
-source("R/process_rov.R")
-source("R/rov_par_kd.R")
+source("R/rov/process_rov.R")
+source("R/rov/rov_par_kd.R")
+source("R/rov/rov_propagate_light_water_column.R")
 
-# source("R/pe_curves.R")
-# source("R/transmittance_christian.R")
-# source("R/kd_christian.R")
-# source("R/pyrano_christian.R")
-# 
-# source("R/primary_production.R")
-# source("R/process_cops.R")
+## SUIT
+source("R/suit/process_suit.R")
+source("R/suit/suit_propagate_light_water_column.R")
 
-## Embed fonts
-files <- list.files("graphs/", full.names = TRUE)
-lapply(files, embed_fonts)
-
-## Create the report
-rmarkdown::render("reports/methods.Rmd")
-
-# source("R/simulate_pe.R")
-# 
-# ## Do the calculation and generate the report
-# ezknitr::ezspin("R/pp.R", out_dir = "reports/", keep_html = FALSE, chunk_opts = list(tidy = FALSE))
-# 
-# ## Publish it on github
-# system("sh ./publish.sh")
+## P vs E curves
+source("R/pe_curves.R")

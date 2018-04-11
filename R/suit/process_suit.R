@@ -1,3 +1,11 @@
+# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>  
+# AUTHOR:       Philippe Massicotte
+#
+# DESCRIPTION:  
+#
+# Process and clean up SUIT data.
+# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
 rm(list = ls())
 
 read_irradiance <- function(file) {
@@ -70,6 +78,33 @@ res <- inner_join(df, station) %>%
 res <- res %>%
   mutate(date_time = date + lubridate::seconds_to_period(time_sec)) %>%
   select(-contains("int_time"))
+
+# Change station ----------------------------------------------------------
+
+## After discussion with Ilka, it was decided to different SUIT stations to
+## match the ROV data when there was not a direct match.
+
+#   | ROV 	| SUIT    	|                                           	|
+#   |-----	|---------	|-------------------------------------------	|
+#   | 19  	| 19      	|                                           	|
+#   | 27  	| 27      	|                                           	|
+#   | 31  	| **28**  	| No match, so use a different SUIT station 	|
+#   | 32  	|         	| We forget this station                    	|
+#   | 39  	| 39      	|                                           	|
+#   | 43  	| 43      	|                                           	|
+#   | 46  	| ** 45** 	| No match, so use a different SUIT station 	|
+#   | 47  	| 47      	|                                           	|
+
+res <- res %>% 
+  mutate(station = ifelse(station == 28, 31, station)) %>% 
+  mutate(station = ifelse(station == 45, 46, station))
+
+# Final clean up ----------------------------------------------------------
+
+res <- res %>% 
+  filter(dplyr::between(transmittance, 0, 1))
+
+# Save data ---------------------------------------------------------------
 
 write_feather(res, "data/clean/suit_transmittance.feather")
 

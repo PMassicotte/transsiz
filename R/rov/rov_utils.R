@@ -85,10 +85,11 @@ read_depth <- function(file) {
 ## Interpolate the distance to ice bottom. For this, we use the data in another file (depth) and interpolate the rov data from this.
 
 interpol_depth <- function(rov, depth) {
+  
   station <- unique(rov$station)
 
   depth <- depth %>%
-    filter(station == station)
+    filter(.$station == !!station)
 
   ## Linear interpolation
   sf <- approxfun(depth$date_time, depth$dist_sea_ice_bottom_m)

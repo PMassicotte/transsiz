@@ -80,7 +80,7 @@ df <- gps[df, roll = "nearest"] %>%
   as.tibble()
 
 df %>%
-  distinct(longitude, latitude, .keep_all = TRUE) %>% 
+  distinct(file_name, .keep_all = TRUE) %>% 
   ggplot(aes(x = longitude, y = latitude)) +
   geom_polygon(data = rworldmap::getMap(resolution = "high"), aes(x = long, y = lat, group = group)) +
   geom_point(aes(color = factor(date))) +
@@ -91,15 +91,18 @@ ggsave("graphs/cops_gps.pdf")
 
 ## Check the time distance
 
-# td <- df %>% 
-#   mutate(date_time_gps = lubridate::ymd_hms(paste(date, hour))) %>% 
-#   mutate(date_diff = date_time - date_time_gps)
-# 
-# td %>% 
-#   ggplot(aes(x = date_diff)) +
-#   geom_histogram(binwidth = 1) +
-#   xlab("Time difference in minutes")
-# 
+td <- df %>%
+  distinct(file_name, .keep_all = TRUE) %>% 
+  mutate(date_time_gps = lubridate::ymd_hms(paste(date, hour))) %>%
+  mutate(date_diff = date_time - date_time_gps)
+
+mean(td$date_diff)
+
+td %>%
+  ggplot(aes(x = date_diff)) +
+  geom_histogram(binwidth = 1) +
+  xlab("Time difference in minutes")
+
 # ggsave("graphs/cops_gps_time_difference.pdf")
 
 ## Associate COPS data with station name
