@@ -93,3 +93,51 @@ Light was propagated in the water column using the folowing equation:
 \end{equation}
 
 Where $\text{par\_just\_below\_surface\_umol}$ is the irradiance measured by the pyranomater at 0-.
+
+## Photosynthetic parameters (PvsE curves)
+
+Photosynthetic parameters have been determined from the P vs E curves obtained according to a method derived from Lewis and Smith (1983) both on water samples taken from the rosette and ice core bottom (last cm, see an example in Fig. \ref{fig:pvse}). Some samples were also collected directly under the ice (UISW). 
+
+\begin{figure}[H]
+\centering
+\includegraphics[page = 57]{graphs/pe_curves.pdf}
+\caption{Example of a fitted PvsE curve.}
+\label{fig:pvse}
+\end{figure}
+
+Two different models based on the original definition proposed by (Platt et al., 1980) were used depending on the situation.
+
+### Model with photoinhibition
+
+When apparent photo-inhibition was present, a model including two exponential was fitted (equation \ref{eq:two_exp}).
+
+\begin{equation}
+p = ps \times (1 - e^{-\alpha \times \frac{light}{ps}}) \times e^{-\beta \times \frac{light}{ps}} + p0
+\label{eq:two_exp}
+\end{equation}
+
+### Model without photoinhibition
+
+When no apparent photo-inhibition was present, a model including only one exponential was fitted (equation \ref{eq:one_exp}).
+
+\begin{equation}
+p = ps \times (1 - e^{-\alpha \times \frac{light}{ps}}) + p0
+\label{eq:one_exp}
+\end{equation}
+
+Finally, photosynthetic parameters have been interpolated between 0 and 15 m at 1 m increment.
+
+\begin{figure}[H]
+\includegraphics{graphs/pvse_propagated_parameters.pdf}
+\caption{Propagated PvsE parameters in the water column.}
+\label{fig:pvse_params}
+\end{figure}
+
+## Primary production
+
+Daily primary production at each depth at each hour was calculated using equation \ref{eq:pp}.
+
+\begin{equation}
+p = ps \times (1 - e^{-\alpha \times \frac{light}{ps}})
+\label{eq:pp}
+\end{equation}
