@@ -41,4 +41,9 @@ source("R/suit/process_suit.R")
 source("R/suit/suit_propagate_light_water_column.R")
 
 ## P vs E curves
-source("R/pe_curves.R")
+source("R/pvse_curves.R")
+source("R/pvse_propagate_parameters.R")
+
+# Primary production ------------------------------------------------------
+
+source("R/primary_production_from_suit_rov_transmittance.R")
