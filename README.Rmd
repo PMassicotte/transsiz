@@ -1,10 +1,10 @@
 ---
 title: "Transsiz primary production"
 output: 
-  md_document: default
-  pdf_document:
-  latex_engine: xelatex
-  sansfont: Open Sans
+      md_document: default
+      pdf_document: default
+      latex_engine: xelatex
+      sansfont: Open Sans
 header-includes:
 - \usepackage{graphicx}
 - \usepackage{float}
@@ -51,6 +51,10 @@ pyrano %>%
 - Ice thickness was estimated as: *ice_thickness = depth_water_m - dist_sea_ice_bottom_m*
 - Using each transmittance measurement, PAR0- (measured by the pyranometer) was propagated in the water column. 
 
+\begin{figure}[H]
+\includegraphics{graphs/rov_transmittance_histogram.pdf}
+\end{figure}
+
 ## SUIT data
 
 - Transmittance files used: `Ir_Dist_draft01_b.dat`.
@@ -58,6 +62,10 @@ pyrano %>%
 - Only haul number was specified in transmittance files. Station id was matched with the file `Summary_file_PS92.txt`.
 - Lat/long were extracted in files like `Lat_lon_01.dat` where the last part of the file name reflects the haul number.
 - Using each transmittance measurement, PAR0- (measured by the pyranometer) was propagated in the water column. 
+
+\begin{figure}[H]
+\includegraphics{graphs/suit_transmittance_histogram.pdf}
+\end{figure}
 
 ## Matching SUIT and ROV transmittance data
 
@@ -71,7 +79,7 @@ There was some ROV stations without matching SUIT measurements. After discussion
 | 32  	|         	| We forget this station                    	|
 | 39  	| 39      	|                                           	|
 | 43  	| 43      	|                                           	|
-| 46  	| ** 45** 	| No match, so use a different SUIT station 	|
+| 46  	| **45**  	| No match, so use a different SUIT station 	|
 | 47  	| 47      	|                                           	|
 
 **For this study, we will use a total of seven stations 19, 27, 31, 39, 43, 46, 47.**

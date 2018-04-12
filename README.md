@@ -90,7 +90,7 @@ discussions, we came up with this table that links stations together.
 </tr>
 <tr class="odd">
 <td>46</td>
-<td>** 45**</td>
+<td><strong>45</strong></td>
 <td>No match, so use a different SUIT station</td>
 </tr>
 <tr class="even">
