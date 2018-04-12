@@ -5,7 +5,7 @@
 Transsiz
 ========
 
-This simple repport give an overview of the data and procedures used to
+This simple report give an overview of the data and procedures used to
 estimate daily primary production. Primary production was calculated
 using PAR data from the pyranometer and light transmittance measured by:
 
@@ -115,7 +115,7 @@ Propagating light in the water column
 -------------------------------------
 
 With both ROV and SUIT transmittance estimated just under the ice, PAR0-
-was propagated in the water column using the folowing equation:
+was propagated in the water column using the flowing equation:
 
 Where par\_just\_below\_surface\_umol is the irradiance measured by the
 pyranomater at 0-.
