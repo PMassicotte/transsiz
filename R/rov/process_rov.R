@@ -92,8 +92,8 @@ ggsave("graphs/rov_transmittance_position.pdf", p1)
 p2 <- transmittance %>%
   ggplot(aes(x = transmittance)) +
   geom_histogram() +
-  facet_wrap(~ station, scales = "free") +
-  scale_x_log10(label = scales::percent) +
+  facet_wrap(~ station) +
+  scale_x_continuous(labels = scales::percent) +
   annotation_logticks(sides = "b") +
   labs(title = "Histograms of transmittance measured by the ROV") +
   labs(subtitle = sprintf("Total of %d measurements", nrow(transmittance)))

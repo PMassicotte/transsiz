@@ -30,9 +30,10 @@ transmittance <- transmittance %>%
 
 pred_light <- function(df) {
   depth <- 0:15
-  par_z <- with(df, par_just_below_surface_µmol * exp(-kd * depth) * transmittance_ed0)
-
-  return(data.frame(depth, par_z))
+  par_z_variable_transmittance <- with(df, par_just_below_surface_µmol * exp(-kd * depth) * transmittance_ed0)
+  par_z_100_percent_transmittance <- with(df, par_just_below_surface_µmol * exp(-kd * depth) * 1)
+  
+  return(data.frame(depth, par_z_variable_transmittance, par_z_100_percent_transmittance))
 }
 
 cl <- create_cluster(detectCores() - 1)
@@ -51,13 +52,22 @@ res <- transmittance %>%
 
 ## Select only important variables
 res <- res <- inner_join(res, transmittance) %>%
-  select(id, date_time, station, par_just_below_surface_µmol, depth, hour, par_z)
+  select(
+    id,
+    date_time,
+    station,
+    par_just_below_surface_µmol,
+    depth,
+    hour,
+    par_z_variable_transmittance,
+    par_z_100_percent_transmittance
+  )
 
 # Have a look to some data ------------------------------------------------
 
 p <- res %>%
   filter(station == 19) %>%
-  ggplot(aes(x = par_z, y = depth, group = id)) +
+  ggplot(aes(x = par_z_variable_transmittance, y = depth, group = id)) +
   geom_path(size = 0.15, alpha = 0.5) +
   scale_y_reverse() +
   facet_wrap(~ hour) +

@@ -113,7 +113,7 @@ write_feather(res, "data/clean/suit_transmittance.feather")
 p1 <- res %>%
   ggplot(aes(x = transmittance)) +
   geom_histogram() +
-  facet_wrap(~ station, scales = "free") +
+  facet_wrap(~ station, scales = "free_y") +
   scale_x_continuous(labels = scales::percent) +
   labs(title = "Histograms of transmittance measured by the SUIT device") +
   labs(subtitle = sprintf("Total of %d measurements", nrow(res)))
