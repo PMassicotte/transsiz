@@ -6,8 +6,9 @@ kd <- read_csv("data/clean/rov_kd.csv") %>%
 
 transmittance <- read_feather("data/clean/rov_transmittance.feather") %>%
   inner_join(kd, by = c("station", "cast")) %>%
-  filter(dist_sea_ice_bottom_m <= 3) ## The model is not good at predicting at higher depth
+  filter(dist_sea_ice_bottom_m <= 3) ## The model is not good at predicting at higher depth, paper from Christian
 
+  
 ## Predict transmittance just bellow ice
 transmittance <- transmittance %>%
   mutate(transmittance_ed0 = transmittance / (exp(-kd * (0 - dist_sea_ice_bottom_m))))
@@ -29,10 +30,11 @@ transmittance <- transmittance %>%
 ## For each ROV measurement, propagate light between 0 and 100 m
 
 pred_light <- function(df) {
-  depth <- 0:15
-  par_z <- with(df, par_just_below_surface_µmol * exp(-kd * depth) * transmittance_ed0)
-
-  return(data.frame(depth, par_z))
+  depth <- 0:40
+  par_z_variable_transmittance <- with(df, par_just_below_surface_µmol * exp(-kd * depth) * transmittance_ed0)
+  par_z_100_percent_transmittance <- with(df, par_just_below_surface_µmol * exp(-kd * depth) * 1)
+  
+  return(data.frame(depth, par_z_variable_transmittance, par_z_100_percent_transmittance))
 }
 
 cl <- create_cluster(detectCores() - 1)
@@ -51,13 +53,26 @@ res <- transmittance %>%
 
 ## Select only important variables
 res <- res <- inner_join(res, transmittance) %>%
-  select(id, filename, date_time, station, cast, transmittance, par_just_below_surface_µmol, depth, hour, par_z)
+  select(
+    id,
+    filename,
+    date_time,
+    station,
+    cast,
+    transmittance,
+    par_just_below_surface_µmol,
+    depth,
+    hour,
+    par_z_variable_transmittance,
+    par_z_100_percent_transmittance,
+    transmittance_ed0
+  )
 
 # Have a look to some data ------------------------------------------------
 
 p <- res %>%
   filter(station == 19) %>%
-  ggplot(aes(x = par_z, y = depth, group = id)) +
+  ggplot(aes(x = par_z_variable_transmittance, y = depth, group = id)) +
   geom_path(size = 0.15, alpha = 0.5) +
   scale_y_reverse() +
   facet_wrap(~ hour) +

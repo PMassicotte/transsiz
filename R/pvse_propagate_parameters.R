@@ -42,7 +42,7 @@ pvse <- pvse %>%
   group_by(station, cast) %>%
   nest() %>%
   mutate(pred = map(data, function(df) {
-    depth <- seq(0, 15, by = 1)
+    depth <- seq(0, 40, by = 1)
 
     af <- approxfun(df$depth, df$ps)
     ps <- af(depth)

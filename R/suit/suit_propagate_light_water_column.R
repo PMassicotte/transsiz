@@ -29,7 +29,7 @@ transmittance <- transmittance %>%
 ## For each SUIT measurement, propagate light between 0 and 100 m
 
 pred_light <- function(df) {
-  depth <- 0:15
+  depth <- 0:40
   par_z_variable_transmittance <- with(df, par_just_below_surface_µmol * exp(-kd * depth) * transmittance_ed0)
   par_z_100_percent_transmittance <- with(df, par_just_below_surface_µmol * exp(-kd * depth) * 1)
   
@@ -60,7 +60,8 @@ res <- res <- inner_join(res, transmittance) %>%
     depth,
     hour,
     par_z_variable_transmittance,
-    par_z_100_percent_transmittance
+    par_z_100_percent_transmittance,
+    transmittance_ed0
   )
 
 # Have a look to some data ------------------------------------------------

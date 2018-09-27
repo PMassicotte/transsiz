@@ -14,7 +14,7 @@ ncores <- detectCores() - 1
 
 files <- list.files("data/raw/Katlein-etal_2016/datasets/", "rovT_irrad", full.names = TRUE)
 
-transmittance <- mclapply(files, read_transmittance, mc.cores = ncores) %>%
+transmittance <- pbmclapply(files, read_transmittance, mc.cores = ncores) %>%
   bind_rows() %>%
   distinct()
 
@@ -22,7 +22,7 @@ transmittance <- mclapply(files, read_transmittance, mc.cores = ncores) %>%
 
 files <- list.files("data/raw/Katlein-etal_2016/datasets/", "rov_irrad", full.names = TRUE)
 
-irradiance <- mclapply(files, read_irradiance, mc.cores = ncores) %>%
+irradiance <- pbmclapply(files, read_irradiance, mc.cores = ncores) %>%
   bind_rows() %>%
   distinct()
 
@@ -92,8 +92,9 @@ ggsave("graphs/rov_transmittance_position.pdf", p1)
 p2 <- transmittance %>%
   ggplot(aes(x = transmittance)) +
   geom_histogram() +
-  facet_wrap(~ station) +
-  scale_x_continuous(labels = scales::percent) +
+  facet_wrap(~ station, scales = "free_y") +
+  scale_x_log10(labels = scales::comma) +
+  # scale_x_continuous(labels = scales::percent) +
   annotation_logticks(sides = "b") +
   labs(title = "Histograms of transmittance measured by the ROV") +
   labs(subtitle = sprintf("Total of %d measurements", nrow(transmittance)))

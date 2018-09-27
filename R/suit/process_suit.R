@@ -43,6 +43,31 @@ radiance <- map(radiance_files, read_radiance) %>%
 
 df <- full_join(irradiance, radiance, by = c("time_sec", "dist_m", "draft_m", "haul"))
 
+
+# Cleanup bad data --------------------------------------------------------
+
+## Check the influence of inclination. Giulia Castellani told me to use inclx
+## and incly instead of pitch and roll.
+res <- map2(rep(0, 10), seq(5, 60, length.out = 10), function(lb, up, df) {
+
+  res <- df %>%
+    filter(between(abs(inclx_deg), lb, up) & between(abs(incly_deg), lb, up)) %>% 
+    mutate(lb = lb, up = up)
+
+  # range(res$inclx_deg)
+
+}, df = df) %>% 
+  bind_rows()
+
+res %>% 
+  ggplot(aes(x = transmittance)) +
+  geom_histogram() +
+  facet_wrap(~lb + up)
+
+## Based on email discussions with Giulia, we choose 15 degrees. This is th
+df <- df %>%
+  filter(between(abs(inclx_deg), 0, 15) & between(abs(incly_deg), 0, 15))
+
 # Geographic positions ----------------------------------------------------
 
 files <- list.files("data/raw/suit/Lat_lon/", full.names = TRUE)
@@ -114,7 +139,9 @@ p1 <- res %>%
   ggplot(aes(x = transmittance)) +
   geom_histogram() +
   facet_wrap(~ station, scales = "free_y") +
-  scale_x_continuous(labels = scales::percent) +
+  scale_x_log10() +
+  # scale_x_continuous(labels = scales::percent) +
+  annotation_logticks(sides = "b") +
   labs(title = "Histograms of transmittance measured by the SUIT device") +
   labs(subtitle = sprintf("Total of %d measurements", nrow(res)))
 

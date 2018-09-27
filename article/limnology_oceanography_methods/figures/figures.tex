@@ -1,0 +1,101 @@
+\documentclass[12pt,a4paper]{scrartcl}
+    \usepackage[utf8]{inputenc}
+    \usepackage{amsmath}
+    \usepackage{amsfonts}
+    \usepackage{amssymb}
+    \usepackage{graphicx}
+
+    \usepackage[bottom = 1in, left = 0.5in, right = 0.5in, top = 1in]{geometry}
+
+    \usepackage[english]{babel}
+    \usepackage[autostyle]{csquotes}
+    \usepackage{mathptmx}
+
+    \usepackage[labelfont=bf]{caption}
+
+    \usepackage[default, scale=0.95]{opensans}
+
+    \usepackage[T1]{fontenc}
+
+    \usepackage{fixltx2e}
+
+    % \addto\captionsenglish{\renewcommand{\figurename}{Supplementary Fig.}}
+    % \addto\captionsenglish{\renewcommand{\tablename}{Supplementary Table}}
+
+    \title{Figures}
+    \date{}
+
+\begin{document}
+\maketitle
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale = 1]{../../../graphs/fig1.pdf}
+	\caption{Density plots showing the distribution of transmittance values measured by the ROV and the SUIT devices between 0-3 meters under sea ice. Numbers on top of the gray boxes identify the stations.}
+\end{figure}
+
+\clearpage
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale = 1]{../../../graphs/fig1b.pdf}
+	\caption{Boxplots, just an idea for the moment.}
+\end{figure}
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{lrrrrr}
+		\hline
+		          & Df   & Sum Sq  & Mean Sq & F value & Pr($>$F) \\
+		\hline
+		.\$source & 1    & 3965.49 & 3965.49 & 2307.06 & 0.0000   \\
+		Residuals & 1720 & 2956.43 & 1.72    &         &          \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\clearpage
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale = 1]{../../../graphs/fig2.pdf}
+	\caption{Violin plots of primary production calculated from ROV and SUIT transmittance data. For SUIT data, mixing models were calculated using only transmittance $\le$ 0.1 whereas the under ice models were calculated using all transmittance data.	The next table shows the SIC values used for the mixing models.}
+\end{figure}
+
+% latex table generated in R 3.5.1 by xtable 1.8-2 package
+% Tue Aug 14 09:36:37 2018
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\begin{tabular}{rrrr}
+		\hline
+		  & station & cast & sic\_9 \\
+		\hline
+		1 & 19      & 5    & 0.71   \\
+		2 & 27      & 3    & 0.96   \\
+		3 & 31      & 3    & 0.97   \\
+		4 & 32      & 5    & 0.98   \\
+		5 & 39      & 8    & 0.99   \\
+		6 & 43      & 5    & 1.00   \\
+		7 & 46      & 2    & 1.00   \\
+		8 & 47      & 4    & 1.00   \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\clearpage
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale = 1]{../../../graphs/fig3.pdf}
+	\caption{Vertical profiles of daily primary production. For SUIT data, mixing models were calculated using only transmittance $\le$ 0.1 whereas the under ice models were calculated using all transmittance data.}
+\end{figure}
+
+\clearpage
+\newpage
+
+
+\end{document}

@@ -14,6 +14,9 @@ library(data.table)
 library(sf)
 library(parallel)
 library(multidplyr)
+library(pbmcapply)
+library(readxl)
+
 
 ## Clear the workspace
 rm(list = ls())
@@ -29,7 +32,7 @@ theme_set(theme_bw(base_size = 12, base_family = "IBM Plex Sans"))
 source("R/process_stations.R")
 
 ## Pyranometer
-source("R/process_pyrano.R")
+source("R/pyranometer/process_pyrano.R")
 
 ## ROV
 source("R/rov/process_rov.R")
@@ -47,3 +50,10 @@ source("R/pvse_propagate_parameters.R")
 # Primary production ------------------------------------------------------
 
 source("R/primary_production_from_suit_rov_transmittance.R")
+
+# Appendix ----------------------------------------------------------------
+
+source("R/appendix_1.R")
+source("R/appendix_2.R")
+source("R/appendix_3.R")
+source("R/appendix_4.R")
