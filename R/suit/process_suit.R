@@ -8,65 +8,22 @@
 
 rm(list = ls())
 
-read_irradiance <- function(file) {
+df <- read_csv("data/raw/suit/PS92_all_irrad.csv") %>%
+  janitor::clean_names() %>%
+  rename(station = stn) %>% 
+  mutate(station = as.character(station)) %>%
+  mutate(station = substr(station, 1, 2)) %>% 
+  mutate(station = parse_number(station)) %>% 
+  rename(dist_m = dist) %>% 
+  rename(draft_m = draft)
 
-  # file <- "data/raw/suit/Irra_Rad_profiles/Ir_Dist_draft01_b.dat"
-
-  df <- read_table2(file) %>%
-    janitor::clean_names() %>%
-    mutate(haul = str_match(file, "draft(\\d+)")[2]) %>%
-    mutate(haul = parse_number(haul))
-
-  return(df)
-}
-
-read_radiance <- function(file) {
-  # file <- "data/raw/suit/Irra_Rad_profiles/Rad_Dist_draft01.dat"
-
-  df <- read.table(file) %>%
-    janitor::clean_names() %>%
-    mutate(haul = str_match(file, "draft(\\d+)")[2]) %>%
-    mutate(haul = parse_number(haul)) %>%
-    as_tibble()
-
-  return(df)
-}
-
-irradiance_files <- list.files("data/raw/suit/Irra_Rad_profiles/", pattern = "^ir", ignore.case = TRUE, full.names = TRUE)
-radiance_files <- list.files("data/raw/suit/Irra_Rad_profiles/", pattern = "^rad", ignore.case = TRUE, full.names = TRUE)
-
-irradiance <- map(irradiance_files, read_irradiance) %>%
-  bind_rows()
-
-radiance <- map(radiance_files, read_radiance) %>%
-  bind_rows()
-
-df <- full_join(irradiance, radiance, by = c("time_sec", "dist_m", "draft_m", "haul"))
-
+df
 
 # Cleanup bad data --------------------------------------------------------
 
-## Check the influence of inclination. Giulia Castellani told me to use inclx
-## and incly instead of pitch and roll.
-res <- map2(rep(0, 10), seq(5, 60, length.out = 10), function(lb, up, df) {
-
-  res <- df %>%
-    filter(between(abs(inclx_deg), lb, up) & between(abs(incly_deg), lb, up)) %>% 
-    mutate(lb = lb, up = up)
-
-  # range(res$inclx_deg)
-
-}, df = df) %>% 
-  bind_rows()
-
-res %>% 
-  ggplot(aes(x = transmittance)) +
-  geom_histogram() +
-  facet_wrap(~lb + up)
-
 ## Based on email discussions with Giulia, we choose 15 degrees. This is th
 df <- df %>%
-  filter(between(abs(inclx_deg), 0, 15) & between(abs(incly_deg), 0, 15))
+  filter(between(abs(incl_x_deg), 0, 15) & between(abs(incl_y_deg), 0, 15))
 
 # Geographic positions ----------------------------------------------------
 
@@ -83,26 +40,19 @@ read_latlon <- function(file) {
 }
 
 latlon <- map(files, read_latlon) %>%
-  bind_rows()
-
-# Associate haul number to station id -------------------------------------
-
-station <- read_table2("data/raw/suit/Summary_file_PS92.txt") %>%
-  select(station = stn, haul, date = date_time) %>%
-  mutate(date = (lubridate::parse_date_time(date, order = "mdY", tz = "UTC"))) %>%
-  mutate(haul = parse_number(haul)) %>%
-  separate(station, into = c("station", "cast"), sep = 2, convert = TRUE)
-
-station
+  bind_rows() 
 
 # Merge -------------------------------------------------------------------
 
-res <- inner_join(df, station) %>%
-  inner_join(latlon)
+## Need a rolling join because the dist_m is not exactly the same
 
-res <- res %>%
-  mutate(date_time = date + lubridate::seconds_to_period(time_sec)) %>%
-  select(-contains("int_time"))
+# https://stackoverflow.com/questions/33438082/join-two-dataframes-with-the-closest-date-and-exact-string
+# You have to make sure that the Date is the last key in both tables 
+setkey(setDT(df), haul, dist_m)
+setkey(setDT(latlon), haul, dist_m)
+
+res <- latlon[df, roll = "nearest"] %>% 
+  as_tibble()
 
 # Change station ----------------------------------------------------------
 
@@ -123,6 +73,9 @@ res <- res %>%
 res <- res %>%
   mutate(station = ifelse(station == 28, 31, station)) %>%
   mutate(station = ifelse(station == 45, 46, station))
+
+res <- res %>% 
+  filter(station %in% c(19, 27, 31, 32, 39, 43, 46, 47))
 
 # Final clean up ----------------------------------------------------------
 
@@ -146,7 +99,7 @@ p1 <- res %>%
   labs(subtitle = sprintf("Total of %d measurements", nrow(res)))
 
 p2 <- res %>%
-  ggplot(aes(x = date_time, y = draft_m)) +
+  ggplot(aes(x = time_sec, y = draft_m)) +
   geom_line() +
   geom_point() +
   facet_wrap(~ station, scales = "free") +

@@ -90,7 +90,7 @@ res <- res %>%
 # Remove non-needed data --------------------------------------------------
 
 df <- res %>% 
-  gather(pp_source, pp, starts_with("daily"))
+  tidyr::gather(pp_source, pp, starts_with("daily"))
 
 ## For the SUIT data, we only want to keep:
 ## 1) the mixing model made with transmittance <= 0.1

@@ -51,10 +51,10 @@ res <- transmittance %>%
   ungroup()
 
 ## Select only important variables
-res <- res <- inner_join(res, transmittance) %>%
+res <- inner_join(res, transmittance) %>%
   select(
     id,
-    date_time,
+    time_sec,
     station,
     par_just_below_surface_µmol,
     depth,
