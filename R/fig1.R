@@ -1,22 +1,29 @@
 rm(list = ls())
 
-rov_transmittance <- read_feather("data/clean/rov_transmittance.feather") %>% 
-  select(transmittance, station, depth_water_m) %>% 
-  mutate(source = "rov")
+rov_transmittance <- read_feather("data/clean/rov_propagated_par_water_column.feather") %>% 
+  filter(depth == 0 & hour == 0) %>% 
+  select(station, depth, transmittance_ed0) %>% 
+  mutate(source = "rov") 
+  
 
-suit_transmittance <- read_feather("data/clean/suit_transmittance.feather") %>% 
-  select(transmittance, station, depth_water_m = draft_m) %>% 
+suit_transmittance <- read_feather("data/clean/suit_propagated_par_water_column.feather") %>% 
+  filter(depth == 0 & hour == 0) %>% 
+  select(station, depth, transmittance_ed0) %>% 
   mutate(source = "suit")
 
 df <- bind_rows(rov_transmittance, suit_transmittance) %>% 
-  filter(station %in% c(19, 27, 31, 39, 43, 46, 47)) %>% 
-  filter(depth_water_m <= 3)
+  filter(station %in% c(19, 27, 31, 39, 43, 46, 47)) 
+
+plain <- function(x,...) {
+  format(x * 100, ..., scientific = FALSE, drop0trailing = TRUE) %>% 
+    paste0("%")
+}
 
 p <- df %>% 
   mutate(source = str_to_title(source)) %>% 
-  ggplot(aes(x = transmittance, fill = source, color = source)) +
+  ggplot(aes(x = transmittance_ed0, fill = source, color = source)) +
   geom_density(alpha = 0.5) +
-  scale_x_log10(labels = function(x) x * 100) +
+  scale_x_log10(labels = plain) +
   annotation_logticks(sides = "b", size = 0.25) +
   scale_y_continuous() +
   facet_wrap(~station, scales = "free_y") +
