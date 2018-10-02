@@ -26,3 +26,42 @@ ggsave("graphs/appendix_3.pdf", device = cairo_pdf, width = 8.7 * 0.75, height =
 ## How many profils at station 19?
 df %>% 
   count(station, hour, depth)
+
+# Stats -------------------------------------------------------------------
+
+
+rov <- read_feather("data/clean/rov_propagated_par_water_column.feather") %>% 
+  mutate(source = "rov")
+
+suit <- read_feather("data/clean/suit_propagated_par_water_column.feather") %>% 
+  mutate(source = "suit")
+
+df <- bind_rows(rov, suit) %>% 
+  filter(depth == 0)
+
+df %>% 
+  group_by(source) %>% 
+  summarise(min(par_z_variable_transmittance),
+            max(par_z_variable_transmittance))
+
+
+# Visualize PAR -----------------------------------------------------------
+
+
+rov <- read_feather("data/clean/rov_propagated_par_water_column.feather") %>% 
+  mutate(source = "rov")
+
+suit <- read_feather("data/clean/suit_propagated_par_water_column.feather") %>% 
+  mutate(source = "suit")
+
+df <- bind_rows(rov, suit) 
+
+df <- df %>% 
+  group_by(source, station, depth, hour) %>% 
+  summarise(par_z_variable_transmittance = mean(par_z_variable_transmittance))
+
+df %>% 
+  ggplot(aes(x = par_z_variable_transmittance, y = depth, color = factor(hour))) +
+  geom_line() +
+  scale_y_reverse() +
+  facet_grid(station ~ source, scales = "free")

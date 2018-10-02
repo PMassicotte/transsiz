@@ -30,9 +30,8 @@ p <- df %>%
   xlab("Transmittance (%)") +
   ylab("Density") +
   labs(fill = "Device") +
-  labs(color = "Device")
-  # theme(legend.justification = c(0, 0)) +
-  # theme(legend.position = c(0.4, 0.05))
+  labs(color = "Device") +
+  geom_vline(xintercept = 0.1, lty = 2)
 
 ggsave("graphs/fig1.pdf", device = cairo_pdf, width = 7, height = 6.22 * 0.75)
 
@@ -41,7 +40,7 @@ ggsave("graphs/fig1.pdf", device = cairo_pdf, width = 7, height = 6.22 * 0.75)
 
 df %>% 
   mutate(source = str_to_title(source)) %>% 
-  ggplot(aes(x = source, y = transmittance)) +
+  ggplot(aes(x = source, y = transmittance_ed0)) +
   geom_boxplot(size = 0.25, outlier.size = 0.5) +
   facet_wrap(~station) +
   scale_y_log10(labels = function(x) x * 100) +
@@ -52,9 +51,35 @@ df %>%
 ggsave("graphs/fig1b.pdf", device = cairo_pdf, width = 7, height = 6.22 * 0.75)
 
 mod <- df %>% 
-  filter(transmittance > 0) %>% 
+  filter(transmittance_ed0 > 0) %>% 
   group_by(station) %>% 
   nest() %>% 
-  mutate(mod = map(data, ~aov(log(.$transmittance) ~ .$source))) %>% 
+  mutate(mod = map(data, ~aov(log(.$transmittance_ed0) ~ .$source))) %>% 
   mutate(res = map(mod, summary)) 
 
+# Stats for the paper -----------------------------------------------------
+
+df %>%
+  mutate(station = as.integer(station)) %>%
+  group_by(station, device = source) %>%
+  summarise(
+    min_transmittance = min(transmittance_ed0),
+    max_transmittance = max(transmittance_ed0),
+    mean_transmittance = mean(transmittance_ed0),
+    n_obs = n()
+  ) %>%
+  xtable::xtable(digits = 3, caption = "Descriptive statistics.") %>%
+  print(file = "article/limnology_oceanography_methods/tables/table1.tex")
+
+df %>% 
+  count(source)
+
+df %>%
+  mutate(station = as.integer(station)) %>%
+  group_by(device = source) %>%
+  summarise(
+    min_transmittance = min(transmittance_ed0),
+    max_transmittance = max(transmittance_ed0),
+    mean_transmittance = mean(transmittance_ed0),
+    n_obs = n()
+  )

@@ -29,6 +29,16 @@ station <- readxl::read_excel("data/raw/station_cast_date_pvse.xls") %>%
 pvse <- pvse %>% 
   left_join(station, by = "date")
 
+## Export parameters for the paper
+pvse %>%
+  select(station, depth, ps, alpha) %>%
+  filter(station %in% c(19, 27, 31, 39, 43, 46, 47)) %>% 
+  xtable::xtable(digits = 3, caption = "Estimated photosynhtetic parameters at each station.") %>%
+  print(file = "article/limnology_oceanography_methods/tables/supplementary_table_pvse.tex",
+        tabular.environment = "longtable",
+        floating = FALSE,
+        include.rownames = FALSE)
+
 ## Complete to add depth = 0 meter
 
 pvse <- pvse %>%
@@ -36,7 +46,7 @@ pvse <- pvse %>%
   complete(depth = c(0, unique(depth))) %>%
   fill(date, ps, alpha, .direction = "up")
 
-## Interpolate PvsE parameters in the water column betwen 0-15m at 1m increment.
+## Interpolate PvsE parameters in the water column betwen 0-40m at 1m increment.
 
 pvse <- pvse %>%
   group_by(station, cast) %>%

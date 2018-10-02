@@ -8,16 +8,6 @@
 
 rm(list = ls())
 
-geomean <- function(x, na.rm = FALSE, trim = 0, ...)
-{
-  exp(mean(log(x, ...), na.rm = na.rm, trim = trim, ...))
-}
-
-geosd <- function(x, na.rm = FALSE, ...)
-{
-  exp(sd(log(x, ...), na.rm = na.rm, ...))
-}
-
 # PAR data ----------------------------------------------------------------
 
 ## Read PAR derived from both SUIT and ROV devices
@@ -57,32 +47,25 @@ df <- df %>%
   left_join(pvse, by = c("station", "depth")) %>% 
   select(-contains("cast"))
 
-## Daily integration
-# df %>%
-#   mutate(pp_under_ice = ps * (1 - exp(-alpha * par_z_variable_transmittance / ps))) %>%
-#   mutate(pp_open_water = ps * (1 - exp(-alpha * par_z_100_percent_transmittance / ps))) %>%
-#   group_by(data_source, station, depth) %>%
-#   nest() %>%
-#   mutate(depth_integrated_pp_under_ice = map_dbl(data, ~pracma::trapz(.$hour, .$pp_under_ice))) %>%
-#   mutate(depth_integrated_pp_open_water = map_dbl(data, ~pracma::trapz(.$hour, .$pp_open_water)))
+df <- df %>% 
+  group_by(data_source, station, depth) %>% 
+  nest() %>% 
+  mutate(id = map(data, function(x) { # Create an id that represents every profiles
+    
+    x %>% 
+      mutate(id = rep(1:(nrow(.) / 24), each = 24))
+    
+  })) %>% 
+  unnest(id)
 
-## Daily integration at each depth
+## Daily integration
 res <- df %>%
-  filter(station %in% c(19, 27, 31, 39, 43, 46, 47)) %>%
   mutate(pp_under_ice = ps * (1 - exp(-alpha * par_z_variable_transmittance / ps))) %>%
   mutate(pp_open_water = ps * (1 - exp(-alpha * par_z_100_percent_transmittance / ps))) %>%
-  group_by(data_source, station, depth, hour) %>%
-  summarise(
-    mean_pp_under_ice = mean(pp_under_ice),
-    mean_pp_open_water = mean(pp_open_water),
-    sd_pp_under_ice = sd(pp_under_ice)
-  ) %>% 
-  group_by(data_source, station, depth) %>% 
-  summarise(
-    pp_under_ice = pracma::trapz(hour, mean_pp_under_ice),
-    pp_open_water = pracma::trapz(hour, mean_pp_open_water)
-  ) %>%
-  ungroup()
+  group_by(data_source, station, id, depth) %>%
+  nest() %>%
+  mutate(pp_under_ice = map_dbl(data, ~pracma::trapz(.$hour, .$pp_under_ice))) %>%
+  mutate(pp_open_water = map_dbl(data, ~pracma::trapz(.$hour, .$pp_open_water)))
 
 res
 
@@ -113,32 +96,13 @@ df <- df %>%
   filter(!(data_source == "suit_no_lead" & pp_source == "pp_under_ice")) %>% 
   mutate(data_source = if_else(str_detect(data_source, "suit"), "suit", data_source))
 
-# In-situ PP (Jean-Eric) --------------------------------------------------
-
-# jet <-
-#   read_excel(
-#     "data/raw/TRANSSIZ_PP.xlsx",
-#     col_names = c("station", "ctd", "depth", "data_source", "pp"),
-#     range = cell_limits(c(3,1), c(NA, 5))
-#   ) %>% 
-#   mutate(data_source = str_to_lower(data_source)) %>% 
-#   filter(data_source == "in situ") %>% 
-#   select(station, depth, data_source, pp) %>% 
-#   mutate(pp_source = "in situ") %>% 
-#   filter(station %in% c(19, 27, 31, 39, 43, 46, 47)) 
-# 
-# jet
-# 
-# res <- bind_rows(df, jet)
-
-
 # Plot --------------------------------------------------------------------
 
 df %>% 
-  ggplot(aes(x = pp, y = depth, color = interaction(pp_source, data_source))) +
+  ggplot(aes(x = pp, y = depth, color = interaction(pp_source, data_source), group = interaction(data_source, station, id, pp_source))) +
   geom_path() +
   scale_y_reverse() +
-  facet_wrap(~station, scales = "free") +
+  facet_grid(pp_source~station, scales = "free") +
   xlab(bquote("Primary production" ~(mgC%*%m^{-3}%*%d^{-1}))) +
   ylab("Depth (m)") +
   theme(legend.title = element_blank())

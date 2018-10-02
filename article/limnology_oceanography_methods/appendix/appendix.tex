@@ -3,7 +3,8 @@
     \usepackage{amsmath}
     \usepackage{amsfonts}
     \usepackage{amssymb}
-    \usepackage{graphicx}
+	\usepackage{graphicx}
+	\usepackage{longtable}
 
     \usepackage[bottom = 1in, left = 0.5in, right = 0.5in, top = 1in]{geometry}
 
@@ -127,6 +128,9 @@ Using photosynthetic parameters derived from PvsE curves, primary production was
 	\label{eq:pp}
 \end{equation}
 
+%\clearpage
+%\input{../tables/supplementary_table_pvse.tex}
+
 \clearpage
 \section*{Spatial autocorrelation}
 
@@ -135,6 +139,27 @@ Using photosynthetic parameters derived from PvsE curves, primary production was
 	\includegraphics[scale = 1]{../../../graphs/appendix_5.pdf}
 	\caption{Moran's I calculated from the SUIT transmittances ($0^-$).}
 \end{figure}
+
+\clearpage
+\section*{Extra}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale = 1]{../../../graphs/fig1b.pdf}
+	\caption{Boxplots, just an idea for the moment.}
+\end{figure}
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{lrrrrr}
+		\hline
+		          & Df   & Sum Sq  & Mean Sq & F value & Pr($>$F) \\
+		\hline
+		.\$source & 1    & 3965.49 & 3965.49 & 2307.06 & 0.0000   \\
+		Residuals & 1720 & 2956.43 & 1.72    &         &          \\
+		\hline
+	\end{tabular}
+\end{table}
 
 \clearpage
 \printbibliography

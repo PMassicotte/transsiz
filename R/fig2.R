@@ -109,13 +109,17 @@ counts <- df %>%
   tally() %>% 
   ungroup()
 
+plain <- function(x, ...) {
+  format(x, ..., scientific = FALSE, drop0trailing = TRUE)
+}
+
 p <- df %>% 
   mutate(data_source = str_to_title(data_source)) %>% 
   ggplot(aes(x = data_source, y = pp, fill = pp_source)) +
   # geom_boxplot() +
   geom_violin(scale = "width", size = 0.25) +
   facet_wrap(~station, scales = "free_y") +
-  scale_y_log10(labels = scales::comma) +
+  scale_y_log10(labels = plain) +
   annotation_logticks(sides = "l", size = 0.25) +
   theme(legend.title = element_blank()) +
   theme(axis.title.x = element_blank()) +
@@ -125,5 +129,14 @@ p <- df %>%
 
 ggsave("graphs/fig2.pdf", device = cairo_pdf, width = 7, height = 6.22 * 0.75)
 
-write_feather(res, "data/clean/primary_production_rov_vs_suit.feather")
-write_csv(res, "data/clean/primary_production_rov_vs_suit.csv")
+write_feather(df, "data/clean/primary_production_rov_vs_suit.feather")
+write_csv(df, "data/clean/primary_production_rov_vs_suit.csv")
+
+# Stats -------------------------------------------------------------------
+
+round(range(df$pp), digits = 3)
+
+df %>% 
+  group_by(station, data_source, pp_source) %>% 
+  summarise(mean_pp = mean(pp)) %>% 
+  arrange(desc(mean_pp))

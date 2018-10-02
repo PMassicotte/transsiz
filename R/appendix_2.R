@@ -20,3 +20,8 @@ p <- df %>%
   scale_y_continuous(breaks = seq(0, 2000, by = 200))
 
 ggsave("graphs/appendix_2.pdf", device = cairo_pdf, width = 8.7 * 0.75, height = 6.22 * 0.75)
+
+
+# Stats -------------------------------------------------------------------
+
+range(df$par_just_below_surface_µmol)
