@@ -1,11 +1,11 @@
 # Fdb version 3
-["pdflatex"] 1538500846 "/media/work/projects/transsiz/article/limnology_oceanography_methods/figures/figures.tex" "figures.pdf" "figures" 1538500847
+["pdflatex"] 1538502500 "/media/work/projects/transsiz/article/limnology_oceanography_methods/figures/figures.tex" "figures.pdf" "figures" 1538502500
   "../../../graphs/fig1.pdf" 1538500433 44054 486b24765639388bc4571016905a50c0 ""
-  "../../../graphs/fig2.pdf" 1538500688 138457 e98f2ac593a2dd2a1e9effaa451909b7 ""
-  "../../../graphs/fig3.pdf" 1538145693 20210 935043eb8f10a945ed6b7b4086c95a70 ""
+  "../../../graphs/fig2.pdf" 1538502380 20210 9982296632d56cd4f5228d9af2fc1615 ""
+  "../../../graphs/fig3.pdf" 1538502420 138457 843ed743b495dffa3f9e5a50a678f620 ""
   "../../../graphs/fig4.pdf" 1538417206 10895 6fa2b6274c36366be038a47775c5eb62 ""
   "/etc/texmf/web2c/texmf.cnf" 1531323512 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/media/work/projects/transsiz/article/limnology_oceanography_methods/figures/figures.tex" 1538500845 1957 acedd8ea6fcca623937f4d092b29a352 ""
+  "/media/work/projects/transsiz/article/limnology_oceanography_methods/figures/figures.tex" 1538502498 1957 5f3787309111d1292988277e5c9f0d97 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-01.enc" 1480098668 3294 a5b3bfab503121e0ee00f4c03e6030bf ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-03.enc" 1480098668 3639 c4bdda7cbfd557cb725510cb5edb8739 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-04.enc" 1480098668 3605 60b44bb3c416ade35b1c003aeada3d4e ""
@@ -110,9 +110,9 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1520210507 32485 c64754543d8ac501bea6e75e209ea521 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1530878718 2700761 ac0584cc9514ab21918550a6948c4ee2 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1530878727 4126293 51a054d90be376a9c3811dfbedde0fad ""
-  "figures.aux" 1538500847 1126 83abf3e92efdc69506f4bd8d03fa641d ""
-  "figures.tex" 1538500845 1957 acedd8ea6fcca623937f4d092b29a352 ""
+  "figures.aux" 1538502500 1126 af9b770d6a35d85eb736909bf114fcd0 ""
+  "figures.tex" 1538502498 1957 5f3787309111d1292988277e5c9f0d97 ""
   (generated)
+  "figures.pdf"
   "figures.log"
   "figures.aux"
-  "figures.pdf"

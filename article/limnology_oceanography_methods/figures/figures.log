@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.7.6)  2 OCT 2018 13:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.7.6)  2 OCT 2018 13:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -791,7 +791,7 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
  [2
 
  <../../../graphs/fig2.pdf>]
-<../../../graphs/fig3.pdf, id=42, 505.89pt x 336.25626pt>
+<../../../graphs/fig3.pdf, id=43, 505.89pt x 336.25626pt>
 File: ../../../graphs/fig3.pdf Graphic file (type pdf)
 <use ../../../graphs/fig3.pdf>
 Package pdftex.def Info: ../../../graphs/fig3.pdf  used on input line 51.
@@ -814,9 +814,9 @@ Here is how much of TeX's memory you used:
  11467 multiletter control sequences out of 15000+600000
  39972 words of font info for 76 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 51i,6n,51p,8926b,375s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 51i,6n,51p,8926b,371s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-03.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-04.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-01.enc}</usr/share/texlive/texmf-dist/fonts/type1/ibm/plex/IBMPlexSans.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Regular.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on figures.pdf (4 pages, 310881 bytes).
+Output written on figures.pdf (4 pages, 310878 bytes).
 PDF statistics:
  93 PDF objects out of 1000 (max. 8388607)
  66 compressed objects within 1 object stream
