@@ -16,6 +16,7 @@ library(parallel)
 library(multidplyr)
 library(pbmcapply)
 library(readxl)
+library(furrr)
 
 
 ## Clear the workspace
@@ -25,6 +26,8 @@ graphics.off()
 ## Set default ggplot2 font size and font family
 loadfonts(quiet = TRUE)
 theme_set(theme_bw(base_size = 12, base_family = "IBM Plex Sans"))
+
+plan(multiprocess)
 
 # Prepare data ------------------------------------------------------------
 

@@ -17,28 +17,44 @@ df <- df %>%
   mutate(abs_err = abs(pp - mean_pp)) %>% 
   mutate(rel_err = abs(pp - mean_pp) / mean_pp)
 
-p1 <- df %>% 
-  ggplot(aes(x = abs_err)) +
-  geom_histogram() +
-  facet_grid(data_source ~ pp_source, scales = "free") +
-  scale_x_log10() +
-  annotation_logticks(sides = "b") +
-  xlab(bquote("Absolute error [abs(mean_pp - pp)]" ~(mgC%*%m^{-2}%*%d^{-1})))
-
 plain <- function(x,...) {
   format(x * 100, ..., scientific = FALSE, drop0trailing = TRUE) %>% 
     paste0("%")
 }
 
-p2 <- df %>% 
+mean_rel_err <- df %>% 
+  group_by(data_source, pp_source) %>% 
+  summarise(mean_rel_err = mean(rel_err))
+
+labels_pp_source <- c(
+  daily_integrated_pp_mixing_model = "Mixing model",
+  daily_integrated_pp_under_ice = "Under ice"
+)
+
+p2 <- df %>%
   ggplot(aes(x = rel_err)) +
   geom_histogram() +
-  facet_grid(data_source ~ pp_source, scales = "free") +
+  facet_grid(data_source ~ pp_source, scales = "free", labeller = labeller(data_source = str_to_upper, pp_source = labels_pp_source)) +
   scale_x_log10(labels = plain) +
   annotation_logticks(sides = "b") +
-  xlab("Relative error [abs(pp - mean_pp) / mean_pp]")
-
-p <- cowplot::plot_grid(p1, p2, ncol = 1)
-ggsave("graphs/fig2c.pdf", device = cairo_pdf, height = 12)
+  geom_vline(
+    data = mean_rel_err,
+    aes(xintercept = mean_rel_err),
+    lty = 2,
+    color = "red",
+    size = 0.25
+  ) +
+  geom_text(
+    data = mean_rel_err,
+    aes(
+      x = mean_rel_err,
+      y = Inf,
+      label = paste0(round(mean_rel_err * 100, digits = 0), "%"),
+      hjust = 1.2,
+      vjust = 1.5
+    ),
+    size = 3
+  ) +
+  xlab("Relative error [abs(pp - mean_pp) / mean_pp] (%)")
 
 ggsave("graphs/fig4.pdf", plot = p2, device = cairo_pdf, width = 7, height = 6.22 * 0.75)

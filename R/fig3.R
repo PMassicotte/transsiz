@@ -113,19 +113,25 @@ plain <- function(x, ...) {
   format(x, ..., scientific = FALSE, drop0trailing = TRUE)
 }
 
+df_mean <- df %>% 
+  group_by(station, data_source, pp_source) %>% 
+  summarise(mean_pp = mean(pp)) %>%
+  ungroup() %>% 
+  mutate(data_source = str_to_title(data_source))
+
 p <- df %>% 
   mutate(data_source = str_to_title(data_source)) %>% 
   ggplot(aes(x = data_source, y = pp, fill = pp_source)) +
   # geom_boxplot() +
   geom_violin(scale = "width", size = 0.25) +
-  facet_wrap(~station, scales = "free_y") +
+  facet_wrap(~station) +
   scale_y_log10(labels = plain) +
   annotation_logticks(sides = "l", size = 0.25) +
   theme(legend.title = element_blank()) +
   theme(axis.title.x = element_blank()) +
   scale_fill_discrete(labels = c("daily_integrated_pp_under_ice" = "Under ice", "daily_integrated_pp_mixing_model" = "Mixing model")) +
   theme(legend.justification = c(0, 0), legend.position = c(0.35, 0.1)) +
-  ylab(bquote("Primary production" ~(mgC%*%m^{-2}%*%d^{-1})))
+  ylab(bquote("Primary production" ~(mgC%*%m^{-2}%*%d^{-1}))) 
 
 ggsave("graphs/fig3.pdf", device = cairo_pdf, width = 7, height = 6.22 * 0.75)
 
@@ -140,3 +146,4 @@ df %>%
   group_by(station, data_source, pp_source) %>% 
   summarise(mean_pp = mean(pp)) %>% 
   arrange(desc(mean_pp))
+

@@ -224,3 +224,4 @@ INPUT /usr/share/texlive/texmf-dist/fonts/type1/ibm/plex/IBMPlexSans.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Bold.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Regular.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
+INPUT /usr/share/texmf/fonts/type1/public/tex-gyre/qhvr.pfb

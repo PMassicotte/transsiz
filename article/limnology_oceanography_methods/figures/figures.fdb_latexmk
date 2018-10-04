@@ -1,11 +1,11 @@
 # Fdb version 3
-["pdflatex"] 1538502500 "/media/work/projects/transsiz/article/limnology_oceanography_methods/figures/figures.tex" "figures.pdf" "figures" 1538502500
+["pdflatex"] 1538674180 "/media/work/projects/transsiz/article/limnology_oceanography_methods/figures/figures.tex" "figures.pdf" "figures" 1538674181
   "../../../graphs/fig1.pdf" 1538500433 44054 486b24765639388bc4571016905a50c0 ""
   "../../../graphs/fig2.pdf" 1538502380 20210 9982296632d56cd4f5228d9af2fc1615 ""
-  "../../../graphs/fig3.pdf" 1538502420 138457 843ed743b495dffa3f9e5a50a678f620 ""
-  "../../../graphs/fig4.pdf" 1538417206 10895 6fa2b6274c36366be038a47775c5eb62 ""
+  "../../../graphs/fig3.pdf" 1538663345 144285 9e86b746f53197334b17720cb674e129 ""
+  "../../../graphs/fig4.pdf" 1538674173 16161 4768922223bda4f10f3c244f0021a88f ""
   "/etc/texmf/web2c/texmf.cnf" 1531323512 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/media/work/projects/transsiz/article/limnology_oceanography_methods/figures/figures.tex" 1538502498 1957 5f3787309111d1292988277e5c9f0d97 ""
+  "/media/work/projects/transsiz/article/limnology_oceanography_methods/figures/figures.tex" 1538674179 2152 2a9235e2188da947c561be39e3e0a624 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-01.enc" 1480098668 3294 a5b3bfab503121e0ee00f4c03e6030bf ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-03.enc" 1480098668 3639 c4bdda7cbfd557cb725510cb5edb8739 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-04.enc" 1480098668 3605 60b44bb3c416ade35b1c003aeada3d4e ""
@@ -107,12 +107,13 @@
   "/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ztmcm.fd" 1480098837 329 aee7226812ba4138ac67a018466b488d ""
   "/usr/share/texlive/texmf-dist/tex/latex/slantsc/slantsc.sty" 1480098839 2856 8a1819784341195ef5bcd3c5842b49e1 ""
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1520210507 32485 c64754543d8ac501bea6e75e209ea521 ""
+  "/usr/share/texmf/fonts/type1/public/tex-gyre/qhvr.pfb" 1257299502 110045 c159829aa6d7d99f1777bb40c90b8157 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1520210507 32485 c64754543d8ac501bea6e75e209ea521 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1530878718 2700761 ac0584cc9514ab21918550a6948c4ee2 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1530878727 4126293 51a054d90be376a9c3811dfbedde0fad ""
-  "figures.aux" 1538502500 1126 af9b770d6a35d85eb736909bf114fcd0 ""
-  "figures.tex" 1538502498 1957 5f3787309111d1292988277e5c9f0d97 ""
+  "figures.aux" 1538674181 1321 d2d2a35876e5505bf8bb64c29969a97d ""
+  "figures.tex" 1538674179 2152 2a9235e2188da947c561be39e3e0a624 ""
   (generated)
-  "figures.pdf"
   "figures.log"
   "figures.aux"
+  "figures.pdf"
