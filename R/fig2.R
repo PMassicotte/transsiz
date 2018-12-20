@@ -1,146 +1,103 @@
-# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>  
-# AUTHOR:       Philippe Massicotte
-#
-# DESCRIPTION:  
-#
-# Figure comparing mean vertical profils of primary production.
-# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-
 rm(list = ls())
 
-geomean <- function(x, na.rm = FALSE, trim = 0, ...)
-{
-  exp(mean(log(x, ...), na.rm = na.rm, trim = trim, ...))
+rov_transmittance <- read_feather("data/clean/rov_propagated_par_water_column.feather") %>% 
+  filter(depth == 0 & hour == 0) %>% 
+  select(station, depth, transmittance_ed0) %>% 
+  mutate(source = "rov") 
+  
+
+suit_transmittance <- read_feather("data/clean/suit_propagated_par_water_column.feather") %>% 
+  filter(depth == 0 & hour == 0) %>% 
+  select(station, depth, transmittance_ed0) %>% 
+  mutate(source = "suit")
+
+df <- bind_rows(rov_transmittance, suit_transmittance) %>% 
+  filter(station %in% c(19, 27, 31, 39, 43, 46, 47)) 
+
+plain <- function(x,...) {
+  format(x * 100, ..., scientific = FALSE, drop0trailing = TRUE) %>% 
+    paste0("%")
 }
 
-geosd <- function(x, na.rm = FALSE, ...)
-{
-  exp(sd(log(x, ...), na.rm = na.rm, ...))
-}
+p <- df %>% 
+  mutate(source = str_to_title(source)) %>% 
+  ggplot(aes(x = transmittance_ed0, fill = source, color = source)) +
+  geom_density(alpha = 0.5, size = 0.25) +
+  scale_x_log10(labels = plain) +
+  annotation_logticks(sides = "b", size = 0.25) +
+  scale_y_continuous() +
+  facet_wrap(~station, scales = "free_y") +
+  xlab("Transmittance (%)") +
+  ylab("Density") +
+  labs(fill = "Device") +
+  labs(color = "Device") +
+  geom_vline(xintercept = 0.1, lty = 2) +
+  scale_fill_brewer(palette = "Set1") +
+  scale_color_brewer(palette = "Set1")
 
-# PAR data ----------------------------------------------------------------
+ggsave("graphs/fig2.pdf", device = cairo_pdf, height = 190 / 1.61803398875, width = 190, units = "mm")
 
-## Read PAR derived from both SUIT and ROV devices
+# Boxplot? ----------------------------------------------------------------
 
-suit <- read_feather("data/clean/suit_propagated_par_water_column.feather") %>%
-  mutate(data_source = "suit")
+# df %>% 
+#   mutate(source = str_to_title(source)) %>% 
+#   ggplot(aes(x = source, y = transmittance_ed0)) +
+#   geom_boxplot(size = 0.25, outlier.size = 0.5) +
+#   facet_wrap(~station) +
+#   scale_y_log10(labels = function(x) x * 100) +
+#   annotation_logticks(sides = "l", size = 0.25) +
+#   ylab("Transmittance (%)") +
+#   theme(axis.title.x = element_blank())
+# 
+# ggsave("graphs/fig1b.pdf", device = cairo_pdf, width = 7, height = 6.22 * 0.75)
+# 
+# mod <- df %>% 
+#   filter(transmittance_ed0 > 0) %>% 
+#   group_by(station) %>% 
+#   nest() %>% 
+#   mutate(mod = map(data, ~aov(log(.$transmittance_ed0) ~ .$source))) %>% 
+#   mutate(res = map(mod, summary)) 
 
-suit_no_lead <- read_feather("data/clean/suit_propagated_par_water_column.feather") %>% 
-  mutate(data_source = "suit_no_lead") %>% 
-  filter(transmittance_ed0 <= 0.1)
+# Stats for the paper -----------------------------------------------------
 
-rov <- read_feather("data/clean/rov_propagated_par_water_column.feather") %>%
-  mutate(data_source = "rov")
-
-df <- bind_rows(suit, rov, suit_no_lead) %>%
-  select(
-    id,
-    data_source,
-    station,
-    cast,
-    hour,
-    depth,
-    par_z_variable_transmittance,
-    par_z_100_percent_transmittance
-  )
-
-# %>%
-#   filter(station != 32) ## Station 32 is discarded because there are no matching ROV-SUIT pairs.
-
-## At the end, shall we use averaged PAR profiles? If so we will loose
-## information on the variability induced by transmittance measurements.
-
-## Attach station and cast to the PvsE data
-pvse <- read_csv("data/clean/pvse_propagated_parameters.csv")
-
-df <- df %>% 
-  left_join(pvse, by = c("station", "depth")) %>% 
-  select(-contains("cast"))
-
-## Daily integration
 # df %>%
-#   mutate(pp_under_ice = ps * (1 - exp(-alpha * par_z_variable_transmittance / ps))) %>%
-#   mutate(pp_open_water = ps * (1 - exp(-alpha * par_z_100_percent_transmittance / ps))) %>%
-#   group_by(data_source, station, depth) %>%
-#   nest() %>%
-#   mutate(depth_integrated_pp_under_ice = map_dbl(data, ~pracma::trapz(.$hour, .$pp_under_ice))) %>%
-#   mutate(depth_integrated_pp_open_water = map_dbl(data, ~pracma::trapz(.$hour, .$pp_open_water)))
+#   mutate(station = as.integer(station)) %>%
+#   mutate(device = toupper(source)) %>% 
+#   group_by(station, device) %>%
+#   summarise(
+#     min_transmittance = min(transmittance_ed0),
+#     max_transmittance = max(transmittance_ed0),
+#     mean_transmittance = mean(transmittance_ed0),
+#     n_obs = n()
+#   ) %>%
+#   xtable::xtable(digits = 3, caption = "Descriptive statistics.") %>%
+#   print(file = "article/jgr/tables/table3.tex", include.rownames = FALSE)
 
-## Daily integration at each depth
-res <- df %>%
-  filter(station %in% c(19, 27, 31, 39, 43, 46, 47)) %>%
-  mutate(pp_under_ice = ps * (1 - exp(-alpha * par_z_variable_transmittance / ps))) %>%
-  mutate(pp_open_water = ps * (1 - exp(-alpha * par_z_100_percent_transmittance / ps))) %>%
-  group_by(data_source, station, depth, hour) %>%
-  summarise(
-    mean_pp_under_ice = mean(pp_under_ice),
-    mean_pp_open_water = mean(pp_open_water),
-    sd_pp_under_ice = sd(pp_under_ice)
-  ) %>% 
-  group_by(data_source, station, depth) %>% 
-  summarise(
-    pp_under_ice = pracma::trapz(hour, mean_pp_under_ice),
-    pp_open_water = pracma::trapz(hour, mean_pp_open_water)
-  ) %>%
-  ungroup()
+## Test with gt library
 
-res
-
-sic <- read_csv("data/clean/sic.csv") %>% 
-  select(-sd)
-
-res <- res %>% 
-  left_join(sic) %>% 
-  mutate(
-    pp_mixing_model = ((sic_9) * pp_under_ice) + ((1 - sic_9) * pp_open_water)
-  ) 
-
-## Remove open water pp, we do not need it now
-res <- res %>% 
-  select(-pp_open_water)
-
-# Remove non-needed data --------------------------------------------------
-
-df <- res %>% 
-  tidyr::gather(pp_source, pp, starts_with("pp_"))
-
-## For the SUIT data, we only want to keep:
-## 1) the mixing model made with transmittance <= 0.1
-## 2) the pp underice made with all suit data (not with T <= 0.1)
-
-df <- df %>% 
-  filter(!(data_source == "suit" & pp_source == "pp_mixing_model")) %>% 
-  filter(!(data_source == "suit_no_lead" & pp_source == "pp_under_ice")) %>% 
-  mutate(data_source = if_else(str_detect(data_source, "suit"), "suit", data_source))
-
-# In-situ PP (Jean-Eric) --------------------------------------------------
-
-# jet <-
-#   read_excel(
-#     "data/raw/TRANSSIZ_PP.xlsx",
-#     col_names = c("station", "ctd", "depth", "data_source", "pp"),
-#     range = cell_limits(c(3,1), c(NA, 5))
+# df %>%
+#   mutate(station = as.integer(station)) %>%
+#   group_by(station, device = source) %>%
+#   summarise(
+#     min_transmittance = min(transmittance_ed0),
+#     max_transmittance = max(transmittance_ed0),
+#     mean_transmittance = mean(transmittance_ed0),
+#     n_obs = n()
 #   ) %>% 
-#   mutate(data_source = str_to_lower(data_source)) %>% 
-#   filter(data_source == "in situ") %>% 
-#   select(station, depth, data_source, pp) %>% 
-#   mutate(pp_source = "in situ") %>% 
-#   filter(station %in% c(19, 27, 31, 39, 43, 46, 47)) 
-# 
-# jet
-# 
-# res <- bind_rows(df, jet)
-
-
-# Plot --------------------------------------------------------------------
+#   gt::gt() %>% 
+#   gt::tab_header(title = md("Data listing from **gtcars**")) %>% 
+#   gt::as_latex() %>% 
+#   as.character() 
 
 df %>% 
-  ggplot(aes(x = pp, y = depth, color = interaction(pp_source, data_source))) +
-  geom_path() +
-  scale_y_reverse() +
-  facet_wrap(~station, scales = "free") +
-  xlab(bquote("Primary production" ~(mgC%*%m^{-3}%*%d^{-1}))) +
-  ylab("Depth (m)") +
-  theme(legend.title = element_blank())
+  count(source)
 
-ggsave("graphs/fig2.pdf", device = cairo_pdf, width = 7, height = 6.22 * 0.75)
+df %>%
+  mutate(station = as.integer(station)) %>%
+  group_by(device = source) %>%
+  summarise(
+    min_transmittance = min(transmittance_ed0),
+    max_transmittance = max(transmittance_ed0),
+    mean_transmittance = mean(transmittance_ed0),
+    n_obs = n()
+  )

@@ -40,32 +40,38 @@ res <- df %>%
 
 # Plot --------------------------------------------------------------------
 
-res %>% 
+p <- res %>% 
   ggplot(aes(x = dist_class, y = coef)) +
   geom_hline(yintercept = 0, lty = 2, color = "red", size = 0.25) +
   geom_line() +
-  geom_point() +
+  geom_point(aes(color = ifelse(p_value <= 0.05, TRUE, FALSE))) +
   facet_wrap(~station) +
   scale_x_continuous(breaks = seq(0, 400, by = 50)) +
-  xlab("Distance (m)") +
-  ylab("Moran's I")
+  xlab("Distance lag (m)") +
+  ylab("Moran's I") +
+  scale_color_manual(values = c("TRUE" = "firebrick1", "FALSE" = "black")) +
+  labs(color = "Significant values\nat p < 0.05") +
+  theme(legend.justification = c(0.5, 0.5), legend.position = c(0.85, 0.15))
 
-ggsave("graphs/appendix_5.pdf", device = cairo_pdf, width = 8.7 * 0.75, height = 5)
-
-# 
-# ncf.cor <-
-#   correlog(
-#     res$dist_rel_x_m,
-#     res$dist_rel_y_m,
-#     res$transmittance_ed0,
-#     increment = 10,
-#     resamp = 0
-#   )
-# 
-# plot(ncf.cor)
+ggsave("graphs/fig7.pdf", device = cairo_pdf, width = 8.7 * 0.75, height = 5)
 
 
-# library(pgirmess)
-# df <- ee$data[[5]]
-# pgi.cor <- pgirmess::correlog(coords=cbind(df$dist_rel_x_m, df$dist_rel_y_m), z=df$transmittance_ed0, method="Moran", nbclass=21)
- 
+# Some stats --------------------------------------------------------------
+
+res %>% 
+  group_by(station) %>% 
+  filter(dist_class == min(dist_class)) %>% 
+  arrange(coef)
+
+## What is the average patch size, defined as as the distance class at which the
+## first zero value of Moran’s I occurred in the correlograms
+
+patch <- res %>% 
+  group_by(station) %>% 
+  filter(coef <= 0) %>% 
+  slice(1) %>% 
+  ungroup()
+
+patch %>% 
+  summarise_at(.vars = "dist_class", .funs = c("min", "max", "mean"))
+  

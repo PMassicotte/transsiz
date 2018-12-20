@@ -1,85 +1,86 @@
+# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>  
+# AUTHOR:       Philippe Massicotte
+#
+# DESCRIPTION:  
+#
+# Map of the sampled ice sites. Note that the IBCAO bathymetry has been
+# reprojected using QGIS.
+# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
 rm(list = ls())
 
-rov_transmittance <- read_feather("data/clean/rov_propagated_par_water_column.feather") %>% 
-  filter(depth == 0 & hour == 0) %>% 
-  select(station, depth, transmittance_ed0) %>% 
-  mutate(source = "rov") 
+pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>%
+  setNames(iconv(names(.), "latin1", "utf-8", sub = "byte")) %>%
+  janitor::clean_names() %>%
+  as_tibble() %>%
+  dplyr::select(c(1, 2, 3, 7)) %>%
+  mutate(date_time = anytime::anytime(date_time)) %>%
+  mutate(date = lubridate::date(date_time)) %>%
+  mutate(date_numeric = lubridate::hour(date_time) * 3600 + lubridate::minute(date_time) * 60 + lubridate::second(date_time)) %>%
+  mutate(hour = lubridate::hour(date_time)) %>%
+  mutate(minute = lubridate::minute(date_time)) %>%
+  filter(par_just_below_surface_µmol >= 0) %>% 
+  dplyr::select(date, longitude_e, latitude_n, date) 
+
+stations <- read_csv("data/clean/stations.csv")
+
+pyrano <- pyrano %>%
+  inner_join(stations, by = "date") %>%
+  separate(station, into = c("station", "cast"), convert = TRUE)
+
+pyrano <- pyrano %>% 
+  st_as_sf(coords = c("longitude_e", "latitude_n"), crs = 4326) 
+
+ocean <- rnaturalearth::ne_download(scale = 50, type = 'land', category = 'physical', returnclass = "sf")
+
+ocean <- ocean %>% 
+  st_transform(crs = 3411) %>% 
+  st_simplify()
+
+pyrano <- pyrano %>% 
+  st_transform(crs = 3411)
+
+pyrano <- cbind(pyrano, st_coordinates(pyrano))
   
-
-suit_transmittance <- read_feather("data/clean/suit_propagated_par_water_column.feather") %>% 
-  filter(depth == 0 & hour == 0) %>% 
-  select(station, depth, transmittance_ed0) %>% 
-  mutate(source = "suit")
-
-df <- bind_rows(rov_transmittance, suit_transmittance) %>% 
-  filter(station %in% c(19, 27, 31, 39, 43, 46, 47)) 
-
-plain <- function(x,...) {
-  format(x * 100, ..., scientific = FALSE, drop0trailing = TRUE) %>% 
-    paste0("%")
-}
-
-p <- df %>% 
-  mutate(source = str_to_title(source)) %>% 
-  ggplot(aes(x = transmittance_ed0, fill = source, color = source)) +
-  geom_density(alpha = 0.5) +
-  scale_x_log10(labels = plain) +
-  annotation_logticks(sides = "b", size = 0.25) +
-  scale_y_continuous() +
-  facet_wrap(~station, scales = "free_y") +
-  xlab("Transmittance (%)") +
-  ylab("Density") +
-  labs(fill = "Device") +
-  labs(color = "Device") +
-  geom_vline(xintercept = 0.1, lty = 2)
-
-ggsave("graphs/fig1.pdf", device = cairo_pdf, width = 7, height = 6.22 * 0.75)
+lim <- tibble(xlim = c(5, 26), ylim = c(76, 82)) %>% 
+  st_as_sf(coords = c("xlim", "ylim"), crs = 4326) %>% 
+  st_transform(crs = 3411)
 
 
-# Boxplot? ----------------------------------------------------------------
+bathy <- raster::brick("data/raw/IBCAO_V3_500m_RR2.tif") %>%
+  raster::crop(c(600701.3, 1567375.5, -859544.4, -282590.1)) %>% 
+  raster::sampleRegular(size = 5e5, asRaster = TRUE)
 
-df %>% 
-  mutate(source = str_to_title(source)) %>% 
-  ggplot(aes(x = source, y = transmittance_ed0)) +
-  geom_boxplot(size = 0.25, outlier.size = 0.5) +
-  facet_wrap(~station) +
-  scale_y_log10(labels = function(x) x * 100) +
-  annotation_logticks(sides = "l", size = 0.25) +
-  ylab("Transmittance (%)") +
-  theme(axis.title.x = element_blank())
+pp <- RStoolbox::ggRGB(bathy, r = 1, g = 2, b = 3, ggLayer = TRUE)
 
-ggsave("graphs/fig1b.pdf", device = cairo_pdf, width = 7, height = 6.22 * 0.75)
+p <- ggplot() +
+  pp + 
+  # geom_sf(data = ocean, size = 0.25) +
+  geom_path(data = pyrano, aes(x = X, y = Y, color = factor(station)), size = 2) +
+  coord_sf(xlim = c(600701.3, 1567375.5), c(-859544.4, -282590.1)) +
+  scale_x_continuous(breaks = seq(-90, 90, by = 4), expand = c(0, 0)) +
+  scale_y_continuous(breaks = seq(-180, 180, by = 1), expand = c(0, 0)) +
+  theme(panel.grid.major = element_line(size = 0.05, color = "gray90")) +
+  labs(color = "Stations") +
+  theme(axis.title = element_blank()) +
+  scale_color_brewer(palette = "Set1")
 
-mod <- df %>% 
-  filter(transmittance_ed0 > 0) %>% 
-  group_by(station) %>% 
-  nest() %>% 
-  mutate(mod = map(data, ~aov(log(.$transmittance_ed0) ~ .$source))) %>% 
-  mutate(res = map(mod, summary)) 
+ggsave("graphs/fig1.pdf", device = cairo_pdf, width = 6, height = 5)
 
-# Stats for the paper -----------------------------------------------------
+system("pdfcrop graphs/fig1.pdf graphs/fig1.pdf")
 
-df %>%
-  mutate(station = as.integer(station)) %>%
-  group_by(station, device = source) %>%
-  summarise(
-    min_transmittance = min(transmittance_ed0),
-    max_transmittance = max(transmittance_ed0),
-    mean_transmittance = mean(transmittance_ed0),
-    n_obs = n()
-  ) %>%
-  xtable::xtable(digits = 3, caption = "Descriptive statistics.") %>%
-  print(file = "article/limnology_oceanography_methods/tables/table1.tex")
 
-df %>% 
-  count(source)
+## Add ship path?
 
-df %>%
-  mutate(station = as.integer(station)) %>%
-  group_by(device = source) %>%
-  summarise(
-    min_transmittance = min(transmittance_ed0),
-    max_transmittance = max(transmittance_ed0),
-    mean_transmittance = mean(transmittance_ed0),
-    n_obs = n()
-  )
+# pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>%
+#   setNames(iconv(names(.), "latin1", "utf-8", sub = "byte")) %>%
+#   janitor::clean_names(case = "old_janitor") %>%
+#   as_tibble() %>% 
+#   filter(latitude_n > 81) %>%
+#   st_as_sf(coords = c("longitude_e", "latitude_n"), crs = 4326) %>% 
+#   st_transform(crs = 3411)
+# 
+# pyrano <- cbind(pyrano, st_coordinates(pyrano))
+# 
+# p + 
+#   geom_path(data = pyrano, aes(x = X, y = Y))

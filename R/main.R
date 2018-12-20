@@ -17,7 +17,7 @@ library(multidplyr)
 library(pbmcapply)
 library(readxl)
 library(furrr)
-
+library(xtable)
 
 ## Clear the workspace
 rm(list = ls())

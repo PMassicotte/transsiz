@@ -20,6 +20,26 @@ kd <- read_feather("data/clean/rov_irradiance.feather") %>%
   group_by(station, cast, date_time, dist_rel_x_m, dist_rel_y_m, dist_sea_ice_bottom_m) %>%
   summarise(par = sum(e))
 
+
+## Just make sure that both methods give the same PAR
+
+# h  <- 6.62607004e-34 # m2.kg.s-1, or J.s
+# c  <- 299792458      # m.s-1
+# av <- 6.022140857e23 # mol-1
+# 
+# kd2 <- read_feather("data/clean/rov_irradiance.feather") %>%
+#   filter(wavelength >= 400 & wavelength <= 700) %>%
+#   mutate(wavelength2 = wavelength * 1e-9) %>%
+#   mutate(irradiance_w_m2_nm = irradiance_w_m2_nm * wavelength2 / (h * c)) %>% 
+#   group_by(station, cast, date_time, dist_rel_x_m, dist_rel_y_m, dist_sea_ice_bottom_m) %>%
+#   summarise(
+#     par_ed = pracma::trapz(wavelength2 / 1e-9, irradiance_w_m2_nm),
+#     par_ed =  par_ed * 1E6 / av
+#   )
+# 
+# plot(kd$par, kd2$par_ed)
+# abline(a = 0, b = 1, col = "red")
+
 p <- kd %>%
   ggplot(aes(x = date_time, y = dist_sea_ice_bottom_m)) +
   geom_point(size = 0.25) +

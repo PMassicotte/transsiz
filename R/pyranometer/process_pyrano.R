@@ -76,3 +76,22 @@ ggsave("graphs/pyrano_hourly_par.pdf", width = 10, height = 5)
 pyrano %>%
   select(-data) %>%
   write_csv("data/clean/pyranometer.csv")
+
+
+# Conversion factor -------------------------------------------------------
+
+pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>%
+  setNames(iconv(names(.), "latin1", "utf-8", sub = "byte")) %>%
+  janitor::clean_names(case = "old_janitor") %>%
+  as_tibble()
+
+## It seems that a factor of 4.49 was used to convert from wm2 to umol
+pyrano %>% 
+  filter(par_down_above_surface_w_m2 > 0) %>% 
+  mutate(test = par_just_below_surface_µmol / par_just_below_surf_w_m2)
+
+
+pyrano %>% 
+  ggplot(aes(x = longitude_e, y = latitude_n)) +
+  geom_path() +
+  ylim(c(81, NA))

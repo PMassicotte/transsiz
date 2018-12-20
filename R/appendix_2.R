@@ -16,11 +16,10 @@ p <- df %>%
   geom_point() +
   facet_wrap(~station) +
   xlab("Time (hour)") +
-  ylab(bquote(PAR~(mu*mol%*%m^{-2}%*%s^{-1}))) +
+  ylab(bquote(PAR(0^"+")~(mu*mol~m^{-2}~s^{-1}))) +
   scale_y_continuous(breaks = seq(0, 2000, by = 200))
 
 ggsave("graphs/appendix_2.pdf", device = cairo_pdf, width = 8.7 * 0.75, height = 6.22 * 0.75)
-
 
 # Stats -------------------------------------------------------------------
 

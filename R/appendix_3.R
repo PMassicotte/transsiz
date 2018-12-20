@@ -19,7 +19,7 @@ p <- df %>%
   scale_y_reverse() +
   facet_wrap(~hour) +
   ylab("Depth (m)") +
-  xlab(bquote(PAR~(mu*mol%*%m^{-2}%*%s^{-1}))) 
+  xlab(bquote(PAR~(mu*mol~m^{-2}~s^{-1}))) 
 
 ggsave("graphs/appendix_3.pdf", device = cairo_pdf, width = 8.7 * 0.75, height = 4)
 

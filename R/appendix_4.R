@@ -63,7 +63,7 @@ pp %>%
   ggplot(aes(x = light, y = p_manip)) +
   geom_point() +
   geom_line(aes(y = pred), color = "red") +
-  xlab(bquote(PAR~(mu*mol%*%m^{-2}%*%s^{-1}))) +
+  xlab(bquote(PAR~(mu*mol~m^{-2}~s^{-1}))) +
   ylab("Primary production") +
   geom_abline(slope = alpha, intercept = p0, color = "blue", lwd = 0.25, lty = 2) +
   geom_hline(yintercept = p0, color = "blue", lwd = 0.25, lty = 2) +
