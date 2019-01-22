@@ -12,7 +12,7 @@ rm(list = ls())
 
 pvse <- read_csv("data/clean/photosynthetic_parameters.csv") %>%
   filter(sheet == "water") %>%
-  select(date, depth, ps, alpha) %>%
+  select(date, depth, ps, alpha, beta) %>%
   mutate(depth = parse_number(depth)) %>%
   mutate(date = as.Date(date)) %>%
   arrange(date, depth)
@@ -29,22 +29,12 @@ station <- readxl::read_excel("data/raw/station_cast_date_pvse.xls") %>%
 pvse <- pvse %>% 
   left_join(station, by = "date")
 
-## Export parameters for the paper
-pvse %>%
-  select(station, depth, ps, alpha) %>%
-  filter(station %in% c(19, 27, 31, 39, 43, 46, 47)) %>% 
-  xtable::xtable(digits = 3, caption = "Estimated photosynhtetic parameters at each station.") %>%
-  print(file = "article/limnology_oceanography_methods/tables/supplementary_table_pvse.tex",
-        tabular.environment = "longtable",
-        floating = FALSE,
-        include.rownames = FALSE)
-
 ## Complete to add depth = 0 meter
 
 pvse <- pvse %>%
   group_by(station, cast) %>%
   complete(depth = c(0, unique(depth))) %>%
-  fill(date, ps, alpha, .direction = "up")
+  fill(date, ps, alpha, beta, .direction = "up")
 
 ## Interpolate PvsE parameters in the water column betwen 0-40m at 1m increment.
 
@@ -59,8 +49,11 @@ pvse <- pvse %>%
 
     af <- approxfun(df$depth, df$alpha)
     alpha <- af(depth)
+    
+    af <- approxfun(df$depth, df$beta)
+    beta <- af(depth)
 
-    return(tibble(depth, ps, alpha))
+    return(tibble(depth, ps, alpha, beta))
   }))
 
 # Plot --------------------------------------------------------------------

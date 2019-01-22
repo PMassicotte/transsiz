@@ -1,103 +1,148 @@
+# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+# AUTHOR:       Philippe Massicotte
+#
+# DESCRIPTION:
+#
+# Plot of the ice/snow thickness
+# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
 rm(list = ls())
 
-rov_transmittance <- read_feather("data/clean/rov_propagated_par_water_column.feather") %>% 
-  filter(depth == 0 & hour == 0) %>% 
-  select(station, depth, transmittance_ed0) %>% 
-  mutate(source = "rov") 
-  
-
-suit_transmittance <- read_feather("data/clean/suit_propagated_par_water_column.feather") %>% 
-  filter(depth == 0 & hour == 0) %>% 
-  select(station, depth, transmittance_ed0) %>% 
-  mutate(source = "suit")
-
-df <- bind_rows(rov_transmittance, suit_transmittance) %>% 
-  filter(station %in% c(19, 27, 31, 39, 43, 46, 47)) 
-
-plain <- function(x,...) {
-  format(x * 100, ..., scientific = FALSE, drop0trailing = TRUE) %>% 
-    paste0("%")
+equal_breaks <- function(n = 3, s = 0.05, ...) {
+  function(x) {
+    # rescaling
+    d <- s * diff(range(x)) / (1 + 2 * s)
+    seq(min(x) + d, max(x) - d, length = n)
+  }
 }
 
-p <- df %>% 
-  mutate(source = str_to_title(source)) %>% 
-  ggplot(aes(x = transmittance_ed0, fill = source, color = source)) +
-  geom_density(alpha = 0.5, size = 0.25) +
-  scale_x_log10(labels = plain) +
-  annotation_logticks(sides = "b", size = 0.25) +
-  scale_y_continuous() +
-  facet_wrap(~station, scales = "free_y") +
-  xlab("Transmittance (%)") +
-  ylab("Density") +
-  labs(fill = "Device") +
-  labs(color = "Device") +
-  geom_vline(xintercept = 0.1, lty = 2) +
-  scale_fill_brewer(palette = "Set1") +
-  scale_color_brewer(palette = "Set1")
+df <- read_csv("data/clean/rov_ice_snow_thickness.csv")
 
-ggsave("graphs/fig2.pdf", device = cairo_pdf, height = 190 / 1.61803398875, width = 190, units = "mm")
+# %>% 
+#   filter(station %in% c(19, 27, 31, 39, 43, 46, 47))
 
-# Boxplot? ----------------------------------------------------------------
+p1 <- df %>%
+  ggplot(aes(x = lon, y = lat, color = z_total)) +
+  geom_point() +
+  facet_wrap(~station, scales = "free") +
+  scale_color_viridis_c(option = "D", limits = c(0.5, 2), oob = scales::squish) +
+  scale_x_continuous(
+    breaks = equal_breaks(n = 3, s = 0.05),
+    labels = function(x)
+      str_pad(round(x, digits = 3), width = 6, side = "right", pad = "0")
+  ) +
+  scale_y_continuous(
+    breaks = equal_breaks(n = 3, s = 0.05),
+    labels = function(x)
+      str_pad(round(x, digits = 3), width = 6, side = "right", pad = "0")
+  ) +
+  labs(color = "Total thickness\n[snow + ice] (m)") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  theme(panel.spacing = unit(2, "lines")) +
+  theme(legend.justification = c(0.5, 0.5)) +
+  theme(legend.position = c(0.85, 0.1)) +
+  theme(
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 9),
+    legend.direction = "horizontal"
+  ) +
+  guides(colour = guide_colourbar(title.position = "top", title.hjust = 0.5)) +
+  theme(plot.margin = margin(r = 20))
 
-# df %>% 
-#   mutate(source = str_to_title(source)) %>% 
-#   ggplot(aes(x = source, y = transmittance_ed0)) +
-#   geom_boxplot(size = 0.25, outlier.size = 0.5) +
-#   facet_wrap(~station) +
-#   scale_y_log10(labels = function(x) x * 100) +
-#   annotation_logticks(sides = "l", size = 0.25) +
-#   ylab("Transmittance (%)") +
-#   theme(axis.title.x = element_blank())
-# 
-# ggsave("graphs/fig1b.pdf", device = cairo_pdf, width = 7, height = 6.22 * 0.75)
-# 
-# mod <- df %>% 
-#   filter(transmittance_ed0 > 0) %>% 
-#   group_by(station) %>% 
-#   nest() %>% 
-#   mutate(mod = map(data, ~aov(log(.$transmittance_ed0) ~ .$source))) %>% 
-#   mutate(res = map(mod, summary)) 
+p2 <- df %>% 
+  gather(type, thickness, starts_with("z")) %>% 
+  filter(thickness >= 0) %>% 
+  ggplot(aes(x = factor(station), y = thickness, fill = type)) +
+  geom_boxplot(outlier.size = 0.5, size = 0.25, position = position_dodge2(preserve = "single")) +
+  xlab("Station") +
+  ylab("Thickness (m)") +
+  scale_fill_brewer(palette = "Set1", labels = c("Ice", "Snow", "Total")) +
+  theme(legend.justification = c(1, 1), legend.position = c(0.95, 0.95)) +
+  theme(legend.title = element_blank()) +
+  scale_y_continuous(breaks = seq(0, 10, by = 0.5))
 
-# Stats for the paper -----------------------------------------------------
+p <- cowplot::plot_grid(p1, p2, ncol = 1, labels = "AUTO", rel_heights = c(1, 0.75))
 
-# df %>%
-#   mutate(station = as.integer(station)) %>%
-#   mutate(device = toupper(source)) %>% 
-#   group_by(station, device) %>%
-#   summarise(
-#     min_transmittance = min(transmittance_ed0),
-#     max_transmittance = max(transmittance_ed0),
-#     mean_transmittance = mean(transmittance_ed0),
-#     n_obs = n()
-#   ) %>%
-#   xtable::xtable(digits = 3, caption = "Descriptive statistics.") %>%
-#   print(file = "article/jgr/tables/table3.tex", include.rownames = FALSE)
+ggsave("graphs/fig2.pdf", device = cairo_pdf, width = 7, height = 10)
 
-## Test with gt library
-
-# df %>%
-#   mutate(station = as.integer(station)) %>%
-#   group_by(station, device = source) %>%
-#   summarise(
-#     min_transmittance = min(transmittance_ed0),
-#     max_transmittance = max(transmittance_ed0),
-#     mean_transmittance = mean(transmittance_ed0),
-#     n_obs = n()
-#   ) %>% 
-#   gt::gt() %>% 
-#   gt::tab_header(title = md("Data listing from **gtcars**")) %>% 
-#   gt::as_latex() %>% 
-#   as.character() 
-
-df %>% 
-  count(source)
+# Stats -------------------------------------------------------------------
 
 df %>%
-  mutate(station = as.integer(station)) %>%
-  group_by(device = source) %>%
-  summarise(
-    min_transmittance = min(transmittance_ed0),
-    max_transmittance = max(transmittance_ed0),
-    mean_transmittance = mean(transmittance_ed0),
-    n_obs = n()
+  group_by(station) %>%
+  summarise_at(
+    .vars = vars(starts_with("z")),
+    .funs = funs(
+      mean(., na.rm = TRUE),
+      min(., na.rm = TRUE),
+      max(., na.rm = TRUE),
+      sd(., na.rm = TRUE),
+      n()
+    )
   )
+
+df %>%
+  select(starts_with("z")) %>%
+  skimr::skim()
+
+## Problem: I only have the total thickness. How is it possible since Ilka said:
+## Due to instrument failure of the Magna Probe no snow measurements were
+## available for stations 46 and 47.
+
+df %>%
+  select(-z_total) %>%
+  gather(layer, thickness, starts_with("z")) %>%
+  filter(thickness >= 0) %>% 
+  ggplot(aes(x = thickness, fill = layer)) +
+  geom_density(aes(color = layer), alpha = 0.5) +
+  facet_wrap(~station)
+
+# Compare ROV and SUIT measures -------------------------------------------
+
+ice_thickness_suit <- read_excel("data/raw/ice_snow_thickness/suit/TRANSSIZ_thickness.xlsx") %>%
+  janitor::clean_names() %>%
+  mutate(station = str_sub(stn, 1, 2)) %>%
+  mutate(station = parse_number(station)) %>%
+  filter(station %in% df$station)
+
+df %>%
+  drop_na(z_ice) %>%
+  ggplot(aes(x = z_ice)) +
+  geom_histogram() +
+  facet_wrap(~station) +
+  geom_vline(data = ice_thickness_suit, aes(xintercept = hi_m, color = "SUIT"), lty = 2) +
+  theme(legend.title = element_blank())
+
+
+# Compare ROV and SUIT ice thickness --------------------------------------
+
+df1 <- read_csv("data/clean/rov_ice_snow_thickness.csv", guess_max = 1e6) %>% 
+  mutate(device = "gem-2")
+
+df2 <- read_csv("data/clean/suit_ice_snow_thickness.csv", guess_max = 1e6) %>% 
+  mutate(device = "suit")
+
+df <- bind_rows(df1, df2) %>% 
+  filter(station %in% c(19, 27, 31, 39, 43, 46, 47))
+
+df %>% 
+  drop_na(z_ice) %>% 
+  ggplot(aes(x = z_ice, fill = device, color = device)) +
+  geom_density(alpha = 0.5) +
+  facet_wrap(~station, scales = "free") +
+  xlab("Ice thickness (m)") +
+  scale_x_continuous(breaks = seq(0, 10, by = 1))
+
+df %>% 
+  drop_na(z_ice) %>% 
+  select(station, device, z_ice) %>% 
+  group_by(station, device) %>%
+  summarise(mean_z_ice = mean(z_ice, na.rm = TRUE)) %>% 
+  spread(device, mean_z_ice)
+
+
+df %>% 
+  filter(station == 19 & device == "suit") %>% 
+  drop_na(z_ice) %>% 
+  distinct(z_ice)
+

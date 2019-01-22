@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1545321900 "/media/work/projects/transsiz/article/jgr/tables/tables.tex" "tables.pdf" "tables" 1545324328
+["pdflatex"] 1548085757 "/media/work/projects/transsiz/article/jgr/tables/tables.tex" "tables.pdf" "tables" 1548088407
   "/etc/texmf/web2c/texmf.cnf" 1531323512 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/media/work/projects/transsiz/article/jgr/tables/tables.tex" 1545318597 933 1946377dc6da67d9b8c0023828255eae ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1480098666 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -35,6 +35,7 @@
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/opensans/OpenSans-Regular-t1.tfm" 1480098717 13452 7762e5e39e65060a7d5228041e0e4418 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/rsfs/rsfs10.tfm" 1480098717 688 37338d6ab346c2f1466b29e195316aa4 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1480098733 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1480098733 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1480098733 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Bold.pfb" 1480098744 106354 4660a54bb24b1f9448dad4bd3f4e9307 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Regular.pfb" 1480098744 101049 396b689e50d2a41e6f6160a56c0c2621 ""
@@ -117,12 +118,12 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1520210507 32485 c64754543d8ac501bea6e75e209ea521 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1530878718 2700761 ac0584cc9514ab21918550a6948c4ee2 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1539283958 4126774 2036083b25f6785bfaa4bc5e6ff95537 ""
-  "table1.tex" 1545317863 1519 ec4202424525ba58dbcc6b4c507e2679 ""
+  "table1.tex" 1548085757 1609 45c53265ee340ecb6f30189f4f376d5a ""
   "table2.tex" 1545318271 2398 9cc55feb8e02bc6af5c18e3fc514ad4f ""
-  "table3.tex" 1545321895 638 f4a4b52c5393fc8960bd1f50a7ecbd42 ""
-  "tables.aux" 1545321901 584 ba4bd3d7e87af41065229d0710a09fe5 ""
+  "table3.tex" 1548081475 637 55d1e495b4e5a983c1c94a64cfc3df75 ""
+  "tables.aux" 1548085758 584 ba4bd3d7e87af41065229d0710a09fe5 ""
   "tables.tex" 1545318597 933 1946377dc6da67d9b8c0023828255eae ""
   (generated)
-  "tables.pdf"
-  "tables.aux"
   "tables.log"
+  "tables.aux"
+  "tables.pdf"

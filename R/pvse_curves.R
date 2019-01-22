@@ -34,58 +34,38 @@ pp <- map(sheets, read_p_manip) %>%
 #   facet_wrap(~gi, scales = "free")
 
 fit_pe <- function(df, model_type) {
+  
   mod <- NA
 
   opt <- nls.control(maxiter = 400, minFactor = 1e-10, tol = 1e-10)
 
-  if (model_type == "model1") {
-    mod <- minpack.lm::nlsLM(
+  model_type = "model1"
+  
+     mod <- minpack.lm::nlsLM(
       p_manip ~
       ps * (1 - exp(-alpha * light / ps)) * exp(-beta * light / ps) + p0,
       data = df,
       start = list(
         ps = max(df$p_manip, na.rm = TRUE),
-        alpha = 0,
-        beta = 0.000001,
+        alpha = 0.001,
+        beta = 0.001,
         p0 = 0
       ),
       lower = c(
-        ps = min(df$p_manip, na.rm = TRUE),
+        ps = max(df$p_manip, na.rm = TRUE) / 2,
         alpha = 0,
         beta = 0,
         p0 = -Inf
       ),
       upper = c(
-        ps = 10,
-        alpha = Inf,
-        beta = 0.6,
+        ps = max(df$p_manip, na.rm = TRUE) * 2,
+        alpha = 1,
+        beta = 1,
         p0 = Inf
       ),
       control = opt
     )
-  } else if (model_type == "model2") {
-    mod <- minpack.lm::nlsLM(
-      p_manip ~
-      ps * (1 - exp(-alpha * light / ps)) + p0,
-      data = df,
-      start = list(
-        ps = 2,
-        alpha = 0.01,
-        p0 = 0.01
-      ),
-      lower = c(
-        ps = min(df$p_manip, na.rm = TRUE),
-        alpha = 0,
-        p0 = -Inf
-      ),
-      upper = c(
-        ps = Inf,
-        alpha = Inf,
-        p0 = Inf
-      ),
-      control = opt
-    )
-  }
+  
 
   return(mod)
 }
@@ -119,6 +99,8 @@ plot_pe <- function(df, mod, model_type, date, depth, sheet) {
   pm <- ps * (alpha / (alpha + beta)) * (beta / (alpha + beta))^(beta / alpha)
   ek <- pm / alpha
   # abline(h = pm + p0)
+  
+  df$tt = ps*exp(-beta*df$light/ps) + p0
 
   p <- df %>%
     ggplot(aes(x = light, y = p_manip)) +
@@ -128,14 +110,16 @@ plot_pe <- function(df, mod, model_type, date, depth, sheet) {
     geom_hline(yintercept = p0, color = "blue", lwd = 0.25, lty = 2) +
     geom_hline(yintercept = pm + p0, color = "blue", lwd = 0.25, lty = 2) +
     geom_vline(xintercept = ek, color = "blue", lwd = 0.25, lty = 2) +
+    geom_hline(yintercept = ps +p0, color = "red", lwd = 0.25, lty = 2) +
     # geom_hline(yintercept = ps, color = "red") +
     # geom_abline(slope = -beta, intercept = ps + p0, color = "blue") +
-    labs(title = paste(date, depth, sheet))
+    labs(title = paste(date, depth, sheet)) +
+    geom_path(aes(x = light, y =tt ), color = "green")
 
   print(p)
 }
 
-pdf("graphs/pe_curves.pdf", width = 6, height = 4)
+pdf("graphs/pe_curves2.pdf", width = 6, height = 4)
 
 pmap(list(pp$data, pp$mod, pp$model_type, as.character(pp$date), pp$depth, pp$sheet), plot_pe)
 

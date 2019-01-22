@@ -50,16 +50,12 @@ source("R/suit/suit_propagate_light_water_column.R")
 source("R/pvse_curves.R")
 source("R/pvse_propagate_parameters.R")
 
-
 # Figures -----------------------------------------------------------------
 
 source("R/fig1.R")
 source("R/fig2.R")
 source("R/fig3.R")
-
-# Appendix ----------------------------------------------------------------
-
-source("R/appendix_1.R")
-source("R/appendix_2.R")
-source("R/appendix_3.R")
-source("R/appendix_4.R")
+source("R/fig4.R")
+source("R/fig5.R")
+source("R/fig6.R")
+source("R/fig7.R")

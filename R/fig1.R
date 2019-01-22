@@ -7,6 +7,8 @@
 # reprojected using QGIS.
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
+library(ggspatial)
+
 rm(list = ls())
 
 pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>%
@@ -24,6 +26,9 @@ pyrano <- data.table::fread("data/raw/PS92_cont_surf_Pyrano.txt") %>%
 
 stations <- read_csv("data/clean/stations.csv")
 
+proj <- 4326
+# proj <- 3413
+
 pyrano <- pyrano %>%
   inner_join(stations, by = "date") %>%
   separate(station, into = c("station", "cast"), convert = TRUE)
@@ -34,40 +39,57 @@ pyrano <- pyrano %>%
 ocean <- rnaturalearth::ne_download(scale = 50, type = 'land', category = 'physical', returnclass = "sf")
 
 ocean <- ocean %>% 
-  st_transform(crs = 3411) %>% 
+  st_transform(crs = proj) %>% 
   st_simplify()
 
 pyrano <- pyrano %>% 
-  st_transform(crs = 3411)
+  st_transform(crs = proj)
 
 pyrano <- cbind(pyrano, st_coordinates(pyrano))
-  
-lim <- tibble(xlim = c(5, 26), ylim = c(76, 82)) %>% 
-  st_as_sf(coords = c("xlim", "ylim"), crs = 4326) %>% 
-  st_transform(crs = 3411)
-
-
-bathy <- raster::brick("data/raw/IBCAO_V3_500m_RR2.tif") %>%
-  raster::crop(c(600701.3, 1567375.5, -859544.4, -282590.1)) %>% 
-  raster::sampleRegular(size = 5e5, asRaster = TRUE)
-
-pp <- RStoolbox::ggRGB(bathy, r = 1, g = 2, b = 3, ggLayer = TRUE)
 
 p <- ggplot() +
-  pp + 
-  # geom_sf(data = ocean, size = 0.25) +
-  geom_path(data = pyrano, aes(x = X, y = Y, color = factor(station)), size = 2) +
-  coord_sf(xlim = c(600701.3, 1567375.5), c(-859544.4, -282590.1)) +
-  scale_x_continuous(breaks = seq(-90, 90, by = 4), expand = c(0, 0)) +
+  geom_sf(data = ocean, size = 0.25) +
+  geom_point(data = pyrano, aes(x = X, y = Y, color = factor(station))) +
+  coord_sf(xlim = c(0, 35), ylim = c(76, 83), crs = 4326) +
+  scale_x_continuous(breaks = seq(-90, 90, by = 5), expand = c(0, 0)) +
   scale_y_continuous(breaks = seq(-180, 180, by = 1), expand = c(0, 0)) +
   theme(panel.grid.major = element_line(size = 0.05, color = "gray90")) +
   labs(color = "Stations") +
   theme(axis.title = element_blank()) +
-  scale_color_brewer(palette = "Set1")
+  scale_color_brewer(palette = "Dark2", direction = 1) +
+  annotate(geom = "text", x = 1, y = 78, label = "Greenland Sea", vjust = 0, hjust = 0, size = 4, family = "IBM Plex Sans") +
+  annotate(geom = "text", x = 25, y = 76.5, label = "Barents Sea", vjust = 0, hjust = 0, size = 4, family = "IBM Plex Sans") +
+  annotation_north_arrow(location = "tr", which_north = "grid", height = unit(0.75, "cm"), width = unit(0.75, "cm")) +
+  annotation_scale(location = "bl")
 
 ggsave("graphs/fig1.pdf", device = cairo_pdf, width = 6, height = 5)
+# system("pdfcrop graphs/fig1.pdf graphs/fig1.pdf")
 
-system("pdfcrop graphs/fig1.pdf graphs/fig1.pdf")
+# lim <- tibble(xlim = c(5, 26), ylim = c(76, 82)) %>% 
+#   st_as_sf(coords = c("xlim", "ylim"), crs = 4326) %>% 
+#   st_transform(crs = proj)
+# 
+# 
+# bathy <- raster::brick("data/raw/IBCAO_V3_500m_RR2.tif") %>%
+#   raster::crop(c(0, 2000000, -1707825, -100000)) %>%
+#   # raster::sampleRegular(size = 6e5, asRaster = TRUE) %>%
+#   raster::projectRaster(crs = "+proj=longlat +datum=WGS84 +no_defs")
+# 
+# pp <- RStoolbox::ggRGB(bathy, r = 1, g = 2, b = 3, ggLayer = TRUE)
+# 
+# p <- ggplot() +
+#   pp + 
+#   # geom_sf(data = ocean, size = 0.25) +
+#   geom_point(data = pyrano, aes(x = X, y = Y, color = factor(station))) +
+#   coord_sf(xlim = c(0, 35), ylim = c(76, 83), crs = 4326) +
+#   scale_x_continuous(breaks = seq(-90, 90, by = 5), expand = c(0, 0)) +
+#   scale_y_continuous(breaks = seq(-180, 180, by = 1), expand = c(0, 0)) +
+#   theme(panel.grid.major = element_line(size = 0.05, color = "gray90")) +
+#   labs(color = "Stations") +
+#   theme(axis.title = element_blank()) +
+#   scale_color_brewer(palette = "Dark2", direction = 1)
+
+
 
 
 ## Add ship path?

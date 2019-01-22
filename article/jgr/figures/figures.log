@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.11)  19 DEC 2018 14:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.11)  21 JAN 2019 10:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -770,29 +770,26 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 
 LaTeX Warning: No \author given.
 
-<../../../graphs/fig1.pdf, id=1, 414.54875pt x 206.7725pt>
+<../../../graphs/fig1.pdf, id=1, 433.62pt x 361.35pt>
 File: ../../../graphs/fig1.pdf Graphic file (type pdf)
 <use ../../../graphs/fig1.pdf>
 Package pdftex.def Info: ../../../graphs/fig1.pdf  used on input line 33.
-(pdftex.def)             Requested size: 414.54773pt x 206.77199pt.
+(pdftex.def)             Requested size: 433.61894pt x 361.34912pt.
 [1
 
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <../../../graphs/fig1.pdf>]
-<../../../graphs/fig2.pdf, id=29, 540.0175pt x 333.245pt>
+<../../../graphs/fig2.pdf, id=30, 505.89pt x 722.7pt>
 File: ../../../graphs/fig2.pdf Graphic file (type pdf)
 <use ../../../graphs/fig2.pdf>
 Package pdftex.def Info: ../../../graphs/fig2.pdf  used on input line 42.
-(pdftex.def)             Requested size: 540.01617pt x 333.24417pt.
+(pdftex.def)             Requested size: 379.41655pt x 542.02367pt.
 
-Overfull \hbox (14.77829pt too wide) in paragraph at lines 42--43
- [][] 
- []
 
-[2
+LaTeX Warning: `h' float specifier changed to `ht'.
 
- <../../../graphs/fig2.pdf>]
-<../../../graphs/fig3.pdf, id=42, 540.0175pt x 333.245pt>
+[2 <../../../graphs/fig2.pdf>]
+<../../../graphs/fig3.pdf, id=48, 540.0175pt x 333.245pt>
 File: ../../../graphs/fig3.pdf Graphic file (type pdf)
 <use ../../../graphs/fig3.pdf>
 Package pdftex.def Info: ../../../graphs/fig3.pdf  used on input line 51.
@@ -802,24 +799,20 @@ Overfull \hbox (14.77829pt too wide) in paragraph at lines 51--52
  [][] 
  []
 
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 52.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 52.
 [3
 
+
  <../../../graphs/fig3.pdf>]
-<../../../graphs/fig4.pdf, id=66, 540.0175pt x 333.245pt>
+<../../../graphs/fig4.pdf, id=63, 470.75874pt x 336.25626pt>
 File: ../../../graphs/fig4.pdf Graphic file (type pdf)
 <use ../../../graphs/fig4.pdf>
 Package pdftex.def Info: ../../../graphs/fig4.pdf  used on input line 60.
-(pdftex.def)             Requested size: 540.01617pt x 333.24417pt.
-
-Overfull \hbox (14.77829pt too wide) in paragraph at lines 60--61
- [][] 
- []
-
-[4
+(pdftex.def)             Requested size: 470.7576pt x 336.25543pt.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 61.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 61.
+ [4
 
  <../../../graphs/fig4.pdf>]
 <../../../graphs/fig5.pdf, id=89, 540.0175pt x 333.245pt>
@@ -835,32 +828,45 @@ Overfull \hbox (14.77829pt too wide) in paragraph at lines 69--70
 [5
 
  <../../../graphs/fig5.pdf>]
-<../../../graphs/fig6.pdf, id=118, 540.0175pt x 333.245pt>
+<../../../graphs/fig6.pdf, id=113, 540.0175pt x 333.245pt>
 File: ../../../graphs/fig6.pdf Graphic file (type pdf)
 <use ../../../graphs/fig6.pdf>
-Package pdftex.def Info: ../../../graphs/fig6.pdf  used on input line 77.
+Package pdftex.def Info: ../../../graphs/fig6.pdf  used on input line 78.
 (pdftex.def)             Requested size: 540.01617pt x 333.24417pt.
 
-Overfull \hbox (14.77829pt too wide) in paragraph at lines 77--78
+Overfull \hbox (14.77829pt too wide) in paragraph at lines 78--79
  [][] 
  []
 
 [6
 
- <../../../graphs/fig6.pdf>] (./figures.aux) ) 
+ <../../../graphs/fig6.pdf>]
+<../../../graphs/fig7.pdf, id=140, 540.0175pt x 333.245pt>
+File: ../../../graphs/fig7.pdf Graphic file (type pdf)
+<use ../../../graphs/fig7.pdf>
+Package pdftex.def Info: ../../../graphs/fig7.pdf  used on input line 86.
+(pdftex.def)             Requested size: 540.01617pt x 333.24417pt.
+
+Overfull \hbox (14.77829pt too wide) in paragraph at lines 86--87
+ [][] 
+ []
+
+[7
+
+ <../../../graphs/fig7.pdf>] (./figures.aux) ) 
 Here is how much of TeX's memory you used:
- 8065 strings out of 492982
- 126946 string characters out of 6134895
+ 8077 strings out of 492982
+ 127131 string characters out of 6134895
  296426 words of memory out of 5000000
- 11475 multiletter control sequences out of 15000+600000
- 39972 words of font info for 76 fonts, out of 8000000 for 9000
+ 11479 multiletter control sequences out of 15000+600000
+ 43844 words of font info for 83 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  51i,6n,51p,8899b,371s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-03.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-04.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-01.enc}</usr/share/texlive/texmf-dist/fonts/type1/ibm/plex/IBMPlexSans.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Regular.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvr.pfb>
-Output written on figures.pdf (6 pages, 1268104 bytes).
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-04.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-03.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-01.enc}</usr/share/texlive/texmf-dist/fonts/type1/ibm/plex/IBMPlexSans-Bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/ibm/plex/IBMPlexSans.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Regular.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on figures.pdf (7 pages, 1413481 bytes).
 PDF statistics:
- 147 PDF objects out of 1000 (max. 8388607)
- 102 compressed objects within 2 object streams
+ 182 PDF objects out of 1000 (max. 8388607)
+ 129 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 31 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
 
