@@ -45,10 +45,19 @@ df <- df %>%
   left_join(pvse, by = c("station", "depth")) %>% 
   select(-contains("cast"))
 
-# Calulate PP -------------------------------------------------------------
+# Convert planar PAR to scalar PAR ----------------------------------------
 
-# df <- df %>% 
-#   filter(data_source == "suit")
+# See ref in the paper. The value of 1.2 was discussed with the co-authors.
+
+df <- df %>% 
+  mutate_at(vars(starts_with("par")), ~. * 1.2)
+
+df %>% 
+  filter(depth == 0) %>% 
+  group_by(data_source) %>% 
+  summarise(min(par_z_variable_transmittance), max(par_z_variable_transmittance))
+
+# Calulate PP -------------------------------------------------------------
 
 res <- df %>%
   mutate(pp_under_ice = ps * (1 - exp(-alpha * par_z_variable_transmittance / ps)) * exp(-beta * par_z_variable_transmittance / ps) ) %>%
@@ -73,7 +82,6 @@ sic <- read_csv("data/clean/sic.csv") %>%
 
 res  <- res %>% 
   left_join(sic)
-
 
 # Mixing model ------------------------------------------------------------
 
@@ -164,7 +172,7 @@ write_csv(df, "data/clean/primary_production_rov_vs_suit.csv")
 
 # Stats -------------------------------------------------------------------
 
-round(range(df$pp), digits = 3)
+round(range(df$pp), digits = 4)
 
 df %>% 
   group_by(station, data_source, pp_source) %>% 

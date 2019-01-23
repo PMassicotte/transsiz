@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.11)  21 JAN 2019 10:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.11)  23 JAN 2019 11:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -839,7 +839,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  51i,12n,51p,8897b,330s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-04.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-01.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Regular.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on tables.pdf (3 pages, 67063 bytes).
+Output written on tables.pdf (3 pages, 67055 bytes).
 PDF statistics:
  47 PDF objects out of 1000 (max. 8388607)
  34 compressed objects within 1 object stream

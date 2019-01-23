@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.11)  21 JAN 2019 10:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.11)  23 JAN 2019 11:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -863,7 +863,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  51i,6n,51p,8899b,371s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-04.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-03.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-01.enc}</usr/share/texlive/texmf-dist/fonts/type1/ibm/plex/IBMPlexSans-Bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/ibm/plex/IBMPlexSans.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Regular.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on figures.pdf (7 pages, 1413481 bytes).
+Output written on figures.pdf (7 pages, 1416200 bytes).
 PDF statistics:
  182 PDF objects out of 1000 (max. 8388607)
  129 compressed objects within 2 object streams
