@@ -25,7 +25,7 @@ numbers <- df %>%
   mutate(n = glue::glue("ROV: {rov}\nSUIT: {suit}"))
 
 p <- df %>% 
-  mutate(source = str_to_title(source)) %>% 
+  mutate(source = toupper(source)) %>% 
   ggplot(aes(x = transmittance_ed0, fill = source, color = source)) +
   geom_density(alpha = 0.5, size = 0.25) +
   scale_x_log10(labels = plain) +

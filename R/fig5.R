@@ -124,11 +124,11 @@ df_mean <- df %>%
   group_by(station, data_source, pp_source) %>% 
   summarise(mean_pp = mean(pp)) %>%
   ungroup() %>% 
-  mutate(data_source = str_to_title(data_source))
+  mutate(data_source = toupper(data_source))
 
 p <- df %>% 
   mutate(station = glue::glue("{station} (SIC: {round(sic_9, digits = 2) * 100}%)")) %>% 
-  mutate(data_source = str_to_title(data_source)) %>% 
+  mutate(data_source = toupper(data_source)) %>% 
   ggplot(aes(x = data_source, y = pp, fill = pp_source, color = pp_source)) +
   geom_violin(scale = "width", size = 0.25) +
   facet_wrap(~station) +
