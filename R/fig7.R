@@ -60,7 +60,7 @@ device_label <- c(
 mod %>%
   ungroup() %>% 
   filter(n_random_sample <= 250) %>% 
-  mutate(pp_source = ifelse(str_detect(pp_source, "under_ice"), "PP[Underice]", "PP[Mixing]")) %>% 
+  mutate(pp_source = ifelse(str_detect(pp_source, "under_ice"), "italic(P)[underice]", "italic(P)[mixing]")) %>% 
   ggplot(aes(x = n_random_sample, y = mean_abs_error)) +
   geom_ribbon(aes(ymin = mean_abs_error - sd_abs_error, ymax = mean_abs_error + sd_abs_error), alpha = 0.5, fill = "gray50") +
   geom_point(size = 1) +
@@ -94,8 +94,8 @@ df_table <- sf %>%
   mutate_if(is.numeric, round) 
 
 df_table <- df_table %>% 
-  mutate(pp_type = ifelse(str_detect(pp_source, "mixing"), "Mixing", "Underice")) %>% 
-  mutate(pp_source = sprintf("$PP^{\\mathrm{%s}}_{\\mathrm{%s}}$", pp_type, data_source)) %>% 
+  mutate(pp_type = ifelse(str_detect(pp_source, "mixing"), "mixing", "underice")) %>% 
+  mutate(pp_source = sprintf("$PP^{\\mathrm{%s}}_{\\mathrm{%s}}$", data_source, pp_type)) %>% 
   select(-data_source, -pp_type)
   
   # mutate(pp_source = ifelse(str_detect(pp_source, "mixing"), "$PP^{\\mathrm{fr}}_{s\\mathrm{MAX}}$", "PP\\textsubscript{Underice}"))

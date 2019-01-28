@@ -69,28 +69,52 @@
 
 \usepackage{textcomp}
 \usepackage[utf8]{inputenc}
+\usepackage{amsmath}
 
+\usepackage{ragged2e}
+\justifying
+
+%% ------------------------------------------------------------------------ %%
 %% Variables
+%% ------------------------------------------------------------------------ %%
 
-\newcommand{\ked}{\ensuremath{K_{d}}}
-\newcommand{\klu}{\ensuremath{K_{Lu}}}
+\newcommand{\ked}{\ensuremath{K_{E_d}}}
+\newcommand{\klu}{\ensuremath{K_{L_u}}}
 \newcommand{\edz}{\ensuremath{{E_d(z)}}}
 \newcommand{\ed}{\ensuremath{{E_d}}}
-\newcommand{\edzero}{\ensuremath{{E_d(0^-)}}}
-\newcommand{\kdpar}{\ensuremath{K_d}(PAR)}
+\newcommand{\edzerominus}{\ensuremath{{E_d(0^-)}}}
+\newcommand{\kdpar}{\ensuremath{K_{E_d}}(\textnormal{PAR})}
+\newcommand{\kdparscalar}{\ensuremath{K_{\mathring{E}_d}}(\textnormal{PAR})}
 
-\newcommand{\epar}{\ensuremath{E}\textsubscript{PAR}}
-\newcommand{\eparz}{\ensuremath{E\textsubscript{PAR}(z)}}
-\newcommand{\eparzint}{\ensuremath{E}\textsubscript{PAR}(\ensuremath{z}\textsubscript{int})}
+\newcommand{\epar}{\ensuremath{E}(\textnormal{PAR})}
+\newcommand{\eparz}{\ensuremath{E(\textnormal{PAR}, z)}}
+\newcommand{\eparzint}{\ensuremath{E(\textnormal{PAR}, z\textsubscript{int})}}
 \newcommand{\edlambdaz}{\ensuremath{{E_d(\lambda, z)}}}
-\newcommand{\eparzero}{\ensuremath{E}\textsubscript{PAR}\ensuremath{(0^+, t)}}
-\newcommand{\dailypp}{mgC~m\textsuperscript{-2}~d\textsuperscript{-1}}
+\newcommand{\eparzero}{\ensuremath{E(\textnormal{PAR}, 0^+, t)}}
 
+\newcommand{\eparscalar}{\ensuremath{\mathring{E}}(\textnormal{PAR})}
+\newcommand{\eparzscalar}{\ensuremath{\mathring{E}(\textnormal{PAR}, z)}}
+\newcommand{\eparzintscalar}{\ensuremath{\mathring{E}(\textnormal{PAR}, z\textsubscript{int})}}
+\newcommand{\eparzeroscalar}{\ensuremath{\mathring{E}(\textnormal{PAR}, 0^+, t)}}
+\newcommand{\eparzerosmoins}{\ensuremath{\mathring{E}(\textnormal{PAR}, 0^-)}}
+
+\newcommand{\ppundericedevice}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize device}}}}
+\newcommand{\ppmixingdevice}{\ensuremath{P_{\textnormal{\scriptsize mixing}}^{\textnormal{\scriptsize device}}}}
+\newcommand{\ppmixingsuit}{\ensuremath{P_{\textnormal{\scriptsize mixing}}^{\textnormal{\scriptsize SUIT}}}}
+\newcommand{\ppundericedevicezt}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize device}}(z,t)}}
+\newcommand{\ppsuitunderice}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize SUIT}}}}
+\newcommand{\pprovunderice}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize ROV}}}}
+\newcommand{\ppopenwater}{\ensuremath{P_{\textnormal{\scriptsize openwater}}}}
+\newcommand{\ppmixing}{\ensuremath{P_{\textnormal{\scriptsize mixing}}}}
+\newcommand{\ppunderice}{\ensuremath{P_{\textnormal{\scriptsize underice}}}}
+
+%% ------------------------------------------------------------------------ %%
 %%  Units
-
+%% ------------------------------------------------------------------------ %%
 \newcommand{\mminus}{m\textsuperscript{-1}}
 \newcommand{\wmsquare}{W~m\textsuperscript{-2}}
 \newcommand{\micromol}{\textmu mol~m\textsuperscript{-2}~s\textsuperscript{-1}}
+\newcommand{\dailypp}{mgC~m\textsuperscript{-2}~d\textsuperscript{-1}}
 
 \begin{document}
 
@@ -106,7 +130,7 @@
 
 % Example: \title{This is a test title}
 
-\title{Sensitivity of phytoplankton primary production estimates under heterogeneous sea surface to available irradiance}
+\title{Sensitivity of phytoplankton primary production estimates to available irradiance under heterogeneous sea-ice conditions}
 
 %% ------------------------------------------------------------------------ %%
 %
@@ -127,12 +151,13 @@
 % Example: \authors{A. B. Author\affil{1}\thanks{Current address, Antartica}, B. C. Author\affil{2,3}, and D. E.
 % Author\affil{3,4}\thanks{Also funded by Monsanto.}}
 
-\authors{Philippe Massicotte\affil{1}, Ilka Peeken\affil{2}, Christian Katlein\affil{1,2}, Hauke Flores\affil{2}, Yannick Huot\affil{3}, Giulia Castellani\affil{2}, Stefanie Arndt\affil{2}, Benjamin A. Lange\affil{2,4}, Jean-Éric Tremblay\affil{1} and Marcel Babin\affil{1}}
+\authors{Philippe Massicotte\affil{1,5}, Ilka Peeken\affil{2}, Christian Katlein\affil{1,2}, Hauke Flores\affil{2}, Yannick Huot\affil{3}, Giulia Castellani\affil{2}, Stefanie Arndt\affil{2}, Benjamin A. Lange\affil{2,4}, Jean-Éric Tremblay\affil{1,5} and Marcel Babin\affil{1,5}}
 
 \affiliation{1}{Takuvik Joint International Laboratory (UMI 3376) -- Université Laval (Canada) \& Centre National de la Recherche Scientifique (France)}
 \affiliation{2}{Alfred-Wegener-Institut Helmholtz-Zentrum für Polar- und Meeresforschung, Bremerhaven, Germany}
 \affiliation{3}{Université de Sherbrooke, Sherbrooke, Québec, Canada, J1K 2R1}
 \affiliation{4}{Fisheries and Oceans Canada, Freshwater Institute, Winnipeg, MB, Canada}
+\affiliation{5}{Québec-Océan et département de biologie, Université Laval, Québec, Canada, G1V 0A6}
 
 %(repeat as many times as is necessary)
 
@@ -162,9 +187,9 @@
 % \end{keypoints}
 
 \begin{keypoints}
-\item enter point 1 here
-\item enter point 2 here
-\item enter point 3 here
+	\item Phytoplankton primary production under heterogeneous sea ice is highly spatially variable.
+	\item Transmittance sampled with profiling platforms improves the accuracy of primary production estimates.
+	\item Upscaling estimates at larger spatial scales using satellite sea-ice concentration further reduced the error.
 \end{keypoints}
 
 %% ------------------------------------------------------------------------ %%
@@ -180,7 +205,8 @@
 %% \begin{abstract} starts the second page
 
 \begin{abstract}
-enter abstract here
+
+	The Arctic icescape is becoming an increasingly complex mosaic composed of ridges, hummocks, melt ponds, leads and snow. Under such heterogeneous surfaces, drifting phytoplankton communities are experiencing a wide range of irradiance conditions and intensities that cannot be sampled representatively using single-point measurements. Combining experimentally derived photosynthetic parameters with transmittance measurements acquired at spatial scales ranging from hundreds of meters (using a Remotely Operated Vehicle, ROV) to thousands of meters (using a Surface and Under-Ice Trawl, SUIT), we assessed the sensitivity of water-column primary production estimates to multi-scale under-ice light measurements. Daily primary production calculated from transmittance from both the ROV and the SUIT ranged between 0.004 and 939 \dailypp{}. Upscaling these estimates at larger spatial scales using satellite-derived sea-ice concentration reduced the variability by 22\% (0.004-731 \dailypp{}). The relative error in primary production estimates was two times lower when combining remote sensing and in situ data compared to ROV-based estimates alone. These results suggest that spatially extensive in situ measurements must be combined with large-footprint sea-ice coverage sampling (e.g., remote sensing, aerial imagery) to accurately estimate primary production in ice-covered waters. Also, the results indicated a decreasing error of primary production estimates with increasing sample size and the spatial scale of in situ measurements. Conversely, existing estimates of spatially integrated phytoplankton primary production in ice-covered waters using single-point measurements may be associated with large statistical errors. Considering these implications is important for modelling scenarios and interpretation of existing measurements in a changing Arctic ecosystem.
 
 \end{abstract}
 
@@ -212,8 +238,6 @@ enter abstract here
 % results)
 %
 % \section{Conclusions}
-
-\ked{}, \klu{}, \edz{}, \ed{}, \edzero{}, \kdpar{}, \epar{}, \eparz{}, \eparzint{}, \edlambdaz{}, \micromol{}, \eparzero{}, \dailypp{}
 
 \input{introduction.tex}
 \input{methods.tex}
@@ -387,9 +411,18 @@ enter abstract here
 % It is also the appropriate place to thank colleagues and other contributors.
 % AGU does not normally allow dedications.
 
-
 \acknowledgments
-Enter acknowledgments, including your data availability statement, here.
+
+We thank F. Bruyant, M. Beaulieu for carrying out the P vs. E curve measurements and providing us with the data. We thank Sascha Willmes for onboard processing of the ice and snow thickness data. We thank captain Thomas Wunderlich and the crew of icebreaker Polarstern for their support during the TRANSSIZ campaign (AWI\_PS92\_00). This study was conducted under the Helmholtz Association Research Programme Polar regions And Coasts in the changing Earth System II (PACES II), Topic 1, WP 4 and is part of the Helmholtz Association Young Investigators Groups Iceflux: Ice-ecosystem carbon flux in polar oceans (VH-NG-800). SUIT was developed by Wageningen Marine Research (WMR; formerly IMARES) with support from the Netherlands Ministry of EZ (project WOT-04-009-036) and the Netherlands Polar Program (project ALW 866.13.009). We thank Jan Andries van Franeker (WMR) for kindly providing the Surface and Under Ice Trawl (SUIT) and Michiel van Dorssen for technical support with work at sea. The project was conducted under the scientific coordination of the Canada Excellence Research Chair on Remote sensing of Canada's new Arctic frontier and the CNRS \& Université Laval Takuvik Joint International laboratory (UMI3376). Data for the light measurement used in this study can be found on Pangaea website: 
+
+\begin{itemize}
+	\item ROV data (https://doi.pangaea.de/10.1594/PANGAEA.861048)
+	\item Incident radiation (https://doi.pangaea.de/10.1594/PANGAEA.849663)
+	\item Station list (https://doi.pangaea.de/10.1594/PANGAEA.848841), 
+	\item SUIT data (submitted to Pangaea)
+	\item Photosynthetic parameters (submitted to Pangaea)
+	\item Sea-ice/snow thickness (submitted to Pangaea)
+\end{itemize}
 
 %% ------------------------------------------------------------------------ %%
 %% References and Citations
@@ -489,24 +522,24 @@ More Information and Advice:
 % Equation arrays will appear left-aligned.
 
 Math coded inside display math mode \[ ...\]
- will not be numbered, e.g.,:
- \[ x^2=y^2 + z^2\]
+will not be numbered, e.g.,:
+\[ x^2=y^2 + z^2\]
 
- Math coded inside \begin{equation} and \end{equation} will
- be automatically numbered, e.g.,:
- \begin{equation}
- x^2=y^2 + z^2
- \end{equation}
+Math coded inside \begin{equation} and \end{equation} will
+be automatically numbered, e.g.,:
+\begin{equation}
+	x^2=y^2 + z^2
+\end{equation}
 
 
 % To create multiline equations, use the
 % \begin{eqnarray} and \end{eqnarray} environment
 % as demonstrated below.
 \begin{eqnarray}
-  x_{1} & = & (x - x_{0}) \cos \Theta \nonumber \\
-        && + (y - y_{0}) \sin \Theta  \nonumber \\
-  y_{1} & = & -(x - x_{0}) \sin \Theta \nonumber \\
-        && + (y - y_{0}) \cos \Theta.
+	x_{1} & = & (x - x_{0}) \cos \Theta \nonumber \\
+	&& + (y - y_{0}) \sin \Theta  \nonumber \\
+	y_{1} & = & -(x - x_{0}) \sin \Theta \nonumber \\
+	&& + (y - y_{0}) \cos \Theta.
 \end{eqnarray}
 
 %If you don't want an equation number, use the star form:

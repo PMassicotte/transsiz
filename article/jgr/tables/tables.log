@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.11)  23 JAN 2019 11:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.11)  25 JAN 2019 08:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -650,7 +650,7 @@ Already applied: [0000/00/00] Old fixltx2e package on input line 53.
 )
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
- (./tables.aux)
+ (/media/work/projects/transsiz/article/jgr/tables/tables.aux)
 \openout1 = `tables.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
@@ -798,7 +798,7 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 
 LaTeX Warning: No \author given.
 
-(./table1.tex
+(/media/work/projects/transsiz/article/jgr/tables/./table1.tex
 LaTeX Font Info:    Font shape `T1/fos/m/n' will be
 (Font)              scaled to size 9.49997pt on input line 5.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
@@ -813,7 +813,7 @@ Overfull \hbox (8.34225pt too wide) in paragraph at lines 7--20
 ) [1
 
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./table2.tex
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (/media/work/projects/transsiz/article/jgr/tables/./table2.tex
 
 LaTeX Warning: No positions in optional float specifier.
                Default added (so using `tbp') on input line 1.
@@ -826,20 +826,20 @@ LaTeX Font Info:    Font shape `T1/fos/m/n' will be
 (Font)              scaled to size 8.54997pt on input line 7.
 LaTeX Font Info:    Font shape `T1/fos/m/n' will be
 (Font)              scaled to size 6.64998pt on input line 7.
-) [2] (./table3.tex) [3
+) [2] (/media/work/projects/transsiz/article/jgr/tables/./table3.tex) [3
 
 
-] (./tables.aux) ) 
+] (/media/work/projects/transsiz/article/jgr/tables/tables.aux) ) 
 Here is how much of TeX's memory you used:
- 8232 strings out of 492982
- 128718 string characters out of 6134895
+ 8233 strings out of 492982
+ 129353 string characters out of 6134895
  301365 words of memory out of 5000000
  11607 multiletter control sequences out of 15000+600000
  68035 words of font info for 118 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  51i,12n,51p,8897b,330s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-04.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-01.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Regular.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on tables.pdf (3 pages, 67055 bytes).
+Output written on /media/work/projects/transsiz/article/jgr/tables/tables.pdf (3 pages, 67331 bytes).
 PDF statistics:
  47 PDF objects out of 1000 (max. 8388607)
  34 compressed objects within 1 object stream

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.11)  23 JAN 2019 11:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.11)  28 JAN 2019 14:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -622,7 +622,7 @@ Already applied: [0000/00/00] Old fixltx2e package on input line 53.
 )
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
- (./figures.aux)
+ (/media/work/projects/transsiz/article/jgr/figures/figures.aux)
 \openout1 = `figures.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 28.
@@ -812,10 +812,14 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 61.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 61.
+LaTeX Font Info:    Font shape `T1/fos/m/n' will be
+(Font)              scaled to size 8.54997pt on input line 61.
+LaTeX Font Info:    Font shape `T1/fos/m/n' will be
+(Font)              scaled to size 6.64998pt on input line 61.
  [4
 
  <../../../graphs/fig4.pdf>]
-<../../../graphs/fig5.pdf, id=89, 540.0175pt x 333.245pt>
+<../../../graphs/fig5.pdf, id=90, 540.0175pt x 333.245pt>
 File: ../../../graphs/fig5.pdf Graphic file (type pdf)
 <use ../../../graphs/fig5.pdf>
 Package pdftex.def Info: ../../../graphs/fig5.pdf  used on input line 69.
@@ -828,7 +832,7 @@ Overfull \hbox (14.77829pt too wide) in paragraph at lines 69--70
 [5
 
  <../../../graphs/fig5.pdf>]
-<../../../graphs/fig6.pdf, id=113, 540.0175pt x 333.245pt>
+<../../../graphs/fig6.pdf, id=120, 540.0175pt x 333.245pt>
 File: ../../../graphs/fig6.pdf Graphic file (type pdf)
 <use ../../../graphs/fig6.pdf>
 Package pdftex.def Info: ../../../graphs/fig6.pdf  used on input line 78.
@@ -841,7 +845,7 @@ Overfull \hbox (14.77829pt too wide) in paragraph at lines 78--79
 [6
 
  <../../../graphs/fig6.pdf>]
-<../../../graphs/fig7.pdf, id=140, 540.0175pt x 333.245pt>
+<../../../graphs/fig7.pdf, id=151, 540.0175pt x 333.245pt>
 File: ../../../graphs/fig7.pdf Graphic file (type pdf)
 <use ../../../graphs/fig7.pdf>
 Package pdftex.def Info: ../../../graphs/fig7.pdf  used on input line 86.
@@ -853,20 +857,20 @@ Overfull \hbox (14.77829pt too wide) in paragraph at lines 86--87
 
 [7
 
- <../../../graphs/fig7.pdf>] (./figures.aux) ) 
+ <../../../graphs/fig7.pdf>] (/media/work/projects/transsiz/article/jgr/figures/figures.aux) ) 
 Here is how much of TeX's memory you used:
- 8077 strings out of 492982
- 127131 string characters out of 6134895
+ 8079 strings out of 492982
+ 127451 string characters out of 6134895
  296426 words of memory out of 5000000
- 11479 multiletter control sequences out of 15000+600000
- 43844 words of font info for 83 fonts, out of 8000000 for 9000
+ 11481 multiletter control sequences out of 15000+600000
+ 50522 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 51i,6n,51p,8899b,371s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-04.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-03.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-01.enc}</usr/share/texlive/texmf-dist/fonts/type1/ibm/plex/IBMPlexSans-Bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/ibm/plex/IBMPlexSans.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Regular.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on figures.pdf (7 pages, 1416200 bytes).
+ 51i,7n,51p,8899b,371s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-04.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-03.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/opensans/opensans-01.enc}</usr/share/texlive/texmf-dist/fonts/type1/ibm/plex/IBMPlexSans-Bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/ibm/plex/IBMPlexSans-Italic.pfb></usr/share/texlive/texmf-dist/fonts/type1/ibm/plex/IBMPlexSans.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/opensans/OpenSans-Regular.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on /media/work/projects/transsiz/article/jgr/figures/figures.pdf (7 pages, 1533508 bytes).
 PDF statistics:
- 182 PDF objects out of 1000 (max. 8388607)
- 129 compressed objects within 2 object streams
+ 201 PDF objects out of 1000 (max. 8388607)
+ 143 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  36 words of extra memory for PDF output out of 10000 (max. 10000000)
 

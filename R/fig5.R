@@ -152,16 +152,16 @@ p <- df %>%
     breaks = c("daily_integrated_pp_under_ice", "daily_integrated_pp_mixing_model"),
     values = RColorBrewer::brewer.pal(3, "Set1"),
     labels = c(
-      bquote(PP[Underice]),
-      bquote(PP[Mixing])
+      bquote(italic(P)[underice]),
+      bquote(italic(P)[mixing])
     )
   ) +
   scale_color_manual(
     breaks = c("daily_integrated_pp_under_ice", "daily_integrated_pp_mixing_model"),
     values = RColorBrewer::brewer.pal(3, "Set1"),
     labels = c(
-      bquote(PP[Underice]),
-      bquote(PP[Mixing])
+      bquote(italic(P)[underice]),
+      bquote(italic(P)[mixing])
     )
   )
 

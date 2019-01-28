@@ -27,7 +27,7 @@ round(range(df$abs_err), digits = 4)
 mean_rel_err <- df %>% 
   group_by(data_source, pp_source) %>% 
   summarise(mean_rel_err = mean(rel_err)) %>% 
-  mutate(pp_source = ifelse(str_detect(pp_source, "under_ice"), "PP[Underice]", "PP[Mixing]")) 
+  mutate(pp_source = ifelse(str_detect(pp_source, "under_ice"), "italic(P)[underice]", "italic(P)[mixing]")) 
 
 # labels_pp_source <- c(
 #   daily_integrated_pp_mixing_model = "P[d]",
@@ -37,7 +37,7 @@ mean_rel_err <- df %>%
 unique(df$pp_source)
 
 p2 <- df %>%
-  mutate(pp_source = ifelse(str_detect(pp_source, "under_ice"), "PP[Underice]", "PP[Mixing]")) %>% 
+  mutate(pp_source = ifelse(str_detect(pp_source, "under_ice"), "italic(P)[underice]", "italic(P)[mixing]")) %>% 
   ggplot(aes(x = rel_err)) +
   geom_histogram() +
   facet_grid(data_source ~ pp_source, scales = "free_y", labeller = labeller(data_source = str_to_upper, pp_source = label_parsed)) +
@@ -61,6 +61,6 @@ p2 <- df %>%
     ),
     size = 3
   ) +
-  xlab(bquote("Relative error"~(delta[PP])))
+  xlab(bquote("Relative error"~(delta[italic(P)])))
 
 ggsave("graphs/fig6.pdf", device = cairo_pdf, height = 190 / 1.61803398875, width = 190, units = "mm")
