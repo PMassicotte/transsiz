@@ -64,3 +64,40 @@ p2 <- df %>%
   xlab(bquote("Relative error"~(delta[italic(P)])))
 
 ggsave("graphs/fig6.pdf", device = cairo_pdf, height = 190 / 1.61803398875, width = 190, units = "mm")
+
+
+# Fig for the poster ------------------------------------------------------
+
+p3 <- df %>%
+  mutate(pp_source = ifelse(str_detect(pp_source, "under_ice"), "italic(P)[underice]", "italic(P)[mixing]")) %>% 
+  ggplot(aes(x = rel_err)) +
+  geom_histogram() +
+  facet_grid(data_source ~ pp_source, scales = "free_y", labeller = labeller(data_source = str_to_upper, pp_source = label_parsed)) +
+  scale_x_log10(labels = plain) +
+  annotation_logticks(sides = "b") +
+  geom_vline(
+    data = mean_rel_err,
+    aes(xintercept = mean_rel_err),
+    lty = 1,
+    color = "red",
+    size = 2
+    # alpha = 0.5
+  ) +
+  geom_text(
+    data = mean_rel_err,
+    aes(
+      x = mean_rel_err,
+      y = Inf,
+      label = paste0(round(mean_rel_err * 100, digits = 0), "%"),
+      hjust = 1.2,
+      vjust = 1.5
+    ),
+    size = 5
+  ) +
+  xlab(bquote("Relative error"~(delta[italic(P)]))) + 
+  theme(axis.text = element_text(size = 14)) +
+  theme(axis.title = element_text(size = 16)) +
+  theme(strip.text = element_text(size = 14)) +
+  theme(strip.background = element_rect(fill = "#f5f6fa")) 
+
+ggsave("graphs/fig6_poster.pdf", device = cairo_pdf, height = 190 / 1.61803398875, width = 190, units = "mm")

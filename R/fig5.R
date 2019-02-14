@@ -170,6 +170,58 @@ ggsave("graphs/fig5.pdf", device = cairo_pdf, height = 190 / 1.61803398875, widt
 write_feather(df, "data/clean/primary_production_rov_vs_suit.feather")
 write_csv(df, "data/clean/primary_production_rov_vs_suit.csv")
 
+
+# Fig for the poster ------------------------------------------------------
+
+p <- df %>% 
+  mutate(station = glue::glue("{station} (SIC: {round(sic_9, digits = 2) * 100}%)")) %>% 
+  mutate(data_source = toupper(data_source)) %>% 
+  ggplot(aes(x = data_source, y = pp, fill = pp_source, color = pp_source)) +
+  geom_violin(scale = "width", size = 0.25) +
+  facet_wrap(~station) +
+  scale_y_log10(labels = plain) +
+  annotation_logticks(sides = "l", size = 0.25) +
+  theme(legend.title = element_blank()) +
+  theme(axis.title.x = element_blank()) +
+  # scale_fill_discrete(labels = c("daily_integrated_pp_under_ice" = "Under ice", "daily_integrated_pp_mixing_model" = "Mixing model")) +
+  theme(legend.justification = c(0, 0), legend.position = c(0.35, 0.1)) +
+  ylab(bquote("Primary production" ~(mgC~m^{-2}~d^{-1})))  +
+  stat_summary(
+    fun.y = mean,
+    geom = "point",
+    aes(group = pp_source),
+    position = position_dodge(.9),
+    color = "black",
+    size = 1,
+    show.legend = FALSE
+  ) +
+  scale_fill_manual(
+    breaks = c("daily_integrated_pp_under_ice", "daily_integrated_pp_mixing_model"),
+    values = RColorBrewer::brewer.pal(3, "Set1"),
+    labels = c(
+      bquote(italic(P)[underice]),
+      bquote(italic(P)[mixing])
+    )
+  ) +
+  scale_color_manual(
+    breaks = c("daily_integrated_pp_under_ice", "daily_integrated_pp_mixing_model"),
+    values = RColorBrewer::brewer.pal(3, "Set1"),
+    labels = c(
+      bquote(italic(P)[underice]),
+      bquote(italic(P)[mixing])
+    )
+  ) +
+  theme(legend.justification = c(0, 0), legend.position = c(0.35, 0.01)) +
+  theme(axis.text=element_text(size = 14)) +
+  theme(axis.title = element_text(size = 16)) +
+  theme(strip.text = element_text(size = 14)) +
+  theme(legend.text = element_text(size = 14)) +
+  theme(legend.text = element_text(margin = margin(l = 10, unit = "pt"))) +
+  theme(strip.background = element_rect(fill = "#f5f6fa")) 
+  
+
+ggsave("graphs/fig5_poster.pdf", device = cairo_pdf, height = 190 / 1.61803398875, width = 190, units = "mm")
+
 # Stats -------------------------------------------------------------------
 
 round(range(df$pp), digits = 4)

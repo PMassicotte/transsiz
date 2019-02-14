@@ -56,6 +56,48 @@ p <- df %>%
 
 ggsave("graphs/fig3.pdf", device = cairo_pdf, height = 190 / 1.61803398875, width = 190, units = "mm")
 
+
+# Fig for the poster ------------------------------------------------------
+
+df %>% 
+  mutate(source = toupper(source)) %>% 
+  ggplot(aes(x = transmittance_ed0, fill = source, color = source)) +
+  geom_density(alpha = 0.5, size = 0.25) +
+  scale_x_log10(labels = plain) +
+  annotation_logticks(sides = "b", size = 0.25) +
+  scale_y_continuous() +
+  facet_wrap(~station, scales = "free_y") +
+  xlab("Transmittance (%)") +
+  ylab("Density") +
+  labs(fill = "Device") +
+  labs(color = "Device") +
+  geom_vline(xintercept = 0.1, lty = 2) +
+  scale_fill_brewer(palette = "Set1") +
+  scale_color_brewer(palette = "Set1") +
+  geom_text(
+    data = numbers,
+    aes(
+      x = 0,
+      y = Inf,
+      label = n,
+      group = station
+    ),
+    inherit.aes = FALSE,
+    parse = FALSE,
+    hjust = -0.1,
+    vjust = 1.2,
+    size = 3
+  ) +
+  theme(legend.justification = c(0, 0), legend.position = c(0.35, 0.01)) +
+  theme(axis.text=element_text(size = 14)) +
+  theme(axis.title = element_text(size = 16)) +
+  theme(strip.text = element_text(size = 14)) +
+  theme(legend.text = element_text(size = 14)) +
+  theme(legend.title = element_text(size = 16)) +
+  theme(strip.background = element_rect(fill = "#f5f6fa")) 
+
+ggsave("graphs/fig3_poster.pdf", device = cairo_pdf, height = 190 / 1.61803398875, width = 190, units = "mm")
+
 # Boxplot? ----------------------------------------------------------------
 
 # df %>% 
