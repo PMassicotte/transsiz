@@ -211,7 +211,7 @@ p <- df %>%
       bquote(italic(P)[mixing])
     )
   ) +
-  theme(legend.justification = c(0, 0), legend.position = c(0.35, 0.01)) +
+  theme(legend.justification = c(0, 0), legend.position = c(0.35, 0.05)) +
   theme(axis.text=element_text(size = 14)) +
   theme(axis.title = element_text(size = 16)) +
   theme(strip.text = element_text(size = 14)) +
