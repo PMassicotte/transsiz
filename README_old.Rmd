@@ -2,12 +2,6 @@
 title: "Transsiz primary production"
 output: 
       md_document: default
-      pdf_document: default
-      latex_engine: xelatex
-      sansfont: Open Sans
-header-includes:
-- \usepackage{graphicx}
-- \usepackage{float}
 ---
 
 ```{r setup, include=FALSE, echo=FALSE, message=FALSE, warning=FALSE}
