@@ -87,3 +87,14 @@ pvse <- pvse %>%
   unnest(pred)
 
 write_csv(pvse, "data/clean/pvse_propagated_parameters.csv")
+
+# Stats for the paper -----------------------------------------------------
+
+ek <- read_csv("data/clean/photosynthetic_parameters.csv") %>%
+  filter(sheet == "water") 
+
+range(ek$ek)
+mean(ek$ek)
+
+ek %>% 
+  summarise_if(is.numeric, .funs = funs(n(), mean))
