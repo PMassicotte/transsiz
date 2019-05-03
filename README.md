@@ -2,11 +2,15 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
+Zenodo badge
+
 This is the repository for the research paper **Sensitivity of phytoplankton primary production estimates to available irradiance under heterogeneous sea-ice condition** which can be found here: xxx
+
+Please cite the paper as: xxx
 
 ## Data
 
-The data is available on [Pangaea web site](https://www.pangaea.de/).
+The data is available on [Pangaea web site](https://www.pangaea.de/):
 
 - ROV data (https://doi.pangaea.de/10.1594/PANGAEA.861048)
 
