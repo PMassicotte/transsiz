@@ -24,6 +24,10 @@ The data is available on [Pangaea web site](https://www.pangaea.de/):
 
 - Sea-ice/snow thickness (https://doi.pangaea.de/10.1594/PANGAEA.897958)
 
-## Code
+## Source code
 
-The file `R/main.R` contains the recipes to reproduce all the analyses and figures of the article.
+R 3.6.0 has been used to build this project. The file `R/main.R` contains the recipes to reproduce all the analyses and figures of the article.
+
+## Code of conduct
+
+Please note that the 'transsiz' project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
