@@ -23,3 +23,7 @@ The data is available on [Pangaea web site](https://www.pangaea.de/):
 - Photosynthetic parameters (https://doi.org/10.1594/PANGAEA.899842)
 
 - Sea-ice/snow thickness (https://doi.pangaea.de/10.1594/PANGAEA.897958)
+
+## Code
+
+The file `R/main.R` contains the recipes to reproduce all the analyses and figures of the article.
