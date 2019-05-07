@@ -95,6 +95,7 @@ ek <- read_csv("data/clean/photosynthetic_parameters.csv") %>%
 
 range(ek$ek)
 mean(ek$ek)
+sd(ek$ek)
 
 ek %>% 
   summarise_if(is.numeric, .funs = funs(n(), mean))
