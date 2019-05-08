@@ -163,7 +163,8 @@ p <- df %>%
       bquote(italic(P)[underice]),
       bquote(italic(P)[mixing])
     )
-  )
+  ) +
+  theme(legend.spacing.x = unit(0.15, "cm"))
 
 ggsave("graphs/fig5.pdf", device = cairo_pdf, height = 190 / 1.61803398875, width = 190, units = "mm")
 
