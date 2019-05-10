@@ -235,3 +235,22 @@ df %>%
 df %>% 
   group_by(pp_source) %>% 
   summarise(min(pp), max(pp))
+
+
+# Stats for Ilka ----------------------------------------------------------
+
+# I know I am asking a lot but if it would be easy for you, could you please
+# send me an average, median and standard deviation for each station and
+# tool/method used.
+
+stats <- df %>% 
+  select(-id, -cast, -starts_with("sic")) %>% 
+  group_by(station, data_source, pp_source) 
+
+stats <- stats %>% 
+  summarise_if(is.numeric, .funs = list(mean_pp = mean, median_pp = median, sd_pp = sd)) %>% 
+  left_join(stats %>% count(name = "number_of_observation"))
+
+stats %>% 
+  write_csv("~/Desktop/stats_pp_for_ilka.csv")
+
