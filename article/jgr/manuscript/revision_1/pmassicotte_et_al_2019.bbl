@@ -216,6 +216,41 @@ Elzhov, T\BPBI V.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Fern{\'{a}}ndez-M{\'{e}}ndez%
+\ \protect \BOthers {.}}{%
+Fern{\'{a}}ndez-M{\'{e}}ndez%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2015}}%
+}]{%
+Fernandez-Mendez2015}
+\APACinsertmetastar {%
+Fernandez-Mendez2015}%
+\begin{APACrefauthors}%
+Fern{\'{a}}ndez-M{\'{e}}ndez, M.%
+, Katlein, C.%
+, Rabe, B.%
+, Nicolaus, M.%
+, Peeken, I.%
+, Bakker, K.%
+\BDBL {}Boetius, A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2015}{jun}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{Photosynthetic production in the central Arctic Ocean
+  during the record sea-ice minimum in 2012}} {{Photosynthetic production in
+  the central Arctic Ocean during the record sea-ice minimum in 2012}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Biogeosciences}{12}{11}{3525--3549}.
+\newblock
+\begin{APACrefURL} \url{https://www.biogeosciences.net/12/3525/2015/}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.5194/bg-12-3525-2015} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Flores%
 \ \protect \BOthers {.}}{%
 Flores%
@@ -356,6 +391,44 @@ Hancke, K.%
   \end{APACrefURL}
 \newblock
 \begin{APACrefDOI} \doi{10.1002/2017JC013263} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Hill%
+, Ardyna%
+, Lee%
+\BCBL {}\ \BBA {} Varela%
+}{%
+Hill%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2018}}%
+}]{%
+Hill2018a}
+\APACinsertmetastar {%
+Hill2018a}%
+\begin{APACrefauthors}%
+Hill, V.%
+, Ardyna, M.%
+, Lee, S\BPBI H.%
+\BCBL {}\ \BBA {} Varela, D\BPBI E.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2018}{jun}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{Decadal trends in phytoplankton production in the
+  Pacific Arctic Region from 1950 to 2012}} {{Decadal trends in phytoplankton
+  production in the Pacific Arctic Region from 1950 to 2012}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Deep Sea Res. Part II Top. Stud.
+  Oceanogr.}{152}{}{82--94}.
+\newblock
+\begin{APACrefURL}
+  \url{https://www.sciencedirect.com/science/article/pii/S0967064516300959
+  https://linkinghub.elsevier.com/retrieve/pii/S0967064516300959}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1016/j.dsr2.2016.12.015} \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
@@ -590,40 +663,6 @@ Kwok, R.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
-Lacour%
-, Larivi{\`{e}}re%
-\BCBL {}\ \BBA {} Babin%
-}{%
-Lacour%
-\ \protect \BOthers {.}}{%
-{\protect \APACyear {2017}}%
-}]{%
-Lacour2017}
-\APACinsertmetastar {%
-Lacour2017}%
-\begin{APACrefauthors}%
-Lacour, T.%
-, Larivi{\`{e}}re, J.%
-\BCBL {}\ \BBA {} Babin, M.%
-\end{APACrefauthors}%
-\unskip\
-\newblock
-\APACrefYearMonthDay{2017}{jan}{}.
-\newblock
-{\BBOQ}\APACrefatitle {{Growth, Chl a content, photosynthesis, and elemental
-  composition in polar and temperate microalgae}} {{Growth, Chl a content,
-  photosynthesis, and elemental composition in polar and temperate
-  microalgae}}.{\BBCQ}
-\newblock
-\APACjournalVolNumPages{Limnol. Oceanogr.}{62}{1}{43--58}.
-\newblock
-\begin{APACrefURL} \url{http://doi.wiley.com/10.1002/lno.10369}
-  \end{APACrefURL}
-\newblock
-\begin{APACrefDOI} \doi{10.1002/lno.10369} \end{APACrefDOI}
-\PrintBackRefs{\CurrentBib}
-
-\bibitem [\protect \citeauthoryear {%
 Lange%
 , Flores%
 \BCBL {}\ \protect \BOthers {.}}{%
@@ -809,7 +848,7 @@ Lund-Hansen, L\BPBI C.%
 \bibitem [\protect \citeauthoryear {%
 Massicotte%
 , B{\'{e}}cu%
-, Girard%
+, Lambert-Girard%
 , Leymarie%
 \BCBL {}\ \BBA {} Babin%
 }{%
@@ -823,21 +862,61 @@ Massicotte2018}%
 \begin{APACrefauthors}%
 Massicotte, P.%
 , B{\'{e}}cu, G.%
-, Girard, S\BHBI l.%
+, Lambert-Girard, S.%
 , Leymarie, E.%
 \BCBL {}\ \BBA {} Babin, M.%
 \end{APACrefauthors}%
 \unskip\
 \newblock
-\APACrefYearMonthDay{2018}{}{}.
+\APACrefYearMonthDay{2018}{dec}{}.
 \newblock
-{\BBOQ}\APACrefatitle {{Estimating underwater light regime under spatially
-  heterogeneous sea ice in the Arctic}} {{Estimating underwater light regime
-  under spatially heterogeneous sea ice in the Arctic}}.{\BBCQ}
+{\BBOQ}\APACrefatitle {{Estimating Underwater Light Regime under Spatially
+  Heterogeneous Sea Ice in the Arctic}} {{Estimating Underwater Light Regime
+  under Spatially Heterogeneous Sea Ice in the Arctic}}.{\BBCQ}
 \newblock
-\APACjournalVolNumPages{}{}{1}{1--9}.
+\APACjournalVolNumPages{Appl. Sci.}{8}{12}{2693}.
+\newblock
+\begin{APACrefURL} \url{http://www.mdpi.com/2076-3417/8/12/2693}
+  \end{APACrefURL}
 \newblock
 \begin{APACrefDOI} \doi{10.3390/app8122693} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Matrai%
+\ \protect \BOthers {.}}{%
+Matrai%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2013}}%
+}]{%
+Matrai2013}
+\APACinsertmetastar {%
+Matrai2013}%
+\begin{APACrefauthors}%
+Matrai, P.%
+, Olson, E.%
+, Suttles, S.%
+, Hill, V.%
+, Codispoti, L.%
+, Light, B.%
+\BCBL {}\ \BBA {} Steele, M.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{mar}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{Synthesis of primary production in the Arctic Ocean: I.
+  Surface waters, 1954–2007}} {{Synthesis of primary production in the Arctic
+  Ocean: I. Surface waters, 1954–2007}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Prog. Oceanogr.}{110}{}{93--106}.
+\newblock
+\begin{APACrefURL}
+  \url{https://www.sciencedirect.com/science/article/pii/S007966111200170X
+  https://linkinghub.elsevier.com/retrieve/pii/S007966111200170X}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1016/j.pocean.2012.11.004} \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
@@ -1120,6 +1199,38 @@ Nicolaus, M.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Park%
+\ \BBA {} Stewart%
+}{%
+Park%
+\ \BBA {} Stewart%
+}{%
+{\protect \APACyear {2016}}%
+}]{%
+Park2016}
+\APACinsertmetastar {%
+Park2016}%
+\begin{APACrefauthors}%
+Park, H\BHBI S.%
+\BCBT {}\ \BBA {} Stewart, A\BPBI L.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2016}{jan}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{An analytical model for wind-driven Arctic summer sea
+  ice drift}} {{An analytical model for wind-driven Arctic summer sea ice
+  drift}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Cryosph.}{10}{1}{227--244}.
+\newblock
+\begin{APACrefURL} \url{https://www.the-cryosphere.net/10/227/2016/}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.5194/tc-10-227-2016} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Parsons%
 , Maita%
 \BCBL {}\ \BBA {} Lalli%
@@ -1208,29 +1319,65 @@ Platt, T.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
-{R Core Team}%
-}{%
-{R Core Team}%
-}{%
-{\protect \APACyear {2018}}%
+Popova%
+\ \protect \BOthers {.}}{%
+Popova%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2010}}%
 }]{%
-RCoreTeam2018}
+Popova2010}
 \APACinsertmetastar {%
-RCoreTeam2018}%
+Popova2010}%
+\begin{APACrefauthors}%
+Popova, E\BPBI E.%
+, Yool, A.%
+, Coward, A\BPBI C.%
+, Aksenov, Y\BPBI K.%
+, Alderson, S\BPBI G.%
+, Cuevas, B\BPBI A\BPBI D.%
+\BCBL {}\ \BBA {} Anderson, T\BPBI R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2010}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{Control of primary production in the Arctic by
+  nutrients and light: insights from a high resolution ocean general
+  circulation model}} {{Control of primary production in the Arctic by
+  nutrients and light: insights from a high resolution ocean general
+  circulation model}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Biogeosciences}{7}{}{3569--3591}.
+\newblock
+\begin{APACrefURL} \url{www.biogeosciences.net/7/3569/2010/} \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.5194/bg-7-3569-2010} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+{R Core Team}%
+}{%
+{R Core Team}%
+}{%
+{\protect \APACyear {2019}}%
+}]{%
+RCoreTeam2019}
+\APACinsertmetastar {%
+RCoreTeam2019}%
 \begin{APACrefauthors}%
 {R Core Team}.%
 \end{APACrefauthors}%
 \unskip\
 \newblock
-\APACrefYearMonthDay{2018}{}{}.
+\APACrefYearMonthDay{2019}{}{}.
 \newblock
-\APACrefbtitle {{R: A Language and Environment for Statistical Computing}.}
-  {{R: A Language and Environment for Statistical Computing}.}
+{\BBOQ}\APACrefatitle {{R: A Language and Environment for Statistical
+  Computing}} {{R: A Language and Environment for Statistical
+  Computing}}{\BBCQ}\ [\bibcomputersoftwaremanual].
 \newblock
 \APACaddressPublisher{Vienna, Austria}{}.
 \newblock
-\begin{APACrefURL} \url{http://www.r-project.org https://www.r-project.org/}
-  \end{APACrefURL}
+\begin{APACrefURL} \url{https://www.r-project.org/} \end{APACrefURL}
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
@@ -1363,6 +1510,42 @@ Toole, D\BPBI A.%
   \end{APACrefURL}
 \newblock
 \begin{APACrefDOI} \doi{10.4319/lo.2003.48.3.1088} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Vancoppenolle%
+\ \protect \BOthers {.}}{%
+Vancoppenolle%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2013}}%
+}]{%
+Vancoppenolle2013}
+\APACinsertmetastar {%
+Vancoppenolle2013}%
+\begin{APACrefauthors}%
+Vancoppenolle, M.%
+, Bopp, L.%
+, Madec, G.%
+, Dunne, J.%
+, Ilyina, T.%
+, Halloran, P\BPBI R.%
+\BCBL {}\ \BBA {} Steiner, N.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{sep}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{Future Arctic Ocean primary productivity from CMIP5
+  simulations: Uncertain outcome, but consistent mechanisms}} {{Future Arctic
+  Ocean primary productivity from CMIP5 simulations: Uncertain outcome, but
+  consistent mechanisms}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Global Biogeochem. Cycles}{27}{3}{605--619}.
+\newblock
+\begin{APACrefURL} \url{http://doi.wiley.com/10.1002/gbc.20055}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1002/gbc.20055} \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
 \end{thebibliography}

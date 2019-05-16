@@ -57,6 +57,14 @@ df %>%
   group_by(data_source) %>% 
   summarise(min(par_z_variable_transmittance), max(par_z_variable_transmittance))
 
+## Average PAR over the day   
+df %>% 
+  filter(depth == 0) %>% 
+  group_by(station, data_source, depth) %>% 
+  summarise_at("par_z_variable_transmittance", .funs = list(mean_par = mean, sd_par = sd))
+# %>% 
+#   write_csv("~/Desktop/light_underice_per_station.csv")
+
 # Calulate PP -------------------------------------------------------------
 
 res <- df %>%

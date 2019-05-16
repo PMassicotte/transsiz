@@ -24,6 +24,9 @@
 \usepackage{url} %this package should fix any errors with URLs in refs.
 \usepackage{lineno}
 \linenumbers
+
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+
 %%%%%%%
 % As of 2018 we recommend use of the TrackChanges package to mark revisions.
 % The trackchanges package adds five new LaTeX commands:
@@ -82,6 +85,7 @@
 \newcommand{\klu}{\ensuremath{K_{L_u}}}
 \newcommand{\edz}{\ensuremath{{E_d(z)}}}
 \newcommand{\ed}{\ensuremath{{E_d}}}
+\newcommand{\lu}{\ensuremath{{L_u}}}
 \newcommand{\edzerominus}{\ensuremath{{E_d(0^-)}}}
 \newcommand{\kdpar}{\ensuremath{K_{E_d}}(\textnormal{PAR})}
 \newcommand{\kdparscalar}{\ensuremath{K_{\mathring{E}_d}}(\textnormal{PAR})}
@@ -101,6 +105,7 @@
 \newcommand{\ppundericedevice}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize device}}}}
 \newcommand{\ppmixingdevice}{\ensuremath{P_{\textnormal{\scriptsize mixing}}^{\textnormal{\scriptsize device}}}}
 \newcommand{\ppmixingsuit}{\ensuremath{P_{\textnormal{\scriptsize mixing}}^{\textnormal{\scriptsize SUIT}}}}
+\newcommand{\ppmixingrov}{\ensuremath{P_{\textnormal{\scriptsize mixing}}^{\textnormal{\scriptsize ROV}}}}
 \newcommand{\ppundericedevicezt}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize device}}(z,t)}}
 \newcommand{\ppsuitunderice}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize SUIT}}}}
 \newcommand{\pprovunderice}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize ROV}}}}
@@ -206,7 +211,7 @@
 
 \begin{abstract}
 
-	The Arctic icescape is becoming an increasingly complex mosaic composed of ridges, hummocks, melt ponds, leads and snow. Under such heterogeneous surfaces, drifting phytoplankton communities are experiencing a wide range of irradiance conditions and intensities that cannot be sampled representatively using single-point measurements. Combining experimentally derived photosynthetic parameters with transmittance measurements acquired at spatial scales ranging from hundreds of meters (using a Remotely Operated Vehicle, ROV) to thousands of meters (using a Surface and Under-Ice Trawl, SUIT), we assessed the sensitivity of water-column primary production estimates to multi-scale under-ice light measurements. Daily primary production calculated from transmittance from both the ROV and the SUIT ranged between 0.004 and 939 \dailypp{}. Upscaling these estimates at larger spatial scales using satellite-derived sea-ice concentration reduced the variability by 22\% (0.004-731 \dailypp{}). The relative error in primary production estimates was two times lower when combining remote sensing and in situ data compared to ROV-based estimates alone. These results suggest that spatially extensive in situ measurements must be combined with large-footprint sea-ice coverage sampling (e.g., remote sensing, aerial imagery) to accurately estimate primary production in ice-covered waters. Also, the results indicated a decreasing error of primary production estimates with increasing sample size and the spatial scale of in situ measurements. Conversely, existing estimates of spatially integrated phytoplankton primary production in ice-covered waters using single-point measurements may be associated with large statistical errors. Considering these implications is important for modelling scenarios and interpretation of existing measurements in a changing Arctic ecosystem.
+	The Arctic icescape is composed by a mosaic of ridges, hummocks, melt ponds, leads and snow. Under such heterogeneous surfaces, drifting phytoplankton communities are experiencing a wide range of irradiance conditions and intensities that cannot be sampled representatively using single-location measurements. Combining experimentally derived photosynthetic parameters with transmittance measurements acquired at spatial scales ranging from hundreds of meters (using a Remotely Operated Vehicle, ROV) to thousands of meters (using a Surface and Under-Ice Trawl, SUIT), we assessed the sensitivity of water-column primary production estimates to multi-scale under-ice light measurements. Daily primary production calculated from transmittance from both the ROV and the SUIT ranged between 0.004 and 939 \dailypp{}. Upscaling these estimates at larger spatial scales using satellite-derived sea-ice concentration reduced the variability by 22\% (0.004-731 \dailypp{}). The relative error in primary production estimates was two times lower when combining remote sensing and in situ data compared to ROV-based estimates alone. These results suggest that spatially extensive in situ measurements must be combined with large-footprint sea-ice coverage sampling (e.g., remote sensing, aerial imagery) to accurately estimate primary production in ice-covered waters. Also, the results indicated a decreasing error of primary production estimates with increasing sample size and the spatial scale at which in situ measurements are performed. Conversely, existing estimates of spatially integrated phytoplankton primary production in ice-covered waters derived  from single-location light measurements may be associated with large statistical errors. Considering these implications is important for modelling scenarios and interpretation of existing measurements in a changing Arctic ecosystem. 
 
 \end{abstract}
 
@@ -413,16 +418,7 @@
 
 \acknowledgments
 
-We thank F. Bruyant, M. Beaulieu for carrying out the P vs. E curve measurements and providing us with the data. We thank Sascha Willmes for onboard processing of the ice and snow thickness data. We thank captain Thomas Wunderlich and the crew of icebreaker Polarstern for their support during the TRANSSIZ campaign (AWI\_PS92\_00). This study was conducted under the Helmholtz Association Research Programme Polar regions And Coasts in the changing Earth System II (PACES II), Topic 1, WP 4 and is part of the Helmholtz Association Young Investigators Groups Iceflux: Ice-ecosystem carbon flux in polar oceans (VH-NG-800). SUIT was developed by Wageningen Marine Research (WMR; formerly IMARES) with support from the Netherlands Ministry of EZ (project WOT-04-009-036) and the Netherlands Polar Program (project ALW 866.13.009). We thank Jan Andries van Franeker (WMR) for kindly providing the Surface and Under Ice Trawl (SUIT) and Michiel van Dorssen for technical support with work at sea. The project was conducted under the scientific coordination of the Canada Excellence Research Chair on Remote sensing of Canada's new Arctic frontier and the CNRS \& Université Laval Takuvik Joint International laboratory (UMI3376). Data for the light measurement used in this study can be found on Pangaea website: 
-
-\begin{itemize}
-	\item ROV data (https://doi.pangaea.de/10.1594/PANGAEA.861048)
-	\item Incident radiation (https://doi.pangaea.de/10.1594/PANGAEA.849663)
-	\item Station list (https://doi.pangaea.de/10.1594/PANGAEA.848841), 
-	\item SUIT data (submitted to Pangaea)
-	\item Photosynthetic parameters (submitted to Pangaea)
-	\item Sea-ice/snow thickness (submitted to Pangaea)
-\end{itemize}
+We thank F. Bruyant, M. Beaulieu for carrying out the P vs. E curve measurements and providing us with the data. We thank Sascha Willmes for onboard processing of the ice and snow thickness data. We thank captain Thomas Wunderlich and the crew of icebreaker Polarstern for their support during the TRANSSIZ campaign (AWI\_PS92\_00). This study was conducted under the Helmholtz Association Research Programme Polar regions And Coasts in the changing Earth System II (PACES II), Topic 1, WP 4 and is part of the Helmholtz Association Young Investigators Groups Iceflux: Ice-ecosystem carbon flux in polar oceans (VH-NG-800). BAL was partly funded during this study by a Visiting Fellowship from the Natural Sciences and Engineering Research Council of Canada (NSERC). The project was conducted under the scientific coordination of the Canada Excellence Research Chair on Remote sensing of Canada's new Arctic frontier and the CNRS \& Université Laval Takuvik Joint International laboratory (UMI3376). We also acknowledge the Sentinel North Strategy for their financial support. SUIT was developed by Wageningen Marine Research (WMR; formerly IMARES) with support from the Netherlands Ministry of EZ (project WOT-04-009-036) and the Netherlands Polar Program (project ALW 866.13.009). We thank Jan Andries van Franeker (WMR) for kindly providing the Surface and Under Ice Trawl (SUIT) and Michiel van Dorssen for technical support with work at sea. Data for the light measurement used in this study can be found on Pangaea website. ROV data (\url{https://doi.pangaea.de/10.1594/PANGAEA.861048}), incident radiation (\url{https://doi.pangaea.de/10.1594/PANGAEA.849663}), station list (\url{https://doi.pangaea.de/10.1594/PANGAEA.848841}), SUIT data (submitted to PANGAEA (https://doi.org/10.1594/pangaea) and are in the curation process. It will be available in open access shortly.), photosynthetic parameters (\url{https://doi.org/10.1594/PANGAEA.899842}) and sea-ice/snow thickness (\url{https://doi.pangaea.de/10.1594/PANGAEA.897958}).
 
 %% ------------------------------------------------------------------------ %%
 %% References and Citations

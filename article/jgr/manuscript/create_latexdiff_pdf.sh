@@ -6,5 +6,5 @@ latexdiff ./initial_submission/discussion.tex ./revision_1/discussion.tex > ./tr
 latexdiff ./initial_submission/conclusions.tex ./revision_1/conclusions.tex > ./tracking_changes_revision_1/conclusions.tex
 
 cd ./tracking_changes_revision_1/
-xelatex pmassicotte_et_al_2019_with_tracking_changes.tex
+pdflatex pmassicotte_et_al_2019_with_tracking_changes.tex
 

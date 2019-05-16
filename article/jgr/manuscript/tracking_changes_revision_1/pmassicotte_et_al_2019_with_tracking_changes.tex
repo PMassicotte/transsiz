@@ -1,7 +1,7 @@
 %% March 2018
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL ./initial_submission/pmassicotte_et_al_2019.tex   Mon Jan 28 15:16:55 2019
-%DIF ADD ./revision_1/pmassicotte_et_al_2019.tex           Mon Jan 28 15:16:55 2019
+%DIF ADD ./revision_1/pmassicotte_et_al_2019.tex           Wed May 15 14:22:55 2019
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % AGUJournalTemplate.tex: this template file is for articles formatted with LaTeX
 %
@@ -27,6 +27,11 @@
 \usepackage{url} %this package should fix any errors with URLs in refs.
 \usepackage{lineno}
 \linenumbers
+%DIF 27a27-29
+ %DIF > 
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref} %DIF > 
+ %DIF > 
+%DIF -------
 %%%%%%%
 % As of 2018 we recommend use of the TrackChanges package to mark revisions.
 % The trackchanges package adds five new LaTeX commands:
@@ -85,6 +90,9 @@
 \newcommand{\klu}{\ensuremath{K_{L_u}}}
 \newcommand{\edz}{\ensuremath{{E_d(z)}}}
 \newcommand{\ed}{\ensuremath{{E_d}}}
+%DIF 85a88
+\newcommand{\lu}{\ensuremath{{L_u}}} %DIF > 
+%DIF -------
 \newcommand{\edzerominus}{\ensuremath{{E_d(0^-)}}}
 \newcommand{\kdpar}{\ensuremath{K_{E_d}}(\textnormal{PAR})}
 \newcommand{\kdparscalar}{\ensuremath{K_{\mathring{E}_d}}(\textnormal{PAR})}
@@ -104,6 +112,9 @@
 \newcommand{\ppundericedevice}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize device}}}}
 \newcommand{\ppmixingdevice}{\ensuremath{P_{\textnormal{\scriptsize mixing}}^{\textnormal{\scriptsize device}}}}
 \newcommand{\ppmixingsuit}{\ensuremath{P_{\textnormal{\scriptsize mixing}}^{\textnormal{\scriptsize SUIT}}}}
+%DIF 104a108
+\newcommand{\ppmixingrov}{\ensuremath{P_{\textnormal{\scriptsize mixing}}^{\textnormal{\scriptsize ROV}}}} %DIF > 
+%DIF -------
 \newcommand{\ppundericedevicezt}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize device}}(z,t)}}
 \newcommand{\ppsuitunderice}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize SUIT}}}}
 \newcommand{\pprovunderice}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize ROV}}}}
@@ -122,13 +133,15 @@
 %DIF UNDERLINE PREAMBLE %DIF PREAMBLE
 \RequirePackage[normalem]{ulem} %DIF PREAMBLE
 \RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
-\providecommand{\DIFadd}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
-\providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+\providecommand{\DIFaddtex}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+\providecommand{\DIFdeltex}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
 %DIF SAFE PREAMBLE %DIF PREAMBLE
 \providecommand{\DIFaddbegin}{} %DIF PREAMBLE
 \providecommand{\DIFaddend}{} %DIF PREAMBLE
 \providecommand{\DIFdelbegin}{} %DIF PREAMBLE
 \providecommand{\DIFdelend}{} %DIF PREAMBLE
+\providecommand{\DIFmodbegin}{} %DIF PREAMBLE
+\providecommand{\DIFmodend}{} %DIF PREAMBLE
 %DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
 \providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
 \providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
@@ -136,6 +149,25 @@
 \providecommand{\DIFaddendFL}{} %DIF PREAMBLE
 \providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
 \providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF HYPERREF PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{\texorpdfstring{\DIFaddtex{#1}}{#1}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{\texorpdfstring{\DIFdeltex{#1}}{}} %DIF PREAMBLE
+%DIF LISTINGS PREAMBLE %DIF PREAMBLE
+\RequirePackage{listings} %DIF PREAMBLE
+\RequirePackage{color} %DIF PREAMBLE
+\lstdefinelanguage{DIFcode}{ %DIF PREAMBLE
+%DIF DIFCODE_UNDERLINE %DIF PREAMBLE
+  moredelim=[il][\color{red}\sout]{\%DIF\ <\ }, %DIF PREAMBLE
+  moredelim=[il][\color{blue}\uwave]{\%DIF\ >\ } %DIF PREAMBLE
+} %DIF PREAMBLE
+\lstdefinestyle{DIFverbatimstyle}{ %DIF PREAMBLE
+	language=DIFcode, %DIF PREAMBLE
+	basicstyle=\ttfamily, %DIF PREAMBLE
+	columns=fullflexible, %DIF PREAMBLE
+	keepspaces=true %DIF PREAMBLE
+} %DIF PREAMBLE
+\lstnewenvironment{DIFverbatim}{\lstset{style=DIFverbatimstyle}}{} %DIF PREAMBLE
+\lstnewenvironment{DIFverbatim*}{\lstset{style=DIFverbatimstyle,showspaces=true}}{} %DIF PREAMBLE
 %DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
 
 \begin{document}
@@ -228,7 +260,7 @@
 
 \begin{abstract}
 
-	The Arctic icescape is becoming an increasingly complex mosaic composed of ridges, hummocks, melt ponds, leads and snow. Under such heterogeneous surfaces, drifting phytoplankton communities are experiencing a wide range of irradiance conditions and intensities that cannot be sampled representatively using single-point measurements. Combining experimentally derived photosynthetic parameters with transmittance measurements acquired at spatial scales ranging from hundreds of meters (using a Remotely Operated Vehicle, ROV) to thousands of meters (using a Surface and Under-Ice Trawl, SUIT), we assessed the sensitivity of water-column primary production estimates to multi-scale under-ice light measurements. Daily primary production calculated from transmittance from both the ROV and the SUIT ranged between 0.004 and 939 \dailypp{}. Upscaling these estimates at larger spatial scales using satellite-derived sea-ice concentration reduced the variability by 22\% (0.004-731 \dailypp{}). The relative error in primary production estimates was two times lower when combining remote sensing and in situ data compared to ROV-based estimates alone. These results suggest that spatially extensive in situ measurements must be combined with large-footprint sea-ice coverage sampling (e.g., remote sensing, aerial imagery) to accurately estimate primary production in ice-covered waters. Also, the results indicated a decreasing error of primary production estimates with increasing sample size and the spatial scale of in situ measurements. Conversely, existing estimates of spatially integrated phytoplankton primary production in ice-covered waters using single-point measurements may be associated with large statistical errors. Considering these implications is important for modelling scenarios and interpretation of existing measurements in a changing Arctic ecosystem.
+	The Arctic icescape is \DIFdelbegin \DIFdel{becoming an increasingly complex mosaic composed }\DIFdelend \DIFaddbegin \DIFadd{composed by a mosaic }\DIFaddend of ridges, hummocks, melt ponds, leads and snow. Under such heterogeneous surfaces, drifting phytoplankton communities are experiencing a wide range of irradiance conditions and intensities that cannot be sampled representatively using \DIFdelbegin \DIFdel{single-point }\DIFdelend \DIFaddbegin \DIFadd{single-location }\DIFaddend measurements. Combining experimentally derived photosynthetic parameters with transmittance measurements acquired at spatial scales ranging from hundreds of meters (using a Remotely Operated Vehicle, ROV) to thousands of meters (using a Surface and Under-Ice Trawl, SUIT), we assessed the sensitivity of water-column primary production estimates to multi-scale under-ice light measurements. Daily primary production calculated from transmittance from both the ROV and the SUIT ranged between 0.004 and 939 \dailypp{}. Upscaling these estimates at larger spatial scales using satellite-derived sea-ice concentration reduced the variability by 22\% (0.004-731 \dailypp{}). The relative error in primary production estimates was two times lower when combining remote sensing and in situ data compared to ROV-based estimates alone. These results suggest that spatially extensive in situ measurements must be combined with large-footprint sea-ice coverage sampling (e.g., remote sensing, aerial imagery) to accurately estimate primary production in ice-covered waters. Also, the results indicated a decreasing error of primary production estimates with increasing sample size and the spatial scale \DIFdelbegin \DIFdel{of }\DIFdelend \DIFaddbegin \DIFadd{at which }\DIFaddend in situ measurements \DIFaddbegin \DIFadd{are performed}\DIFaddend . Conversely, existing estimates of spatially integrated phytoplankton primary production in ice-covered waters \DIFdelbegin \DIFdel{using single-point }\DIFdelend \DIFaddbegin \DIFadd{derived  from single-location light }\DIFaddend measurements may be associated with large statistical errors. Considering these implications is important for modelling scenarios and interpretation of existing measurements in a changing Arctic ecosystem. 
 
 \end{abstract}
 
@@ -435,16 +467,21 @@
 
 \acknowledgments
 
-We thank F. Bruyant, M. Beaulieu for carrying out the P vs. E curve measurements and providing us with the data. We thank Sascha Willmes for onboard processing of the ice and snow thickness data. We thank captain Thomas Wunderlich and the crew of icebreaker Polarstern for their support during the TRANSSIZ campaign (AWI\_PS92\_00). This study was conducted under the Helmholtz Association Research Programme Polar regions And Coasts in the changing Earth System II (PACES II), Topic 1, WP 4 and is part of the Helmholtz Association Young Investigators Groups Iceflux: Ice-ecosystem carbon flux in polar oceans (VH-NG-800). SUIT was developed by Wageningen Marine Research (WMR; formerly IMARES) with support from the Netherlands Ministry of EZ (project WOT-04-009-036) and the Netherlands Polar Program (project ALW 866.13.009). We thank Jan Andries van Franeker (WMR) for kindly providing the Surface and Under Ice Trawl (SUIT) and Michiel van Dorssen for technical support with work at sea. The project was conducted under the scientific coordination of the Canada Excellence Research Chair on Remote sensing of Canada's new Arctic frontier and the CNRS \& Université Laval Takuvik Joint International laboratory (UMI3376). Data for the light measurement used in this study can be found on Pangaea website: 
+We thank F. Bruyant, M. Beaulieu for carrying out the P vs. E curve measurements and providing us with the data. We thank Sascha Willmes for onboard processing of the ice and snow thickness data. We thank captain Thomas Wunderlich and the crew of icebreaker Polarstern for their support during the TRANSSIZ campaign (AWI\_PS92\_00). This study was conducted under the Helmholtz Association Research Programme Polar regions And Coasts in the changing Earth System II (PACES II), Topic 1, WP 4 and is part of the Helmholtz Association Young Investigators Groups Iceflux: Ice-ecosystem carbon flux in polar oceans (VH-NG-800). \DIFaddbegin \DIFadd{BAL was partly funded during this study by a Visiting Fellowship from the Natural Sciences and Engineering Research Council of Canada (NSERC). The project was conducted under the scientific coordination of the Canada Excellence Research Chair on Remote sensing of Canada's new Arctic frontier and the CNRS \& Université Laval Takuvik Joint International laboratory (UMI3376). We also acknowledge the Sentinel North Strategy for their financial support. }\DIFaddend SUIT was developed by Wageningen Marine Research (WMR; formerly IMARES) with support from the Netherlands Ministry of EZ (project WOT-04-009-036) and the Netherlands Polar Program (project ALW 866.13.009). We thank Jan Andries van Franeker (WMR) for kindly providing the Surface and Under Ice Trawl (SUIT) and Michiel van Dorssen for technical support with work at sea. \DIFdelbegin \DIFdel{The project was conducted under the scientific coordination of the Canada Excellence Research Chair on Remote sensing of Canada's new Arctic frontier and the CNRS \& Université Laval Takuvik Joint International laboratory (UMI3376). }\DIFdelend Data for the light measurement used in this study can be found on Pangaea website\DIFdelbegin \DIFdel{: 
+}%DIFDELCMD < 
 
-\begin{itemize}
-	\item ROV data (https://doi.pangaea.de/10.1594/PANGAEA.861048)
-	\item Incident radiation (https://doi.pangaea.de/10.1594/PANGAEA.849663)
-	\item Station list (https://doi.pangaea.de/10.1594/PANGAEA.848841), 
-	\item SUIT data (submitted to Pangaea)
-	\item Photosynthetic parameters (submitted to Pangaea)
-	\item Sea-ice/snow thickness (submitted to Pangaea)
-\end{itemize}
+%DIFDELCMD < \begin{itemize}
+%DIFDELCMD < 	\item %%%
+\DIFdelend \DIFaddbegin \DIFadd{. }\DIFaddend ROV data (\DIFdelbegin \DIFdel{https://doi.pangaea.de/10.1594/PANGAEA.861048)}%DIFDELCMD < \item %%%
+\DIFdel{Incident radiation (https://doi.pangaea.de/10.1594/PANGAEA.849663)}%DIFDELCMD < \item %%%
+\DIFdel{Station list (}\DIFdelend \DIFaddbegin \url{https://doi.pangaea.de/10.1594/PANGAEA.861048}\DIFadd{), incident radiation (}\url{https://doi.pangaea.de/10.1594/PANGAEA.849663}\DIFadd{), station list (}\url{https://doi.pangaea.de/10.1594/PANGAEA.848841}\DIFadd{), SUIT data (submitted to PANGAEA (}\DIFaddend https://doi.\DIFdelbegin \DIFdel{pangaea.de}\DIFdelend \DIFaddbegin \DIFadd{org}\DIFaddend /10.1594/\DIFdelbegin \DIFdel{PANGAEA.848841) , 
+	}%DIFDELCMD < \item %%%
+\DIFdel{SUIT data (submitted to Pangaea)}%DIFDELCMD < \item %%%
+\DIFdel{Photosynthetic parameters (submitted to Pangaea) }%DIFDELCMD < \item %%%
+\DIFdel{Sea-ice}\DIFdelend \DIFaddbegin \DIFadd{pangaea) and are in the curation process. It will be available in open access shortly.), photosynthetic parameters (}\url{https://doi.org/10.1594/PANGAEA.899842}\DIFadd{) and sea-ice}\DIFaddend /snow thickness (\DIFdelbegin \DIFdel{submitted to Pangaea)}%DIFDELCMD < \end{itemize}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \url{https://doi.pangaea.de/10.1594/PANGAEA.897958}\DIFadd{).
+}\DIFaddend 
 
 %% ------------------------------------------------------------------------ %%
 %% References and Citations
