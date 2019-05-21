@@ -1,8 +1,6 @@
 # Transsiz
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-
-- Zenodo badge
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![DOI](https://zenodo.org/badge/75082606.svg)](https://zenodo.org/badge/latestdoi/75082606)
 
 This is the repository for the research paper **Sensitivity of phytoplankton primary production estimates to available irradiance under heterogeneous sea-ice condition** which can be found here: xxx
 
