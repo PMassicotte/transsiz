@@ -1,0 +1,411 @@
+%% March 2018
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% AGUJournalTemplate.tex: this template file is for articles formatted with LaTeX
+%
+% This file includes commands and instructions
+% given in the order necessary to produce a final output that will
+% satisfy AGU requirements, including customized APA reference formatting.
+%
+% You may copy this file and give it your
+% article name, and enter your text.
+%
+%
+% Step 1: Set the \documentclass
+%
+% There are two options for article format:
+%
+% PLEASE USE THE DRAFT OPTION TO SUBMIT YOUR PAPERS.
+% The draft option produces double spaced output.
+%
+
+%% To submit your paper:
+\documentclass[draft]{agujournal2018}
+\usepackage{apacite}
+\usepackage{url} %this package should fix any errors with URLs in refs.
+\usepackage{lineno}
+\linenumbers
+
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+
+%%%%%%%
+% As of 2018 we recommend use of the TrackChanges package to mark revisions.
+% The trackchanges package adds five new LaTeX commands:
+%
+%  \note[editor]{The note}
+%  \annote[editor]{Text to annotate}{The note}
+%  \add[editor]{Text to add}
+%  \remove[editor]{Text to remove}
+%  \change[editor]{Text to remove}{Text to add}
+%
+% complete documentation is here: http://trackchanges.sourceforge.net/
+%%%%%%%
+
+\draftfalse
+
+%% Enter journal name below.
+%% Choose from this list of Journals:
+%
+% JGR: Atmospheres
+% JGR: Biogeosciences
+% JGR: Earth Surface
+% JGR: Oceans
+% JGR: Planets
+% JGR: Solid Earth
+% JGR: Space Physics
+% Global Biogeochemical Cycles
+% Geophysical Research Letters
+% Paleoceanography and Paleoclimatology
+% Radio Science
+% Reviews of Geophysics
+% Tectonics
+% Space Weather
+% Water Resources Research
+% Geochemistry, Geophysics, Geosystems
+% Journal of Advances in Modeling Earth Systems (JAMES)
+% Earth's Future
+% Earth and Space Science
+% Geohealth
+%
+% ie, \journalname{Water Resources Research}
+
+\journalname{JGR: Oceans}
+
+\usepackage{textcomp}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+\usepackage{ragged2e}
+\justifying
+
+%% ------------------------------------------------------------------------ %%
+%% Variables
+%% ------------------------------------------------------------------------ %%
+
+\newcommand{\ked}{\ensuremath{K_{E_d}}}
+\newcommand{\klu}{\ensuremath{K_{L_u}}}
+\newcommand{\edz}{\ensuremath{{E_d(z)}}}
+\newcommand{\ed}{\ensuremath{{E_d}}}
+\newcommand{\lu}{\ensuremath{{L_u}}}
+\newcommand{\edzerominus}{\ensuremath{{E_d(0^-)}}}
+\newcommand{\kdpar}{\ensuremath{K_{E_d}}(\textnormal{PAR})}
+\newcommand{\kdparscalar}{\ensuremath{K_{\mathring{E}_d}}(\textnormal{PAR})}
+
+\newcommand{\epar}{\ensuremath{E}(\textnormal{PAR})}
+\newcommand{\eparz}{\ensuremath{E(\textnormal{PAR}, z)}}
+\newcommand{\eparzint}{\ensuremath{E(\textnormal{PAR}, z\textsubscript{int})}}
+\newcommand{\edlambdaz}{\ensuremath{{E_d(\lambda, z)}}}
+\newcommand{\eparzero}{\ensuremath{E(\textnormal{PAR}, 0^+, t)}}
+
+\newcommand{\eparscalar}{\ensuremath{\mathring{E}}(\textnormal{PAR})}
+\newcommand{\eparzscalar}{\ensuremath{\mathring{E}(\textnormal{PAR}, z)}}
+\newcommand{\eparzintscalar}{\ensuremath{\mathring{E}(\textnormal{PAR}, z\textsubscript{int})}}
+\newcommand{\eparzeroscalar}{\ensuremath{\mathring{E}(\textnormal{PAR}, 0^+, t)}}
+\newcommand{\eparzerosmoins}{\ensuremath{\mathring{E}(\textnormal{PAR}, 0^-)}}
+
+\newcommand{\ppundericedevice}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize device}}}}
+\newcommand{\ppmixingdevice}{\ensuremath{P_{\textnormal{\scriptsize mixing}}^{\textnormal{\scriptsize device}}}}
+\newcommand{\ppmixingsuit}{\ensuremath{P_{\textnormal{\scriptsize mixing}}^{\textnormal{\scriptsize SUIT}}}}
+\newcommand{\ppmixingrov}{\ensuremath{P_{\textnormal{\scriptsize mixing}}^{\textnormal{\scriptsize ROV}}}}
+\newcommand{\ppundericedevicezt}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize device}}(z,t)}}
+\newcommand{\ppsuitunderice}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize SUIT}}}}
+\newcommand{\pprovunderice}{\ensuremath{P_{\textnormal{\scriptsize underice}}^{\textnormal{\scriptsize ROV}}}}
+\newcommand{\ppopenwater}{\ensuremath{P_{\textnormal{\scriptsize openwater}}}}
+\newcommand{\ppmixing}{\ensuremath{P_{\textnormal{\scriptsize mixing}}}}
+\newcommand{\ppunderice}{\ensuremath{P_{\textnormal{\scriptsize underice}}}}
+
+%% ------------------------------------------------------------------------ %%
+%%  Units
+%% ------------------------------------------------------------------------ %%
+\newcommand{\mminus}{m\textsuperscript{-1}}
+\newcommand{\wmsquare}{W~m\textsuperscript{-2}}
+\newcommand{\micromol}{\textmu mol~m\textsuperscript{-2}~s\textsuperscript{-1}}
+\newcommand{\dailypp}{mgC~m\textsuperscript{-2}~d\textsuperscript{-1}}
+
+\begin{document}
+
+%% ------------------------------------------------------------------------ %%
+%  Title
+%
+% (A title should be specific, informative, and brief. Use
+% abbreviations only if they are defined in the abstract. Titles that
+% start with general keywords then specific terms are optimized in
+% searches)
+%
+%% ------------------------------------------------------------------------ %%
+
+% Example: \title{This is a test title}
+
+\title{Sensitivity of phytoplankton primary production estimates to available irradiance under heterogeneous sea-ice conditions}
+
+%% ------------------------------------------------------------------------ %%
+%
+%  AUTHORS AND AFFILIATIONS
+%
+%% ------------------------------------------------------------------------ %%
+
+% Authors are individuals who have significantly contributed to the
+% research and preparation of the article. Group authors are allowed, if
+% each author in the group is separately identified in an appendix.)
+
+% List authors by first name or initial followed by last name and
+% separated by commas. Use \affil{} to number affiliations, and
+% \thanks{} for author notes.
+% Additional author notes should be indicated with \thanks{} (for
+% example, for current addresses).
+
+% Example: \authors{A. B. Author\affil{1}\thanks{Current address, Antartica}, B. C. Author\affil{2,3}, and D. E.
+% Author\affil{3,4}\thanks{Also funded by Monsanto.}}
+
+\authors{Philippe Massicotte\affil{1,5}, Ilka Peeken\affil{2}, Christian Katlein\affil{1,2}, Hauke Flores\affil{2}, Yannick Huot\affil{3}, Giulia Castellani\affil{2}, Stefanie Arndt\affil{2}, Benjamin A. Lange\affil{2,4}, Jean-Éric Tremblay\affil{1,5} and Marcel Babin\affil{1,5}}
+
+\affiliation{1}{Takuvik Joint International Laboratory (UMI 3376) -- Université Laval (Canada) \& Centre National de la Recherche Scientifique (France)}
+\affiliation{2}{Alfred-Wegener-Institut Helmholtz-Zentrum für Polar- und Meeresforschung, Bremerhaven, Germany}
+\affiliation{3}{Université de Sherbrooke, Sherbrooke, Québec, Canada, J1K 2R1}
+\affiliation{4}{Fisheries and Oceans Canada, Freshwater Institute, Winnipeg, MB, Canada}
+\affiliation{5}{Québec-Océan et département de biologie, Université Laval, Québec, Canada, G1V 0A6}
+
+%(repeat as many times as is necessary)
+
+%% Corresponding Author:
+% Corresponding author mailing address and e-mail address:
+
+% (include name and email addresses of the corresponding author.  More
+% than one corresponding author is allowed in this LaTeX file and for
+% publication; but only one corresponding author is allowed in our
+% editorial system.)
+
+% Example: \correspondingauthor{First and Last Name}{email@address.edu}
+
+\correspondingauthor{Philippe Massicotte}{philippe.massicotte@takuvik.ulaval.ca}
+
+%% Keypoints, final entry on title page.
+
+%  List up to three key points (at least one is required)
+%  Key Points summarize the main points and conclusions of the article
+%  Each must be 100 characters or less with no special characters or punctuation
+
+% Example:
+% \begin{keypoints}
+% \item	List up to three key points (at least one is required)
+% \item	Key Points summarize the main points and conclusions of the article
+% \item	Each must be 100 characters or less with no special characters or punctuation
+% \end{keypoints}
+
+\begin{keypoints}
+	\item Phytoplankton primary production under heterogeneous sea ice is highly spatially variable.
+	\item Transmittance sampled with profiling platforms improves the accuracy of primary production estimates.
+	\item Upscaling estimates at larger spatial scales using satellite sea-ice concentration further reduced the error.
+\end{keypoints}
+
+%% ------------------------------------------------------------------------ %%
+%
+%  ABSTRACT
+%
+% A good abstract will begin with a short description of the problem
+% being addressed, briefly describe the new data or analyses, then
+% briefly states the main conclusion(s) and how they are supported and
+% uncertainties.
+%% ------------------------------------------------------------------------ %%
+
+%% \begin{abstract} starts the second page
+
+\begin{abstract}
+
+	The Arctic icescape is composed by a mosaic of ridges, hummocks, melt ponds, leads and snow. Under such heterogeneous surfaces, drifting phytoplankton communities are experiencing a wide range of irradiance conditions and intensities that cannot be sampled representatively using single-location measurements. Combining experimentally derived photosynthetic parameters with transmittance measurements acquired at spatial scales ranging from hundreds of meters (using a Remotely Operated Vehicle, ROV) to thousands of meters (using a Surface and Under-Ice Trawl, SUIT), we assessed the sensitivity of water-column primary production estimates to multi-scale under-ice light measurements. Daily primary production calculated from transmittance from both the ROV and the SUIT ranged between 0.004 and 939 \dailypp{}. Upscaling these estimates at larger spatial scales using satellite-derived sea-ice concentration reduced the variability by 22\% (0.004-731 \dailypp{}). The relative error in primary production estimates was two times lower when combining remote sensing and in situ data compared to ROV-based estimates alone. These results suggest that spatially extensive in situ measurements must be combined with large-footprint sea-ice coverage sampling (e.g., remote sensing, aerial imagery) to accurately estimate primary production in ice-covered waters. Also, the results indicated a decreasing error of primary production estimates with increasing sample size and the spatial scale at which in situ measurements are performed. Conversely, existing estimates of spatially integrated phytoplankton primary production in ice-covered waters derived  from single-location light measurements may be associated with large statistical errors. Considering these implications is important for modelling scenarios and interpretation of existing measurements in a changing Arctic ecosystem. 
+
+\end{abstract}
+
+% ****************************************
+
+\section{Introduction}
+
+The Arctic Ocean (AO) icescape is a mosaic composed of sea ice, snow, leads, melt ponds and open water. During the last decades, this AO icescape has been undergoing major changes, including a reduction in extent and thickness \citep{Meier2014}, and an increased drift speed \citep{Kwok2013}. A greater frequency of storm events is also making this icescape more prone to deformation \citep{Itkin2017} and promotes lead formation. Because of the surface heterogeneity of the AO icescape, light transmittance can be highly variable in space, even over short distances \citep{Nicolaus2013b, Katlein2015, Hancke2018}. For example, \citet{Perovich1998} showed that sea ice and snow transmittance at 440 nm could vary by a factor of two over horizontal distances of 25 m. The relative contribution of various sea-ice features to under-ice light variability depends on the spatial scale under consideration and has significant implications for their application in physical and ecological studies and also determines the context in which results can be interpreted. For instance, at small scales (\textless~100 m), local features such as melt ponds and leads have a strong influence on light penetration \citep{Frey2011, Katlein2016, Massicotte2018}. At larger scales (\textgreater~100 m), it was argued that the variability of transmittance is mainly controlled by sea ice thickness (Katlein2015).
+
+Because phytoplankton is exposed to a highly variable light regime while drifting under a spatially heterogeneous, and sometimes dynamic sea-ice surface, single-location irradiance measurements are not representative of the average irradiance experienced by phytoplankton over a large area \citep{Katlein2016, Lange2017}. This is why traditional primary production estimated using in situ incubations at single locations with seawater samples inoculated with \textsuperscript{14}C or \textsuperscript{13}C are also not appropriate because they reflect primary production under local light conditions, which is not representative of the range of irradiance experienced by drifting phytoplankton. A better option consists in calculating primary production using daily time series of incident irradiance, sea ice transmittance and in-water vertical attenuation coefficients, combined with photosynthetic parameters determined using photosynthesis vs. irradiance curves (P vs. E curves) measured with incubations of seawater samples inoculated with \textsuperscript{14}C. However, this approach requires an adequate description of the underwater light field, which cannot be characterized using single-location measurements in a spatially heterogeneous sea ice surface. To better estimate primary production of phytoplankton under sea ice,  the large-area variability in the light field should be adequately captured.
+
+One major challenge in obtaining adequate irradiance estimates under spatially heterogeneous sea ice is that observations are often limited to time-consuming single-location measurements made through boreholes. To overcome this limitation, different underwater technologies have been developed to study the spatial variability of light transmission under spatially heterogeneous sea-ice surfaces. For the last decade, radiometers have been attached to remotely operated vehicles (ROV). Small sized ROVs can be deployed through relatively small holes (\textless~2 m) to cover areas in the order of a few hundred meters \citep{Katlein2015, Katlein2017, Ambrose2005, Lund-Hansen2018, Nicolaus2010}. Navigating directly under sea ice, ROVs allow covering various types of sea ice, such as newly formed, ponded and snow-covered sea ice, as well as pressure ridges \citep{Katlein2017}. More recently, radiometers have been attached to the Surface and Under Ice Trawl (SUIT). The SUIT is a trawl developed for sampling meso- and macrofauna in the ice-water interface layer, allowing for greater spatial coverage on the order of a few kilometers \citep{Flores2012, Lange2016, Lange2017}.
+
+In a recent study, \citet{Massicotte2018} showed that under spatially heterogeneous sea ice and snow surfaces, propagating measured surface downward irradiance just below sea ice \edzerominus{} into the water column using upward attenuation coefficient (\klu{}) calculated from radiance profiles is a better choice compared to the traditional downward vertical attenuation coefficient (\ked{}), because it is less influenced by surface heterogeneity. However, while the method allows propagation of irradiance to depth from \edzerominus{} more accurately, estimation of representative \edzerominus{} remains difficult. Both ROV and SUIT aim to better describe the horizontal variability of \edzerominus{} under heterogeneous sea ice. Since these technologies are designed to operate at different scales and in different conditions, they are likely to provide complementary information on the light regime experienced by drifting phytoplankton.
+
+In this study, we investigated the spatial variability of light transmittance measured from these two devices and combined them with satellite-derived sea ice concentrations. We further used these transmittance data measured at different horizontal spatial scales to quantify how they influence primary production estimates derived from photosynthetic parameters. The main objective was to determine if combining multiscale under-ice transmittance observations with photosynthetic parameters, which are derived under a range of different irradiances, could provide adequate  estimates of primary production under sea ice. This study further aimed at addressing the sensitivity of the phytoplankton to heterogeneous irradiance. It provides new guidance on how to derive more representative primary production estimates under a heterogeneous and changing icescape.
+
+\section{Materials and Methods}
+
+\subsection{Sampling campaign and study sites}
+
+Process studies on biological productivity and ecosystem interactions were carried out north of Spitsbergen during the international Transitions in the Arctic Seasonal Sea Ice Zone (TRANSSIZ) expedition aboard the RV Polarstern (PS92, ARK-XXIX/1) between the 19th of May and the 26th June of 2015. In total, eight process studies (stations 19 27, 31, 32, 39, 43, 46 and 47) were carried out where the ship was anchored to an ice floe, typically for 36 hours (Figure 1, Table 1). While the ship drifted anchored to ice floe on the port side of the ship, winch-operated instruments were deployed in the open water on the starboard side. Water samples for P vs. E curves were collected using a CTD/Rosette. On-ice station work included the deployment of a small observation class ROV under the ice to investigate the small-scale irradiance variability. Prior to arriving or directly after leaving each ice station, the SUIT was deployed for larger scale characterization of the under-ice irradiance field. Due to instrument failure, no SUIT data are available for station 32.
+
+\subsection{Sea-ice and snow thicknesses and sea-ice concentrations}
+
+Ground-based multi-frequency electromagnetic induction soundings from a GEM-2 (Geophex Ltd., Raleigh, NC, USA) were used to measure the total thickness of both sea ice and snow following the ROV survey grid. The snow thickness during GEM-2 surveys was measured with a Snow-Hydro Magna Probe instrument (SnowHydro LLC, Fairbanks, Alaska, USA) with a precision of 3 mm \citep{Sturm2006}. The instrument was inserted in the snow approximately every 2 m. The combined GEM-2 and Magna Probe measurements started immediately after the ROV light transmission measurements were finished to ensure that the snow surface was undisturbed. Sea-ice thickness was calculated as the difference between total snow and -ice thickness and snow depth. The snow thickness displayed in table 1 is based on ice cores sampled at each station. Sea ice concentration (SIC) data were obtained from www.meereisportal.de and processed according to algorithms in \citet{Spreen2008}.
+
+\subsection{Underwater light measurements}
+
+\subsubsection{ROV measurements}
+
+ROV observations were taken using similar procedures as presented in \citet{Nicolaus2013} and \citet{Katlein2017} using a V8 Sii ROV (Ocean Modules, Atvidaberg, Sweden) and RAMSES-ACC-VIS (TriOs GmbH, Rastede, Germany) spectroradiometers mounted both on the ROV and in a fixed location above the sea-ice surface. The ROV was deployed through a hole drilled through the ice at a distance of more than 300 m from the ship. Optical measurements were performed along two perpendicular 100-m transects and in a push-broom pattern over a 100 m by 100 m area. Spectral downward irradiance (\ed{}, \wmsquare) between 320 and 950 nm was recorded above and below the surface to calculate spectral light transmittance as the ratio of irradiance transmitted through the snow/ice to incident irradiance. The sensors were triggered in \textit{burst} mode with the sensors acquiring data as fast as possible. To account for ROV movement, all data with ROV roll and pitch angles larger than 10 degrees and with a distance of more than 3 m depth to the ice cover were rejected from further analysis. To account for light attenuation between the ice-water interface and the sensor, an exponential function was used to obtain the transmission at the ice-water interface:
+
+\begin{linenomath*}
+	\begin{equation}
+		T(z_\textnormal{int}) = \frac{T(z)}{e^{-\kdpar{} \times -z}}
+	\end{equation}
+\end{linenomath*}
+
+\noindent where $T(z_\textnormal{int})$ is the transmittance of the ice and snow at the ice-water interface, $T(z)$ the photosynthetically available radiation (PAR) transmittance measured by the ROV at depth $z$ (m) and \kdpar{} is the downward diffuse attenuation coefficient of PAR (m\textsuperscript{-1}) calculated from \epar{} vertical profiles (equation 2). At each station, at some point during the survey, the ROV measured a vertical irradiance profile between the surface and at least 20 m depth. Photosynthetically available radiation downwelling irradiance (\eparz{}, \micromol{}), was calculated as follows:
+
+\begin{linenomath*}
+    \begin{equation}
+		\eparz{} = \frac{1}{hc} \frac{1}{N} \int_{400}^{700} \lambda E_d(\lambda, z)d\lambda
+	\end{equation}
+\end{linenomath*}
+
+\noindent where $h$ is Planck's constant, describing the energy content of quanta (6.623 $\times$ 10\textsuperscript{-34} J s), $c$ is the constant speed of light (299 792 458 m s\textsuperscript{-1}), $N$ is Avogadro's number (6.022 $\times$ 10\textsuperscript{23} mol\textsuperscript{-1}) and \edlambdaz{} is the measured irradiance at wavelength $\lambda$ (nm) at depth $z$. Conversion from mol to \textmu mol has been done using a factor of 1 $\times$ 10\textsuperscript{6}. Note that planar, \epar{}, was converted to scalar irradiance, \eparscalar{}, using a conversion factor of 1.2 \citep{Toole2003}. For each vertical \eparscalar{} profile, \kdparscalar{} was calculated by fitting the following equation to the measured irradiance data:
+
+\begin{linenomath*}
+    \begin{equation}
+		\eparzscalar{} = \eparzintscalar{} e^{\kdparscalar{}z}
+	\end{equation}
+\end{linenomath*}
+
+where \eparzintscalar{} is PAR at the ice-water interface and \kdparscalar{} is the diffuse vertical attenuation coefficient (\mminus{}) describing the rate at which \eparscalar{} decreases with increasing depth. It is assumed constant for a given station in all our calculations. The determination coefficients ($R^2$) of the non-linear fits (equation 3) varied between 0.936 and 0.998.
+
+\subsubsection{SUIT measurements}
+
+On the SUIT, transmittance ($T$) and sea ice draft observations were made using a mounted environmental sensors array that included a RAMSES-ACC irradiance sensor (Trios, GmbH, Rastede, Germany), a conductivity-temperature-depth probe (CTD; Sea and Sun Technology, Trappenkamp, Germany), a PA500/6S altimeter (Tritech International Ltd., Aberdeen, UK), and an Aquadopp acoustic doppler current Profiler (ADCP; Nortek AS, Rud, Norway). A complete and detailed description of the full sensor array can be found in \citet{David2015} and \citet{Lange2016}. Sea ice draft was calculated from the CTD depth and altimeter measurements of the distance to the ice and corrected for sensor attitude using the ADCP's pitch and roll measurements according to \citet{Lange2016}. Irradiance above the ice was measured with a RAMSES spectroradiometer mounted on the ship's crow's nest. Consistent with the ROV spectral measurements, the transmittance was calculated as the ratio of under-ice irradiance to incoming irradiance. SUIT-mounted downwelling irradiance measurements were acquired every 11 seconds during the haul. To account for SUIT movement, all data with SUIT roll and pitch angles larger than 15 degrees were rejected from further analysis. Note that we did not correct for the light attenuation between the ice-water interface and the sensor because contrary to the ROV, the SUIT frame is equipped with buoyancy blocks  that keep it at the surface in open water or in contact with the sea ice. 
+
+\subsection{Incident in-air \eparscalar{}}
+
+A CM 11 global radiation pyranometer (Kipp \& Zonen, Delft, Netherlands) installed in the crowsnest onboard the Polarstern was used for measuring incident solar photosynthetically available radiation, (\eparscalar{}, \wmsquare), at 10 minutes intervals. Conversion from shortwave flux in energy units to \eparscalar{} in quanta (\micromol{}) was achieved using a conversion factor of 4.49 \citep{McCree1972}. Data were then hourly averaged. Calculated hourly $\mathring{E}(\textnormal{PAR}, 0^+)$ were vertically propagated in the water column between 0 and 40 meters with 1-meter increments using the following equation:
+
+\begin{linenomath*}
+    \begin{eqnarray}
+        \mathring{E}(\textnormal{PAR}, z, t) & = & \eparzeroscalar{}T(z_{\textnormal{int}})e^{-\kdparscalar{}z} \\
+        & = & \mathring{E}(\textnormal{PAR}, z_\textnormal{int})e^{-\kdparscalar{}z} \nonumber
+    \end{eqnarray}
+\end{linenomath*}
+
+\noindent where \eparzeroscalar{} is the incident in-air hourly PAR derived from the pyranometer (\micromol{}), \kdparscalar{} is derived from the ROV (see Table 1 and equation 3), $z$ the water depth (m) and $T(z_{\textnormal{int}})$ the snow and sea ice transmittance estimated using either the ROV or the SUIT data.
+
+\subsection{Photosynthetic parameters derived from P vs. E curves}
+
+To calculate photosynthetic parameters (see the next section for a complete description of these parameters), seawater samples were taken from six depths between 1 and 75 m and incubated at different irradiance levels in presence of 14\textsuperscript{C}-labelled sodium bicarbonate using a method derived from \citet{Lewis1983}. Incubations were carried out in a dimly lit radiation van under the deck to avoid any light stress on the algae. Three replicates of 50 mL samples were inoculated with inorganic 14\textsuperscript{C} (NaH\textsuperscript{14}CO\textsubscript{3}, approximately 2 \textmu Ci mL\textsuperscript{-1} final concentration). Exact total activity of added bicarbonate was determined by three 20 \textmu L aliquots of inoculated samples added to 50 \textmu L of an organic base (ethanolamine) and 6 mL of scintillation cocktail (EcoLumeTM, Costa Mesa, US) into glass scintillation vials. One mL aliquots of the inoculated sample were dispensed into twenty-eight 7 mL glass scintillation vials. The samples were cooled to 0\textdegree{}C in thermo-regulated alveoli. Within the array, the vials were exposed to 28 different irradiance levels provided by separate LEDs (LUXEON Rebel, Philips Lumileds, USA) from the bottom of each alveolus. Scalar PAR irradiance was measured in each alveolus prior to the incubation with an irradiance quantum meter (Walz US-SQS + LI-COR LI-250A, USA) equipped with a 4$\pi$ spherical collector. For each measurement, the range of irradiance intensities was selected in order to adequately capture the initial slope and maximum part of the P vs. E curve. Because this depends on the in situ growth irradiance, incubation irradiances were modified according to the depth at which the sample was collected. The maximum irradiance varied between 124 and 1143 \textmu mol photon m\textsuperscript{-2} s\textsuperscript{-1}. The incubation lasted for 120 minutes and the incubations were terminated by adding with 50 \textmu L of buffered formalin to each sample. Note that given the short incubation time, our method for deriving primary production likely provides values close to gross production \citep{Lewis1983}. Thereafter, the aliquots were acidified (250 \textmu L of HCl 50\%) in a glove box (radioactive \textsuperscript{14}CO\textsubscript{2} was trapped in a NaOH solution before opening the glove box) to remove the excess inorganic carbon (three hours, \citet{Knap1996}). In the end, 6 mL of scintillation cocktail was added to each vial prior to counting in a liquid scintillation counter (Tri-Carb, PerkinElmer, Boston, USA). The carbon fixation rate was finally estimated according to \citet{Parsons1984}. Photosynthetic parameters were estimated from P vs. E curves by fitting non-linear models based on the original definition proposed by \citet{Platt1980} using equation 5 (parameters are presented in the next section): 
+
+\begin{linenomath*}
+	\begin{equation}
+P(z) = (1 - e^{-\alpha(z)\frac{\mathring{E}(\text{PAR}, z)}{z}}) \times e^{-\beta(z)\frac{\mathring{E}(\text{PAR}, z)}{z}} + P0
+\end{equation}
+\end{linenomath*}
+
+\subsection{Estimating primary production}
+
+Two different approaches were used to calculate primary production from estimated photosynthetic parameters.
+
+\textit{Method 1: under-ice only primary production} - This first approach relied on using \eparscalar{} propagated in the water column only under the ice using the transmittance values derived from either the ROV or the SUIT, the \kdparscalar{} from the ROV and the hourly incident irradiance from the pyranometer. Primary production was calculated every hour at each sampling depth using $\mathring{E}(\textnormal{PAR}, z, t)$ measurements derived from both ROV and SUIT transmittance as follows:
+
+\begin{linenomath*}
+    \begin{equation}
+		\ppundericedevice{}(z,t) = P(z)(1 - e^{-\alpha(z,t)\frac{\mathring{E}(\text{PAR}, z, t)}{z}}) \times e^{-\beta(z,t)\frac{\mathring{E}(\text{PAR}, z, t)}{z}}
+	\end{equation}
+\end{linenomath*}
+
+\noindent where \ppundericedevice{} device is primary production (mgC~m\textsuperscript{-3}~h\textsuperscript{-1}) calculated using the $\mathring{E}(\text{PAR}, z, t)$ from the transmittances measured from a specific device (ROV, \pprovunderice{} or SUIT, \ppsuitunderice{}), $P$ is the photosynthetic rate (mgC~m\textsuperscript{-3}~h\textsuperscript{-1}) at light saturation, $\alpha$ is the photosynthetic efficiency at irradiance close zero (mgC~m\textsuperscript{-3}~h\textsuperscript{-1} (\textmu mol photon m\textsuperscript{-2} s\textsuperscript{-1})\textsuperscript{-1}), $\beta$ is a photoinhibition parameter (same unit as $\alpha$). The superscript \textit{device} can be either ROV or SUIT. While fits allowed a variable intercept ($P0$), which tended to be positive, we did not use $P0$ in the primary production computations as we assumed that it was due to methodological issues (e.g., light absorbed before incubation started). Photosynthetic parameters were linearly interpolated between 0 and 40 m depth by 1 m increment. Daily primary production (mgC~m\textsuperscript{-3}~h\textsuperscript{-1}) at each depth was calculated by integrating \ppundericedevice{}$(z,t)$ over a 24h period. Depth-integrated primary production (\dailypp{}) was then calculated by integrating daily primary production over the first 40~m of the water column. This depth was chosen because it roughly coincides with the depth of the euphotic zone.
+
+\textit{Method 2: average production under ice and adjacent open waters} - The second approach consisted of using a mixing model based on sea ice concentration (SIC) derived from satellite imagery to upscale at a larger spatial scale the estimates of primary production derived from the ROV and the SUIT. This approach was motivated by the fact that, even far away from the marginal ice zone, there were often large leads that increased the amount of light available to drifting phytoplankton and may have contributed to under-ice blooms in the vicinity as observed by \citet{Assmy2017}. To account for this additional light source available for phytoplankton, primary production was calculated as follows:
+
+\begin{linenomath*}
+    \begin{equation}
+		\ppmixingdevice{} = \text{SIC} \times \ppundericedevice{} + (1 - \text{SIC}) \times \ppopenwater{}
+	\end{equation}
+\end{linenomath*}
+
+where \ppmixingdevice{} is the primary production calculated using the mixing model approach with the transmittance values from a specific device, SIC is the sea ice concentration averaged over an area of $\approx$350 km\textsuperscript{2} (the mean of a 9-pixels square with the station within the center pixel). \ppundericedevice{} is the primary production calculated under ice using transmittance measurements (equation 6 \& method 1 above) and \ppopenwater{} the primary production calculated in open water by using a transmittance of 100\%. For the mixing-model based SUIT-derived primary production, \ppmixingsuit{}, transmittance observations higher than 10\% were discarded to remove measurements made under very thin ice and in open leads to avoid accounting twice for open water. In the end, four types of primary production were considered (2 devices $\times$ 2 approaches, Table 2).
+
+\subsection{Error on primary production estimates}
+
+For each of the four scenarios (\ppmixingsuit{}, \ppmixingrov{}, \ppsuitunderice{}, \pprovunderice{}), the average primary production derived from all the transmittance values was viewed as an adequate description of the average primary production produced by drifting phytoplankton cells for a given area. The relative deviation of each individual primary production estimate to the average primary production over all stations was viewed as the error that one would make when measuring light at a single location. This relative error was calculated as follows:
+
+\begin{linenomath*}
+    \begin{equation}
+		\delta_P^{\text{device}} = \frac{\mid P^{\text{device}} - \bar{P}^{\text{device}} \mid}{\bar{P}^{\text{device}}} \times 100
+	\end{equation}
+\end{linenomath*}
+
+where $\delta_P^{\text{device}}$ is the relative error (\%) associated to a specific device (ROV or SUIT), $P^{\text{device}}$ the primary production estimate and $\bar{P}^{\text{device}}$ the average primary production of the device (both in \dailypp{}).
+
+\subsection{Impacts of the number of in situ single-location light  measurements on primary production estimates}
+
+Because of the sea surface heterogeneity in the field, one needs to carefully choose the number of single-location light measurements in order to obtain representative values of primary production over a given area. Averaging a high number of local measurements is likely to give a better approximation of the average primary production over a given area. However, in the Arctic, it is difficult to sample a high number of uniformly dispersed sampling locations due to logistical constraints. Using primary production estimates derived from the ROV and the SUIT, we calculated how the error would decrease on average when increasing the number of measurements uniformly sampled over a given area. To calculate this error, between 1 and 250 values were randomly drawn from the full distribution of primary production values calculated with individual transmittance data from the ROV or SUIT, and used to calculate average primary production. One can view each of these 250 numerical experiments as possible number of single-location irradiance  measurements that one would perform in the field. Each numerical experiment was repeated 100 times to calculate an average and the standard deviation of the absolute difference between a given estimate of primary production and the reference primary production calculated with all transmittance measurements.
+
+\subsection{Statistical analysis}
+
+All statistical analysis and graphics were carried out with R 3.6.0 \citep{RCoreTeam2019}. The non-linear fitting for the P vs. E curves was done using the Levenberg-Marquardt algorithm implemented in the minpack.lm R package \citep{Elzhov2013}. The code used in this study is available under the GNU GPLv3 licence (https://github.com/PMassicotte/transsiz).
+
+\section{Results}
+
+\subsection{Characterization of the sea-ice and snow cover}
+
+GEM-2 and Magna Probe surveys along and across the ROV transects showed distinct differences in sea ice and snow thickness between the sampled stations. An overview of the total thickness (i.e., combined snow and ice thickness) is presented in Figure 2A. Overall, the mean ice thickness was 1.01 $\pm$ 0.52 m (mean $\pm$ s.d.), the mean snow thickness was 0.32 $\pm$ 0.16 m and the mean total thickness was 1.33 $\pm$ 0.49 m (Figure 2B). Stations 19 and 47 were characterized by an average total thickness over the ROV transect of approximately 1 m, whereas the average total thickness at station 39 was approximately 2 m. For other stations, average total thickness varied around 1.4 m.
+
+\subsection{ROV and SUIT transmittance measurements}
+
+A total of 9211 and 817 transmittance measurements distributed over the seven stations were collected from the ROV and SUIT devices, respectively (Figure 3). Transmittance values ranged between 0.001\% and 68\% for the ROV and between 0.002\% and 92\% for the SUIT (Figure 3). The transmittances measured by the SUIT were generally higher (mean = 35\%) by approximately one order magnitude than those measured with the ROV (mean = 2\%). The SUIT measurements were also covering greater ranges of transmittances compared to the ROV. Histograms showed that transmittance generally followed a bimodal distribution (most of the time occurring within the SUIT data) with often one overlapping mode between the ROV and SUIT values (Figure 3). 
+
+\subsection{Photosynthetically active radiation (PAR)}
+
+Incident hourly \eparscalar{}, \eparzeroscalar{}, measured by the pyranometer ranged between 190 and 1400 \micromol{} (Figure 4). Stations 32 and 39 experienced the highest incident \eparzeroscalar{} whereas stations 27 and 43 received the lowest amount of light. Over 24h periods, \eparzintscalar{} calculated using SUIT and ROV transmittances ranged between 0.005-1358 and 0.005-1012 \micromol{} respectively. Due to relatively high attenuation coefficients (Table 1), \eparscalar{} decreased rapidly with depth and generally reached the asymptotic regime at maximum 30 m depth. The PAR diffuse vertical attenuation coefficients, \kdparscalar{}, estimated from the ROV vertical profiles varied between 0.07 and 0.59 m\textsuperscript{-1} (Table 1).
+
+\subsection{Estimated primary production}
+
+Daily areal primary production derived from photosynthetic parameters and transmittance values ranged between 0.004 and 939 \dailypp{} for \ppunderice{} and between 0.004 and 731 \dailypp{} for \ppmixing{} (Figure 5). In ROV-based estimates, daily areal primary production calculated using the two different approaches (\ppunderice{} and \ppmixing{}) generally showed consistency especially when SIC was high. At stations 19 and 27, greater differences between \ppunderice{} and \ppmixing{} were observed in ROV-based estimates due to lower sea ice concentrations (Table 1) which allowed for a greater weight of \ppopenwater{} on the calculations. In SUIT-based estimates, mean daily \ppunderice{} values were higher than \ppmixing{} values at stations 19, 39 and 43, similar at stations 27, 46 and 47, and lower at station 31 (Figure 5). The 10\% transmittance threshold used to filter out SUIT-based data explains why mean values of daily \ppunderice{} can be lower than those of based on ROV measurements. The differences between the two approaches in SUIT data were related to the varying proportions of thin ice and open water during SUIT hauls, which were reflected in the \ppunderice{} estimates. Overall, both ROV- and SUIT based estimates agreed well with each other when the mixing approach (\ppmixing{}) was applied.
+
+\subsection{Error on primary production estimates}
+
+Figure 6 shows the distributions of the relative errors around the calculated average of areal primary production (see black dots in Figure 5). Overall, the absolute relative errors ($\delta_P$) were distributed over a range covering four orders of magnitude, between 0.1\% and 1000\% which is corresponds to an absolute primary production error varying between 0.0001 and 640 \dailypp{}. The lowest absolute errors (average $\approx$50\%) were associated with primary production estimates made using the mixing model approach (\ppmixing{}). Larger absolute errors were made with \ppunderice{} derived from only using ROV (mean = 88\%) and the SUIT (mean = 71\%) transmittances.
+
+\subsection{Impacts of the number of in situ light measurements on primary production estimates}
+
+Figure 7 shows the average relative error that one would make when averaging light measurements performed at a number of random locations varying between 1 and 250. The variability around the means also decreased with increasing number of observations (shaded areas in Figure 7). The greatest relative mean error ($\approx$60-100\%) occurred when only one primary production estimate was randomly selected from the distributions. The number of randomly selected observations to reach mean relative errors of 10\%, 15\%, 20\% and 25\% are presented in Table 3. Overall, about 25\% the number of observations were needed to reach those targets when sampling from the distribution for \ppmixing{} compared to the distribution of \ppunderice{}. Additionally, the number of observations required when using the SUIT transmittance to derive primary production estimation was also about 25\% of the number of corresponding ROV-based measurements to reach the same error threshold.
+
+\section{Discussion}
+
+\subsection{Primary production under heterogeneous sea ice}
+
+Vertically-integrated net primary production in the Arctic is known to be highly variable in both time and space \citep{Matrai2013, Hill2018a}. For example, primary production in the central Arctic Ocean estimated using photosynthetic parameters was found to vary between 18 and 308 \dailypp{} in ice-free waters, and between 0.1 and 232 \dailypp{} in ice-covered waters \citep{Fernandez-Mendez2015}. Our primary production estimates generally fall within these ranges, although our highest values (731 - 939 \dailypp{}) are roughly twice as high. There are many factors such as season, cloudiness, sea ice and snow, nutrient concentration, temperature and phytoplankton community composition that can influence such variability. In a modeling exercise, \citet{Popova2010} found that shortwave light radiation and the maximum depth of winter mixing (which determine the amount of nutrients available for summer primary production) explained more than 80\% of the spatial variability of primary production in the Arctic. In our approach, the impact of light history, nutrients, temperature, and community composition are implicit in photosynthetic parameters and chl a concentration obtained in this study. The instantaneous effect of light variations is explicit and the main focus of this study. 
+
+\subsection{Multi-scale spatial variability of light transmittance}
+
+In the context of obtaining meaningful measurements of transmittance to accurately estimate E0(PAR, 0-), one challenge is to define the spatial extent at which light should be sampled. Based on a spatial autocorrelation analysis conducted in the central Arctic ocean, it was determined that transmittance values were uncorrelated (i.e., randomly spatially distributed) to each other after a horizontal lag distance of 65 m \citep{Lange2017b}. This range is much smaller than the distance covered by drifting phytoplankton over a 24h period. Water currents around Svalbard have been found to vary between 0.14 and 0.21 m s\textsuperscript{-1} at this time of the year \citep{Meyer2017}. Such speeds are in the same order of magnitude as  the average sea ice drift speeds of 0.10 m s\textsuperscript{-1} observed during the expedition. On daily timescales, ice-motion is generally decoupled from Ocean currents and is rather driven by inertial oscillations and wind stress \citep{Park2016}. This corresponds to a relative ice-water displacement varying between 3.5 and 18 km over a 24h period which is much greater than the scale of the spatial variability of transmittance, as well as the scale of most typical ice floes in this area. Under such a large area, drifting phytoplankton is experiencing a wide range of irradiance conditions that can be hardly characterized by a single-location light measurement. Our results showed that at medium spatial scales, the ROV and the SUIT are able to characterize the local sea-ice variability on the scale of one or a few individual ice floes. However, these technologies do not adequately capture the spatial variability that originate from larger scale features such as open water areas nor large leads that can increase the amount of light available to drifting phytoplankton \citep{Assmy2017}. Thus at larger spatial scales, satellite-derived information, such as SIC or lead cover products can provide important information on the panarctic context. Such information allows to upscale the estimates of primary production derived from the ROV and the SUIT to a larger spatial scale. Our results showed that using a simple mixing model (equation 7), combining both in-situ transmittance measurements and SIC, can be used to upscale observations acquired “locally” to larger scales. This approach reduced the relative error by approximately a factor of two when spatially integrating devices such as ROVs or SUIT are used to measure transmittance (Figure 5). Furthermore, this error was lower when using in-situ measurements acquired on a larger spatial scale using the SUIT. This strengthens the idea that one needs to characterize the light field over an area as large as reasonably possible so the true irradiance variability is captured.
+
+Our study confirms our earlier hypothesis that estimating primary production from photosynthetic parameters and transmittance measured at a single location does not provide a representative description of the spatial variability of the primary production occurring under a heterogeneous sea surface (Figure 6, Figure 7). Depending on the scale at which transmittance was measured, it was found that deriving primary production from photosynthetic parameters using under-ice profile measurements alone would produce on average relative errors varying between 47\% and 88\% (Figure 6). In contrast, much lower errors (25\%) were made when primary production estimates were upscaled using satellite-derived SIC (\ppmixing{}). For stations with lower SIC (stations 19, 27, 31 and 39), primary production estimates were more constrained around the average (Figure 4) because \ppopenwater{} had a greater weight in the calculation of \ppmixing{} (see equation 7). For stations 43, 46 and 47 where SIC was 100\%, the spread around the mean was higher because only \ppunderice{} was contributing to the calculation of \ppmixing{}. These results suggest that using a distribution of measured transmittances allows calculating a more representative transmittance average for a given area, but also provides additional knowledge on its spatial variability.
+
+Although our results indicate that it is necessary to properly characterize the light field under the heterogeneous sea surface, the physiological state of the phytoplankton community under the sea ice surface also plays a major role on the sensitivity of the estimates to incoming irradiance. An important parameter of the physiological state of the phytoplankton community is the light-saturated photosynthesis regime, $E_k$ an index of photoadaptation. If a phytoplankton community was adapted to extremely low light intensity, as example,  variations in the surface light field would have reduced impacts on the estimates because phytoplankton primary production might be systematically light-saturated. In this study, the average $E_k$ was 65.2 $\pm$ 55.3 (range = 18.0 - 409.5) \micromol{}, whereas the average of  all estimates of mean daily, under-ice irradiance made from ROV and SUIT measurements was 12.6 $\pm$ 7.6 (range = 3.0 - 26.4) \micromol{}. Since the latter were generally much lower than $E_k$, phytoplankton were able to respond strongly to variability in the under-ice light field and take advantage of increased irradiance in occasional leads. This setting underscores the importance of taking into account a mixture of sea ice cover and open water, for  the estimation of primary production. However, the seasonal degree of photoadaptation of the phytoplankton communities and their ability to adjust rapidly to a variable light field still remains to be evaluated.
+
+\subsection{Influence of the number of sampling locations on primary production estimation}
+
+As with any scientific expedition in remote environments such as the Arctic, careful planning is needed to find the right balance between the sampling effort and the sufficient  amount of acquired information to study a particular phenomenon. Our results suggested that errors made by estimating primary production using photosynthetic parameters decreased exponentially with increasing number of transmittance measurements (Figure 7). Depending on the extent of the spatial scale at which transmittance is measured (order of meters for the ROV, order of kilometers for the SUIT) and the targeted error thresholds (10\%, 15\%, 20\% or 25\%), a number of light measurements varying between four and 359 were sufficient to reasonably capture the spatial variability of sea ice transmittance to derive average primary production estimates over a given area. This shows, that local primary production estimated from just a single or even a handful of light observations has limited value. However, further seasonal and regional studies are needed to fully capture the variability of photosynthetic parameters, which are not fully accounted for within the primary production derived from the presented spring study.
+
+\subsection{Implications for Arctic primary production estimates}
+
+It is known that the annual primary production in the ice-covered Arctic is among the lowest of all oceans worldwide, because both light and limited nutrient availability are the main constraining  factors for phytoplankton growth under the ice. In a changing Arctic icescape, efforts have been devoted to better understand how phytoplankton primary production is responding to increasing light availability \citep{Fernandez-Mendez2015, Vancoppenolle2013}. Many studies have been conducted in the vicinity of an ice edge to characterize primary production occurring under the ice sheet \citep{Arrigo2012, Arrigo2014, Mundy2009}. However, in such studies, due to logistical constraints, the underwater light field was often characterized by a limited number of light measurements. Other approaches, based on 24h ship-board incubations performed under incident light, have provided local estimates that were simply scaled to an assessment of percent ice-cover in the vicinity of the ship \citep{Smith1995, Gosselin1997, Mei2003}. Therefore, depending on whether light is measured under bare ice or in open water, the estimated primary production is either under- or overestimated. Different approaches based on remote sensing techniques and modelling have been used to reduce the uncertainties associated with estimates derived from local in-situ measurements. However, in an ecosystem model intercomparison study, \citet{Jin2015} showed that under-ice primary production was very sensitive to the light availability computed by atmospheric and sea ice models, reinforcing the need to develop new integrative strategies to adequately characterize the light field at large scale under heterogeneous sea ice surfaces. Our results show that upscaling primary production estimates derived from fine-scale local measurements using SIC derived from satellite imagery allowed reducing the error at larger spatial scales. Furthermore, it was found that even when SIC was high (\textgreater~95\%), the use of a mixing-model approach helped to obtain better estimates (Figure 5).
+
+Based on our results, different strategies can be easily adopted to obtain the best possible estimates of primary production under spatially heterogeneous sea ice surfaces. Firstly, one should acquire a sufficient number of P vs. E curves under different nutrient conditions that are representative for the region under investigation. Secondly, one should measure light transmittance or irradiance at a spatial scale fine enough to capture the horizontal variability that is meaningful for the studied process. The number of measurements should be chosen as a function of the sampling method and a reasonable degree of error (Figure 7, Table 3). Nowadays, this can be relatively easily achieved using ROV, SUIT or autonomous underwater vehicles (AUV). Secondly, under heterogeneous sea ice surface, one should use extinction coefficients derived from upward radiance (\lu{}) measurements to propagate PAR in the water column because it is less influenced by the geometric effects of asea ice surface compared to downward irradiance \citep{Katlein2016, Massicotte2018}. Finally, local measurements can be upscaled at higher spatial scale using remote-sensing data such as sea-ice concentration.
+
+\section{Conclusions}
+
+Advances in underwater technologies have made it easier to characterize surface transmittance over large areas even under dense sea ice. Our results show that combining photosynthetic parameters measured in laboratory experiments with spatially representative transmittance values sampled with under-ice profiling platforms can significantly improve the accuracy of primary production estimates under heterogeneous sea surfaces. A good way forward to sample the under-ice light field on a large enough scale without the inherent biases of the ROV and SUIT deployment techniques would be the use of long-range autonomous underwater vehicles. Furthermore, upscaling in-situ measurements at larger scales using remote sensing data becomes necessary when the spatial scale of the studied process (e.g., a phytoplankton bloom) is greater than that which is realistically possible to measure in the field. This emphasizes the need for spatially integrated observation approaches to characterize the light field in ice-covered regions in order to provide more representative primary production estimates for the Arctic.
+
+% ****************************************
+
+\acknowledgments
+
+We thank F. Bruyant, M. Beaulieu for carrying out the P vs. E curve measurements and providing us with the data. We thank Sascha Willmes for onboard processing of the ice and snow thickness data. We thank captain Thomas Wunderlich and the crew of icebreaker Polarstern for their support during the TRANSSIZ campaign (AWI\_PS92\_00). This study was conducted under the Helmholtz Association Research Programme Polar regions And Coasts in the changing Earth System II (PACES II), Topic 1, WP 4 and is part of the Helmholtz Association Young Investigators Groups Iceflux: Ice-ecosystem carbon flux in polar oceans (VH-NG-800). BAL was partly funded during this study by a Visiting Fellowship from the Natural Sciences and Engineering Research Council of Canada (NSERC). The project was conducted under the scientific coordination of the Canada Excellence Research Chair on Remote sensing of Canada's new Arctic frontier and the CNRS \& Université Laval Takuvik Joint International laboratory (UMI3376). We also acknowledge the Sentinel North Strategy for their financial support. SUIT was developed by Wageningen Marine Research (WMR; formerly IMARES) with support from the Netherlands Ministry of EZ (project WOT-04-009-036) and the Netherlands Polar Program (project ALW 866.13.009). We thank Jan Andries van Franeker (WMR) for kindly providing the Surface and Under Ice Trawl (SUIT) and Michiel van Dorssen for technical support with work at sea. Data for the light measurement used in this study can be found on Pangaea website. ROV data \url{https://doi.pangaea.de/10.1594/PANGAEA.861048}, incident radiation \url{https://doi.pangaea.de/10.1594/PANGAEA.849663}, station list \url{https://doi.pangaea.de/10.1594/PANGAEA.848841}, SUIT data \url{https://doi.pangaea.de/10.1594/PANGAEA.902056}, photosynthetic parameters \url{https://doi.org/10.1594/PANGAEA.899842} and sea-ice/snow thickness \url{https://doi.pangaea.de/10.1594/PANGAEA.897958}.
+
+%% ------------------------------------------------------------------------ %%
+%% References and Citations
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BibTeX is preferred:
+%
+\bibliography{lib}
+
+\end{document}

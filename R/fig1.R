@@ -57,8 +57,8 @@ p <- ggplot() +
   labs(color = "Stations") +
   theme(axis.title = element_blank()) +
   scale_color_brewer(palette = "Dark2", direction = 1) +
-  annotate(geom = "text", x = 1, y = 78, label = "Greenland Sea", vjust = 0, hjust = 0, size = 4, family = "IBM Plex Sans") +
-  annotate(geom = "text", x = 25, y = 76.5, label = "Barents Sea", vjust = 0, hjust = 0, size = 4, family = "IBM Plex Sans") +
+  annotate(geom = "text", x = 1, y = 78.1, label = "Greenland Sea", vjust = 0, hjust = 0, size = 4, family = "Poppins") +
+  annotate(geom = "text", x = 25, y = 76.5, label = "Barents Sea", vjust = 0, hjust = 0, size = 4, family = "Poppins") +
   annotation_north_arrow(location = "tr", which_north = "grid", height = unit(0.75, "cm"), width = unit(0.75, "cm")) +
   annotation_scale(location = "bl")
 

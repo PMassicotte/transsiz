@@ -25,9 +25,11 @@ graphics.off()
 
 ## Set default ggplot2 font size and font family
 loadfonts(quiet = TRUE)
-theme_set(theme_bw(base_size = 12, base_family = "IBM Plex Sans"))
+theme_set(theme_light(base_size = 12, base_family = "Poppins"))
+theme_update(strip.text = element_text(colour = "#414141"))
+update_geom_defaults("text", list(family = "Poppins"))
 
-plan(multiprocess)
+plan(multiprocess(workers = availableCores() - 1))
 
 # Prepare data ------------------------------------------------------------
 

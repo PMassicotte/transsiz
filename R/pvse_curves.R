@@ -28,6 +28,13 @@ pp <- map(sheets, read_p_manip) %>%
   bind_rows(.id = "sheet") %>%
   ungroup()
 
+pp %>% 
+  filter(sheet == "water") %>% 
+  group_by(date, depth) %>% 
+  summarise(max_light = max(light)) %>% 
+  pull(max_light) %>% 
+  range()
+
 # pp %>%
 #   ggplot(aes(x = light, y = p_manip)) +
 #   geom_point(aes(color = model_type)) +
