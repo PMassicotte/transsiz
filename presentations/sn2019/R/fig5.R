@@ -131,6 +131,7 @@ p <- df %>%
   filter(station != 47) %>% 
   mutate(station = glue::glue("{station} (SIC: {round(sic_9, digits = 2) * 100}%)")) %>% 
   mutate(data_source = toupper(data_source)) %>% 
+  mutate(pp_source = fct_rev(pp_source)) %>% 
   ggplot(aes(x = data_source, y = pp, fill = pp_source)) +
   geom_violin(scale = "width", size = 0.25, color = NA, alpha = 0.5) +
   facet_wrap(~station) +

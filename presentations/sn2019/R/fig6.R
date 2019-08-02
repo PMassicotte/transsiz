@@ -43,7 +43,7 @@ unique(df$pp_source)
 p2 <- df %>%
   mutate(pp_source = ifelse(str_detect(pp_source, "under_ice"), "italic(P)[underice]", "italic(P)[mixing]")) %>% 
   ggplot(aes(x = rel_err)) +
-  geom_histogram(fill = "#5D99C6", alpha = 0.5) +
+  geom_histogram(fill = "#789db8", size = 0.01, color = "white", binwidth = 0.15) +
   facet_grid(data_source ~ pp_source, scales = "free_y", labeller = labeller(data_source = str_to_upper, pp_source = label_parsed)) +
   scale_x_log10(labels = plain) +
   annotation_logticks(sides = "b") +
@@ -66,6 +66,7 @@ p2 <- df %>%
     size = 4
   ) +
   xlab(bquote("Relative error"~(delta[italic(P)]))) +
+  ylab("Number of observation") +
   theme(panel.grid = element_blank()) +
   theme(plot.title = element_text(size = 14, lineheight = 1.5)) +
   theme(strip.background = element_blank()) +
