@@ -6,7 +6,7 @@ This is the repository for the research paper **Sensitivity of phytoplankton pri
 
 Please cite the paper as: 
 
-Massicotte, P., Peeken, I., Katlein, C., Flores, H., Huot, Y., Castellani, G., et al. (2019). Sensitivity of phytoplankton primary production estimates to available irradiance under heterogeneous sea ice conditions. Journal of Geophysical Research: Oceans, 124. https://doi.org/ 10.1029/2019JC015007
+*Massicotte, P., Peeken, I., Katlein, C., Flores, H., Huot, Y., Castellani, G., et al. (2019). Sensitivity of phytoplankton primary production estimates to available irradiance under heterogeneous sea ice conditions. Journal of Geophysical Research: Oceans, 124. https://doi.org/10.1029/2019JC015007*
 
 ## Data
 
