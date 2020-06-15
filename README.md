@@ -1,10 +1,12 @@
 # Transsiz
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![DOI](https://zenodo.org/badge/75082606.svg)](https://zenodo.org/badge/latestdoi/75082606)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3364144.svg)](https://doi.org/10.5281/zenodo.3364144)
 
-This is the repository for the research paper **Sensitivity of phytoplankton primary production estimates to available irradiance under heterogeneous sea-ice condition** which can be found here: xxx
+This is the repository for the research paper **Sensitivity of phytoplankton primary production estimates to available irradiance under heterogeneous sea-ice condition** which can be found here: https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2019JC015007
 
-Please cite the paper as: xxx
+Please cite the paper as: 
+
+*Massicotte, P., Peeken, I., Katlein, C., Flores, H., Huot, Y., Castellani, G., et al. (2019). Sensitivity of phytoplankton primary production estimates to available irradiance under heterogeneous sea ice conditions. Journal of Geophysical Research: Oceans, 124. https://doi.org/10.1029/2019JC015007*
 
 ## Data
 
