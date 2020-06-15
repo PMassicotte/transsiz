@@ -68,10 +68,13 @@ df %>%
 # Calulate PP -------------------------------------------------------------
 
 res <- df %>%
+  # filter(depth <= 2) %>%
   mutate(pp_under_ice = ps * (1 - exp(-alpha * par_z_variable_transmittance / ps)) * exp(-beta * par_z_variable_transmittance / ps) ) %>%
   mutate(pp_open_water = ps * (1 - exp(-alpha * par_z_100_percent_transmittance / ps)) * exp(-beta * par_z_variable_transmittance / ps)) %>%
   group_by(id, data_source, station, hour) %>%
   nest() %>%
+  ungroup() %>% 
+  # slice(1:24) %>% 
   mutate(depth_integrated_pp_under_ice = map_dbl(data, ~ pracma::trapz(.$depth, .$pp_under_ice))) %>%
   mutate(depth_integrated_pp_open_water = map_dbl(data, ~ pracma::trapz(.$depth, .$pp_open_water))) %>%
   mutate(id = rep(1:((nrow(.)) / 24), each = 24)) %>% 
@@ -176,9 +179,9 @@ p <- df %>%
 
 ggsave("graphs/fig5.pdf", device = cairo_pdf, height = 190 / 1.61803398875, width = 190, units = "mm")
 
-write_feather(df, "data/clean/primary_production_rov_vs_suit.feather")
+# write_feather(df, "data/clean/primary_production_rov_vs_suit.feather")
 write_csv(df, "data/clean/primary_production_rov_vs_suit.csv")
-
+# write_csv(df, "data/clean/primary_production_rov_vs_suit_0_2_m.csv")
 
 # Fig for the poster ------------------------------------------------------
 
