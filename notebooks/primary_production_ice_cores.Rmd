@@ -1,0 +1,192 @@
+---
+title: "Primary production in ice cores"
+author: "Philippe Massicotte"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: hpstr
+    highlight: github
+---
+
+
+```{r setup, echo=FALSE, cache=FALSE, warning=FALSE, message=FALSE}
+library(knitr)
+library(rmdformats)
+library(tidyverse)
+library(arrow)
+library(ggpmthemes)
+
+theme_set(theme_poppins())
+
+## Global options
+options(max.print = "75")
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  cache = TRUE,
+  dpi = 600
+)
+
+opts_knit$set(width = 75)
+```
+
+## Context
+
+Calculate primary production in ice at station 19. Since there was no PvsE curve measured at this station, parameters from station 32 will be used.
+
+## PAR data
+
+First, we have to calculate PAR just bellow the surface. We will use the pyranometer data to estimate PAR under the ice based on transmittance measured by both the ROV and the SUIT.
+
+```{r read_par}
+
+par <- read_feather(
+  here::here("data/clean/rov_propagated_par_water_column.feather")
+) %>%
+  filter(depth == 0 & station == 19)
+```
+
+### Pyranometer
+
+```{r plot_pyranometer}
+par %>%
+  distinct(station, hour, .keep_all = TRUE) %>%
+  ggplot(aes(x = hour, y = par_z_100_percent_transmittance)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    y = bquote(ring(E)(PAR, 0^"+") ~ (mu * mol ~ m^{
+      -2
+    } ~ s^{
+      -1
+    })),
+    x = "Hours of the day"
+  )
+```
+
+### Transmittance
+
+Measured by the ROV and the SUIT. Note the large differences between the two methods (see our paper for more information).
+
+```{r transmittance}
+rov_transmittance <- read_feather(
+  here::here("data/clean/rov_propagated_par_water_column.feather")
+) %>%
+  filter(depth == 0 & station == 19) %>%
+  mutate(source = "rov")
+
+suit_transmittance <- read_feather(
+  here::here("data/clean/suit_propagated_par_water_column.feather")
+) %>%
+  filter(depth == 0 & station == 19) %>%
+  mutate(source = "suit")
+
+transmitance <- bind_rows(rov_transmittance, suit_transmittance) %>% 
+  select(-depth)
+```
+
+```{r plot_transmittance}
+transmitance %>%
+  ggplot(aes(x = transmittance_ed0)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10(
+    labels = scales::label_percent()
+  ) +
+  annotation_logticks(sides = "b") +
+  labs(
+    x = "Transmittance"
+  ) +
+  facet_wrap(~source, ncol = 1)
+```
+
+```{r n_transmittance}
+n_transmittance <- transmitance %>%
+  count(source, hour) %>%
+  group_by(source) %>%
+  slice(1)
+```
+
+PAR just under the ice was estimated using PAR measured from the pyranometer and transmittance measured from the ROV and the SUIT. At station 19, there was a total of `r filter(n_transmittance, source == "rov")$n` and `r filter(n_transmittance, source == "suit")$n` transmittance measurements from the ROV and the SUIT. Hence, there are the same numbers of PAR estimations.
+
+```{r plot_par}
+transmitance %>%
+  ggplot(aes(x = factor(hour), y = par_z_variable_transmittance)) +
+  geom_boxplot(outlier.size = 0.25, size = 0.1, fill = "#90a8c0") +
+  scale_y_log10(
+    labels = scales::label_number()
+  ) +
+  annotation_logticks(sides = "l") +
+  labs(
+    y = "PAR underice (i.e. at 0 meter)",
+    x = "Hours of the day"
+  ) +
+  facet_wrap(~source, ncol = 1)
+```
+
+## PvsE parameters
+
+Use parameters from station 32 sampled on 2015-06-07.
+
+```{r pvse}
+pvse <- read_csv(here::here("data/clean/photosynthetic_parameters.csv")) %>%
+  filter(as.Date(date) == "2015-06-07" & depth %in% c("Ice-1", "Ice-2"))
+
+pvse %>%
+  select(date, depth, ps, alpha) %>%
+  knitr::kable("html")
+
+# Change the data of the pvse
+pvse <- pvse %>%
+  mutate(date = as.Date("2015-05-28"))
+
+# Merge PAR and PvsE data
+df <- pvse %>%
+  left_join(transmitance, by = character())
+```
+
+## Calculate Primary production
+
+This is the formula used to calculate primary production:
+
+$$
+pp = ps * (1 - exp(-\text{alpha} * \text{PAR} / ps))
+$$
+
+The following graphic shows the averaged hourly primary production based on transmittance measured by both the ROV and the SUIT.
+
+```{r hourly_pp}
+df <- df %>%
+  mutate(pp = ps * (1 - exp(-alpha * par_z_variable_transmittance / ps)))
+
+pp_average <- df %>%
+  group_nest(source, hour, depth) %>%
+  mutate(average_pp = map_dbl(data, ~ mean(.$pp)))
+
+pp_average %>% 
+  ggplot(aes(x = hour, y = average_pp, color = depth)) +
+  geom_line() +
+  geom_point(show.legend = FALSE) +
+  labs(
+    y = "Primary production",
+    x = "Hours of the day"
+  ) +
+  theme(
+    legend.title = element_blank()
+  ) +
+  facet_wrap(~source, scales = "free_y", ncol = 1) +
+  paletteer::scale_color_paletteer_d("ggthemes::wsj_colors6")
+```
+
+### Daily primary production
+
+Daily primary production can be calculated by integrating hourly primary production (i.e. the areas under each curve in the previous graphic).
+
+```{r daily_pp}
+pp_average %>% 
+  group_by(transmittance_source = source, depth) %>% 
+  summarise(daily_pp = pracma::trapz(hour, average_pp)) %>% 
+  knitr::kable()
+```
+
