@@ -263,3 +263,51 @@ pvse_curve_station_19 %>%
     box.padding = unit(0.5, "lines")
   )
 ```
+
+A better way to understand it is by looking at the next graph. Here I assumed a surface PAR of 900 µmol. Then, underice PAR is calculated at three levels of transmittance (1%, 18% and 62%). These correspond to underice PAR of 11, 162 and 559. It can be seen that a difference in PAR of 397 (559 - 162) only produce an increase in PP of 0.21 (2.09 - 1.88). Hence, although transmittance is *very* different (18% vs 62%), the difference in PP is not so different. 
+
+```{r primary_production_exploration_station_19_2}
+
+pp_station_19_hour_10 <- pp_station_19 %>% 
+  filter(hour == 10)
+
+pp_station_19_hour_10 <- pp_station_19_hour_10 %>%
+  mutate(label = glue::glue("PP: {round(pp, digits = 2)}")) %>%
+  mutate(
+    description = glue::glue(
+      "Surface PAR: {round(par_just_below_surface_µmol, digits = 2)}\nTransmittance: {round(transmittance, digits = 2)}\nUnderice PAR: {round(par_underice_µmol, digits = 2)}"
+    )
+  )
+
+pvse_curve_station_19 %>%
+  ggplot(aes(x = par, y = pp)) +
+  geom_line() +
+  geom_point(
+    data = pp_station_19_hour_10,
+    aes(x = par_underice_µmol, y = pp, color = source),
+    size = 5
+  ) +
+  scale_y_continuous(limits = c(0, 2.2)) +
+  ggforce::geom_mark_circle(
+    data = pp_station_19_hour_10,
+    aes(
+      x = par_underice_µmol,
+      y = pp,
+      group = source,
+      label = label,
+      description = description
+    ),
+    con.size = 0.25,
+    label.fontsize = c(10, 8) 
+  ) +
+  labs(
+    x = "PAR",
+    y = "Primary production"
+  ) +
+  paletteer::scale_color_paletteer_d("ggsci::default_nejm") +
+  theme(
+    legend.title = element_blank(),
+    legend.position = "top"
+  )
+```
+
