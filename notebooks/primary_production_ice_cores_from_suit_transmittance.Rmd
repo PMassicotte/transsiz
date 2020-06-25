@@ -1,0 +1,265 @@
+---
+title: "Primary production in ice cores"
+subtitle: "Using SUIT transmittance from Giulia's paper"
+author: "Philippe Massicotte"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: hpstr
+    highlight: github
+---
+
+
+```{r setup, echo=FALSE, cache=FALSE, warning=FALSE, message=FALSE}
+library(knitr)
+library(rmdformats)
+library(tidyverse)
+library(arrow)
+library(ggpmthemes)
+library(ggrepel)
+
+theme_set(theme_poppins())
+
+## Global options
+options(max.print = "75")
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  cache = TRUE,
+  dpi = 600
+)
+
+opts_knit$set(width = 75)
+```
+
+## Context
+
+Calculate daily primary production in ice core using transmittance values derived form the SUIT that was provided by Giulia in her paper.
+
+## Pyranometer data
+
+```{r pyranometer}
+# Please note, station 45 is associated with station 46, unfortunately, it did not
+# get the same station number but we figured this already out during your paper.
+# Thus station 45 and 46 can be considered as one process study station.
+
+pyrano <- read_csv(here::here("data/clean/pyranometer.csv")) %>% 
+  mutate(station = ifelse(station == 46, 45, station))
+
+pyrano %>% 
+  ggplot(aes(x = hour, y = par_just_below_surface_µmol)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~station) +
+  xlab("Time (hour)") +
+  ylab(bquote(ring(E)(PAR,0^"+")~(mu*mol~m^{-2}~s^{-1}))) +
+  scale_y_continuous(breaks = scales::breaks_pretty())
+```
+
+## Transmittance and PAR under ice
+
+### Transmittance from Giulia's paper
+
+```{r transmittance}
+transmittance <- tibble::tribble(
+  ~station, ~transmittance,
+  19L, 0.18,
+  27L, 0.24,
+  28L, 0.02,
+  39L, 0.27,
+  43L, 0.04, # Regarding station 43, use the values cast number 43-23 
+  44L, 0.2,
+  45L, 0.04,
+  47L, 0.09,
+  48L, 0.18,
+  49L, 0.08,
+  56L, 0.12
+)
+
+transmittance %>% 
+  knitr::kable(caption = "Transmittance values from Giulia's paper")
+
+par <- pyrano %>% 
+  inner_join(transmittance, by = "station") %>% 
+  mutate(par_underice_µmol = par_just_below_surface_µmol * transmittance)
+```
+
+There are **`r n_distinct(par$station)` stations** for which we have pyranometer data and transmittance values from Giulia's paper.
+
+```{r plot_par}
+par %>%
+  pivot_longer(starts_with("par")) %>%
+  ggplot(aes(x = hour, y = value, color = name)) +
+  geom_line() +
+  facet_wrap(~station) +
+  xlab("Time (hour)") +
+  ylab(bquote(PAR ~ (mu * mol ~ m^{-2} ~ s^{-1}))) +
+  scale_y_continuous(breaks = scales::breaks_pretty()) +
+  paletteer::scale_color_paletteer_d(
+    "ggthemes::wsj_colors6", 
+    labels = c("surface", "underice")
+  ) +
+  theme(
+    legend.position = "top",
+    legend.title = element_blank()
+  )
+```
+
+### Comparing with SUIT and ROV transmittance
+
+Just for comparing, I am plotting the mean transmittance values for the ROV and the SUIT as well as the averages calculated by Giulia.
+
+```{r compare_transmittance}
+rov_transmittance <- read_feather(
+  here::here("data/clean/rov_propagated_par_water_column.feather")
+) %>%
+  filter(depth == 0 & hour == 0) %>%
+  mutate(source = "rov")
+
+suit_transmittance <- read_feather(
+  here::here("data/clean/suit_propagated_par_water_column.feather")
+) %>%
+  filter(depth == 0 & hour == 0) %>%
+  mutate(source = "suit")
+
+transmitance_rov_suit <- bind_rows(
+  rov_transmittance,
+  suit_transmittance
+) %>% 
+  mutate(station = ifelse(station == 46, 45, station))
+
+transmitance_rov_suit %>%
+  filter(station %in% c(19, 27, 39, 43, 45, 47)) %>%
+  group_by(station, source) %>%
+  summarise(across(contains("transmittance_ed0"), list(mean = mean, median = median))) %>%
+  ggplot(aes(y = source, x = transmittance_ed0_mean)) +
+  geom_col() +
+  geom_col(
+    data = transmittance %>%
+      filter(station %in% c(19, 27, 39, 43, 45, 47)),
+    aes(y = "Giulia", x = transmittance)
+  ) +
+  facet_wrap(~station, scales = "free", ncol = 2) +
+  labs(
+    y = NULL,
+    x = "Transmittance"
+  ) +
+  scale_x_continuous(
+    labels = scales::label_percent(),
+    breaks = scales::breaks_pretty()
+  )
+```
+
+## PvsE parameters
+
+These are the stations for which we will compute primary production. Note that for station 19 we are using PvsE parameters form station 32.
+
+```{r pvse}
+# Change the date of the station 32 (2015-06-07) to the date of the station 19
+# (2015-05-28)
+pvse <- read_csv(here::here("data/clean/photosynthetic_parameters.csv")) %>%
+  filter(depth %in% c("Ice-1", "Ice-2")) %>%
+  mutate(date = as.Date(date)) %>%
+  mutate(date = if_else(date == as.Date("2015-06-07"), as.Date("2015-05-28"), date)) %>%
+  mutate(date = if_else(date == as.Date("2015-06-16"), as.Date("2015-06-15"), date))
+
+df <- par %>% 
+  left_join(pvse, by = "date")
+
+df %>%
+  select(station, date, depth, ps, alpha) %>%
+  distinct() %>% 
+  knitr::kable("html")
+```
+
+## Primary production
+
+This is the formula used to calculate primary production:
+
+$$
+pp = ps * (1 - exp(-\text{alpha} * \text{PAR} / ps))
+$$
+
+### Hourly primary production
+
+```{r hourly_pp}
+df <- df %>%
+  mutate(pp = ps * (1 - exp(-alpha * par_underice_µmol / ps)))
+
+df %>% 
+  ggplot(aes(x = hour, y = pp, color = depth)) +
+  geom_line() +
+  geom_point(show.legend = FALSE) +
+  labs(
+    y = "Primary production",
+    x = "Hours of the day"
+  ) +
+  theme(
+    legend.title = element_blank(),
+    legend.position = "top"
+  ) +
+  facet_wrap(~station, scales = "free_y") +
+  paletteer::scale_color_paletteer_d("ggthemes::wsj_colors6")
+```
+
+### Daily primary production
+
+Daily primary production can be calculated by integrating hourly primary production (i.e. the areas under each curve in the previous graphic).
+
+```{r daily_pp}
+df %>% 
+  group_by(station, depth) %>% 
+  summarise(daily_pp = pracma::trapz(hour, pp)) %>% 
+  knitr::kable()
+```
+
+## Understanding primary production values at station 19
+
+Here I am presenting the PvsE curve of the station 32 Ice-1 that is used for station 19. On each panel, primary production estimated over the 24 hours of the day (black dots) is plotted. The three panels show primary production estimates using three levels of transmittance. This is just to better understand/visualize what is the effect of the transmittance on PAR and subsequently on primary production estimates. Because of the log-like PvsE curve, low transmittance of the ROV produces lower estimates of primary production.
+
+```{r primary_production_exploration_station_19, fig.height=8}
+pp_station_19 <- df %>% 
+  filter(station == 19 & depth == "Ice-1") %>% 
+  select(station, hour, par_just_below_surface_µmol, ps, alpha)
+
+# ps * (1 - exp(-alpha * par_underice_µmol / ps))
+
+pp_station_19 <- pp_station_19 %>%
+  left_join(tibble(
+    source = c("rov", "suit", "giulia"),
+    transmittance = c(0.0121, 0.621, 0.18)
+  ), by = character()) %>% 
+  mutate(par_underice_µmol = par_just_below_surface_µmol * transmittance) %>% 
+  mutate(pp = ps * (1 - exp(-alpha * par_underice_µmol / ps)))
+
+pvse_curve_station_19 <- tibble(
+  par = seq(0, 1000),
+  pp = 2.09 * (1 - exp(-0.0301 * par / 2.09))
+) 
+
+pvse_curve_station_19 %>%
+  ggplot(aes(x = par, y = pp)) +
+  geom_line(color = "#ef4040") +
+  geom_point(
+    data = pp_station_19,
+    aes(x = par_underice_µmol, y = pp),
+    inherit.aes = FALSE,
+    size = 0.5
+  ) +
+  labs(
+    x = "PAR",
+    y = "Primary production"
+  ) +
+  facet_wrap(~ glue::glue("{source}\n(mean transmittance = {transmittance})"),
+             ncol = 1
+  ) +
+  geom_text_repel(
+    data = pp_station_19,
+    aes(x = par_underice_µmol, y = pp, label = hour, group = hour),
+    size = 3,
+    segment.size = 0.25,
+    box.padding = unit(0.5, "lines")
+  )
+```
